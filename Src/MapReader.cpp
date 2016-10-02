@@ -1,5 +1,6 @@
 #include "MapReader.h"
 #include "ConstUtil.h"
+#include "ResCreator.h"
 
 CMapReader g_MapReader;
 
@@ -46,24 +47,91 @@ void CMapReader::ParseTileMap()
 	TMXObjectGroup* pObjectGroup = _tilemap->getObjectGroup("objects");
 	ValueVector vecArray = pObjectGroup->getObjects();
 	
+	g_ResCreator.GetMapReaderInstance()->setVecObjectPath(vecArray);
+
+	ValueVector::iterator itBegin = vecArray.begin();
+	for (; itBegin != vecArray.end(); ++itBegin)
+	{
+		ValueMap  mapObject = itBegin->asValueMap();
+
+		CCLOG("ParseTileMap		value: %d,	name: %s", mapObject.size(), mapObject["name"]);
+		CCLOG("ParseTileMap		X: %s,		Y: %s", mapObject["x"].asString().c_str(), mapObject["y"].asString().c_str());
+		CCLOG("ParseTileMap		Type: %s", mapObject["Type"].asString().c_str());
+
+		DWORD dwScore = 0;
+		//DoParseScore(mapObject, dwScore);
+	}
+	
+}
+
+bool CMapReader::CheckCanTakeAddSocre(DWORD &dwScore, Vec2 oPoint)
+{
+
+	CCLOG("Dest: x = %02f,   y = %02f ", oPoint.x, oPoint.y);
+	ValueVector vecArray = g_ResCreator.GetMapReaderInstance()->getVecObjectPath();
+	
 	ValueVector::iterator itBegin = vecArray.begin();
 	for (; itBegin != vecArray.end(); ++itBegin)
 	{
 		ValueMap  mapObject = itBegin->asValueMap();
 
 		CCLOG("value: %d, %s", mapObject.size(), mapObject["name"]);
-		DoParseObject(mapObject);
+		float x = mapObject["x"].asFloat();
+		float y	= mapObject["y"].asFloat();
+
+		Vec2 vecPoint = Vec2(x, y);
+
+		Vec2 vecPoint1 = Vec2(x + 1, y + 1);
+		Vec2 vecPoint2 = Vec2(x + 1, y);
+		Vec2 vecPoint3 = Vec2(x, y + 1);
+
+		Vec2 vecPoint4 = Vec2(x - 1, y - 1);
+		Vec2 vecPoint5 = Vec2(x - 1, y);
+		Vec2 vecPoint6 = Vec2(x, y - 1);
+
+		CCLOG("Src: x = %02f,   y = %02f ", x, y);
+		
+		bool bFlag_x = (fabs(oPoint.x - x) <= CoordinateDiff);
+		bool bFlag_y = (fabs(oPoint.y - y) <= CoordinateDiff);
+		CCLOG("fabs: x = %02f,   y = %02f ", fabs(oPoint.x - x), fabs(oPoint.y - y));
+
+		if (bFlag_x && bFlag_y)
+		{
+			if (DoParseScore(mapObject, dwScore))
+			{
+				CCLOG("Src Map		value: %d,	name: %s", mapObject.size(), mapObject["name"]);
+				CCLOG("Src Map		X: %s,		Y: %s", mapObject["x"].asString().c_str(), mapObject["y"].asString().c_str());
+				CCLOG("Src eMap		Type: %s", mapObject["Type"].asString().c_str());
+				CCLOG("Src: x = %02f,   y = %02f ", x, y);
+				return true;
+			}
+		}
+		
 	}
-	
+	return false;
 }
 
-void CMapReader::DoParseObject(ValueMap mapObject)
+bool CMapReader::DoParseScore(ValueMap mapObject, DWORD &dwScore)
 {
-	if (strcmp(mapObject["name"].asString().c_str(), "player_1") == 0)
+	if (strcmp(mapObject["name"].asString().c_str(), "Score") == 0)
 	{
+		CCLOG("find Score pos....");
 
-		CCLOG("find player pos....");
+		if (strcmp(mapObject["Type"].asString().c_str(), "int") == 0)
+		{
+			CCLOG("---------------------------finally find result Coordinate----------------------------");
+			CCLOG("Dest Map		value: %d,	name: %s", mapObject.size(), mapObject["name"]);
+			CCLOG("Dest Map		X: %s,		Y: %s", mapObject["x"].asString().c_str(), mapObject["y"].asString().c_str());
+			CCLOG("Dest Map			Type: %s", mapObject["Type"].asString().c_str());
+			CCLOG("Dest Map			Type: %s", mapObject["Value"].asString().c_str());
+
+			dwScore = mapObject["Value"].asDouble();
+
+			return true;
+		}
 	}
+
+	return false;
 }
 
 void CMapReader::setPathWay()

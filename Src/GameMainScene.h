@@ -40,8 +40,6 @@ public:
 
 	void onClick_StartControl(Object* pSender, Control::EventType event);
 
-	void  AfterOpenCard();
-
 private:
 	void AddSceneMap();
 
@@ -58,6 +56,12 @@ private:
 	void addPlayer();
 
 	void GetAnimateVec(int iMin, int iMax, TVecSpriteFrame &vecPlayer_director, EPlayer iState);
+	
+	void AfterOpenCard();
+
+	void BeginFloatHead();
+
+	void BeginActorGo();
 
 private:
 	Size visibleSize;
@@ -81,5 +85,6 @@ private:
 	CallFunc* pCallFunc_AfterOpen;
 
 	int m_CurRandNum;
+	DWORD m_CurPalyer_1_Socre;
 };
 

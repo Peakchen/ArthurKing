@@ -2,17 +2,21 @@
 #include "ConstUtil.h"
 #include "MapReader.h"
 #include "ArthurKingControl.h"
+#include "ResCreator.h"
 
 USING_NS_CC;
 
 CArthurKing::CArthurKing()
 {
+	m_ActorScore = 0;
+	m_pCtrl = NULL;
+
 	m_bCheckActorRuning = false;
 	m_bActorRunDirector = false;
 	m_pActorSprite = NULL;
 	m_szSpriteName = NULL;
 
-	pCallFunc_MoveEnd = CallFunc::create(CC_CALLBACK_0(CArthurKing::OnPlayerMoveEnd, this));
+	//pCallFunc_MoveEnd = CallFunc::create(CC_CALLBACK_0(CArthurKing::OnPlayerMoveEnd, this));
 }
 
 
@@ -129,87 +133,18 @@ bool CArthurKing::init()
 	return true;
 }
 
-void CArthurKing::PlayStartGo()
+void CArthurKing::RequestActorCtrl()
 {
-	//AnimationCache* pAnimationInstance = AnimationCache::getInstance();
-	//if (pAnimationInstance == NULL)
-	//{
-	//	CCLOG("error: %s 取得animation  实例出错。", __FUNCTION__);
-	//	return;
-	//}
-
-	//// 初始化 动画帧
-	//if (!pAnimationInstance->animationByName("EPlayer_Animation_Left"))
-	//{
-	//	Animation* pLeftAnimation =  Animation::createWithSpriteFrames(vecPlayer_anim_Left, 0.1f);
-	//	if (pLeftAnimation == NULL)
-	//	{
-	//		CCLOG("error: %s 取得pLeftAnimation  实例出错。", __FUNCTION__);
-	//		return;
-	//	}
-	//	pAnimationInstance->addAnimation(pLeftAnimation, "EPlayer_Animation_Left");
-	//}
-
-	//if (!pAnimationInstance->animationByName("EPlayer_Animation_Right"))
-	//{
-	//	Animation* pRightAnimation = Animation::createWithSpriteFrames(vecPlayer_anim_right, 0.1f);
-	//	if (pRightAnimation == NULL)
-	//	{
-	//		CCLOG("error: %s 取得pRightAnimation  实例出错。", __FUNCTION__);
-	//		return;
-	//	}
-	//	pAnimationInstance->addAnimation(pRightAnimation, "EPlayer_Animation_Right");
-	//}
-
-	//if (!pAnimationInstance->animationByName("EPlayer_Animation_UP"))
-	//{
-	//	Animation* pUpAnimation = Animation::createWithSpriteFrames(vecPlayer_anim_up, 0.1f);
-	//	if (pUpAnimation == NULL)
-	//	{
-	//		CCLOG("error: %s 取得pUpAnimation  实例出错。", __FUNCTION__);
-	//		return;
-	//	}
-	//	pAnimationInstance->addAnimation(pUpAnimation, "EPlayer_Animation_UP");
-	//}
-
-	//if (!pAnimationInstance->animationByName("EPlayer_Animation_Down"))
-	//{
-	//	Animation* pDownAnimation = Animation::createWithSpriteFrames(vecPlayer_anim_down, 0.1f);
-	//	if (pDownAnimation == NULL)
-	//	{
-	//		CCLOG("error: %s 取得pDownAnimation  实例出错。", __FUNCTION__);
-	//		return;
-	//	}
-	//	pAnimationInstance->addAnimation(pDownAnimation, "EPlayer_Animation_Down");
-	//}
-
-	//m_pActor_Up_Animate		= Animate::create(pAnimationInstance->animationByName("EPlayer_Animation_UP"));
-	//m_pActor_Down_Animate	= Animate::create(pAnimationInstance->animationByName("EPlayer_Animation_Down"));
-	//m_pActor_Right_Animate	= Animate::create(pAnimationInstance->animationByName("EPlayer_Animation_Right"));
-	//m_pActor_Left_Animate	= Animate::create(pAnimationInstance->animationByName("EPlayer_Animation_Left"));
-
-	//m_pActor_Left_Animate->retain();
-	//m_pActor_Right_Animate->retain();
-	//m_pActor_Up_Animate->retain();
-	//m_pActor_Down_Animate->retain();
-	//
-	//stPlayerMovePath.iCurCol = m_passColPath[0];
-	//stPlayerMovePath.iCurRow = m_passRowPath[0];
-
-	//stPlayerMovePath.iNextCol = 0;
-	//stPlayerMovePath.iNextRow = 0;
-	//stPlayerMovePath.iStepCount = 0;
-
-	//OnPlayerMove();
-
-	CArthurKingControl* pCtrl = CArthurKingControl::create();
-	if (pCtrl == NULL)
+	
+	m_pCtrl = CArthurKingControl::create();
+	if (m_pCtrl == NULL)
 	{
 		return;
 	}
-	addChild(pCtrl);
+	
+	addChild(m_pCtrl);
 
-	pCtrl->StartActorGo(m_passRowPath, m_passColPath, this);
+	m_pCtrl->InitData(m_passRowPath, m_passColPath, this);
 }
 
 void CArthurKing::GetPlayerGoPath(int iStepCount, int** arrCanGoGrid)
@@ -221,7 +156,9 @@ void CArthurKing::GetPlayerGoPath(int iStepCount, int** arrCanGoGrid)
 	int iNextRowStep = 0;
 
 	int iCurrentColStep = (dwLocx) / TILE_WIDTH;
-	int iCurrentRowStep = (dwLocy) / TILE_HEIGHT;
+	int iCurrentRowStep = (dwLocy - TILE_HEIGHT/5) / TILE_HEIGHT;
+
+	CCLOG("iCurrentColStep: %d, iCurrentRowStep: %d", iCurrentColStep, iCurrentRowStep);
 	
 	// 设置当前能够行走的 格子
 	int **arrTempCanGoGrid = new int *[TILE_ROW];
@@ -233,7 +170,7 @@ void CArthurKing::GetPlayerGoPath(int iStepCount, int** arrCanGoGrid)
 		{
 			arrTempCanGoGrid[iRow][iCol] = arrCanGoGrid[iRow][iCol];
 
-			CCLOG("arrTempCanGoGrid[iRow][iCol]: %d,  iRow: %d, iCol: %d  ", arrTempCanGoGrid[iRow][iCol], iRow, iCol);
+			//CCLOG("arrTempCanGoGrid[iRow][iCol]: %d,  iRow: %d, iCol: %d  ", arrTempCanGoGrid[iRow][iCol], iRow, iCol);
 		}
 	}
 
@@ -267,10 +204,10 @@ void CArthurKing::GetPlayerGoPath(int iStepCount, int** arrCanGoGrid)
 		vecCanPassDirection[Direction_Left] = arrTempCanGoGrid[iCurrentRowStep][iCurrentColStep - 1];
 		vecCanPassDirection[Direction_Right] = arrTempCanGoGrid[iCurrentRowStep][iCurrentColStep + 1];
 
-		CCLOG("Direction_Up: %d, ", arrTempCanGoGrid[iCurrentRowStep - 1][iCurrentColStep]);
+		/*CCLOG("Direction_Up: %d, ", arrTempCanGoGrid[iCurrentRowStep - 1][iCurrentColStep]);
 		CCLOG("Direction_Down: %d, ", arrTempCanGoGrid[iCurrentRowStep + 1][iCurrentColStep]);
 		CCLOG("Direction_Left: %d, ", arrTempCanGoGrid[iCurrentRowStep][iCurrentColStep - 1]);
-		CCLOG("Direction_Right: %d, ", arrTempCanGoGrid[iCurrentRowStep][iCurrentColStep + 1]);
+		CCLOG("Direction_Right: %d, ", arrTempCanGoGrid[iCurrentRowStep][iCurrentColStep + 1]);*/
 
 		vecPassedPath.clear();
 		for (int i = 0; i < Go_Direction; ++i)
@@ -417,4 +354,14 @@ void CArthurKing::OnPlayerMoveEnd()
 	stPlayerMovePath.iCurCol = stPlayerMovePath.iNextCol;
 	stPlayerMovePath.iCurRow = stPlayerMovePath.iNextRow;
 	OnPlayerMove();
+}
+
+void CArthurKing::UpdateScoreItem(int addScore)
+{
+	m_ActorScore += addScore;
+}
+
+void CArthurKing::PlayStartGo()
+{
+	m_pCtrl->StartActorGo();
 }

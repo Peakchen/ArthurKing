@@ -7,6 +7,8 @@
 USING_NS_CC;
 USING_NS_CC_EXT;
 
+const float CoordinateDiff = 3.0f;
+
 class CMapReader :
 	public LayerColor
 {
@@ -26,13 +28,15 @@ public:
 	CC_SYNTHESIZE_RETAIN(TMXLayer*, _bg, MapBackground);
 	CC_SYNTHESIZE_RETAIN(Sprite*, _player, Player);
 
+	CC_SYNTHESIZE(ValueVector, m_vecArray, VecObjectPath);
+
 	CREATE_FUNC(CMapReader);
 
 private:
 	void initPlayer();
 	void ParseTileMap();
 
-	void DoParseObject(ValueMap mapObject);
+	bool DoParseScore(ValueMap mapObject, DWORD &dwScore);
 
 	void setPathWay();
 
@@ -46,12 +50,16 @@ private:
 	//std::vector<Vec2> vevLayerPath;
 
 	std::vector<Vec2> m_vecLayerPath;
+
+	//ValueVector m_vecArray;
 public:
 		// 取得 行走路径
 	std::vector<Vec2>* GetGoPathMap(){ return &m_vecLayerPath; }
 	int** GetCanGoPathArr(){ return m_arrPassGrid; }
 
 	void initPressGrid(int** arrPassGrid);
+
+	bool CheckCanTakeAddSocre(DWORD &iScore, Vec2 oPoint);
 };
 
 extern CMapReader g_MapReader;

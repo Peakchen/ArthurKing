@@ -1,6 +1,7 @@
 #include "ArthurKingControl.h"
 #include "ArthurKing.h"
 #include "ConstUtil.h"
+#include "ResCreator.h"
 
 
 CArthurKingControl::CArthurKingControl()
@@ -20,7 +21,7 @@ bool CArthurKingControl::init()
 	}
 
 
-	pCallFunc_MoveEnd = CallFunc::create(CC_CALLBACK_0(CArthurKingControl::OnPlayerMoveEnd, this));
+	//pCallFunc_MoveEnd = CallFunc::create(CC_CALLBACK_0(CArthurKingControl::OnPlayerMoveEnd, this));
 	return true;
 }
 
@@ -99,11 +100,17 @@ void CArthurKingControl::OnPlayerMove()
 	{
 		CCLOG("error: %s 动作产出 失败。。。", __FUNCTION__);
 	}
-	Sequence* pSequence = Sequence::create(pSpawn, pCallFunc_MoveEnd, NULL);
+
+	pCallFunc_MoveEnd = CallFunc::create(CC_CALLBACK_0(CArthurKingControl::OnPlayerMoveEnd, this));
+
+	Sequence* pSequence = Sequence::create(pSpawn,
+										   pCallFunc_MoveEnd,
+										   NULL);
+
 	m_pActor->runAction(pSequence);
 }
 
-void CArthurKingControl::StartActorGo(std::vector<int> vecRowGo, std::vector<int> vecColGo, CArthurKing* pActor)
+void CArthurKingControl::InitData(std::vector<int> vecRowGo, std::vector<int> vecColGo, CArthurKing* pActor)
 {
 	AnimationCache* pAnimationInstance = AnimationCache::getInstance();
 	if (pAnimationInstance == NULL)
@@ -167,6 +174,9 @@ void CArthurKingControl::StartActorGo(std::vector<int> vecRowGo, std::vector<int
 	m_pActor_Up_Animate->retain();
 	m_pActor_Down_Animate->retain();
 
+	g_ResCreator.GetActorCtrlInstance()->setRecordPassColPath(vecColGo);
+	g_ResCreator.GetActorCtrlInstance()->setRecordPassRowPath(vecRowGo);
+
 	m_passColPath = vecColGo;
 	m_passRowPath = vecRowGo;
 	m_pActor = pActor;
@@ -178,5 +188,15 @@ void CArthurKingControl::StartActorGo(std::vector<int> vecRowGo, std::vector<int
 	stPlayerMovePath.iNextRow = 0;
 	stPlayerMovePath.iStepCount = 0;
 
+}
+
+void CArthurKingControl::StartActorGo()
+{
 	OnPlayerMove();
+}
+
+CArthurKingControl* CArthurKingControl::getActorCtrlInstance()
+{
+	CArthurKingControl* pCtrl = new CArthurKingControl();
+	return pCtrl;
 }

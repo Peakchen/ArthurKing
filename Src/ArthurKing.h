@@ -8,6 +8,9 @@ USING_NS_CC;
 USING_NS_CC_EXT;
 
 #pragma once
+
+class CArthurKingControl;
+
 class CArthurKing :
 	public Sprite
 {
@@ -43,6 +46,8 @@ public:
 	CC_SYNTHESIZE(Vector<SpriteFrame*>, vecPlayer_anim_down, vecAnim_down);
 	CC_SYNTHESIZE(Vector<SpriteFrame*>, vecPlayer_anim_up, vecAnim_up);
 
+	void RequestActorCtrl();
+
 	void PlayStartGo();
 
 	void GetPlayerGoPath(int iStepCount, int** arrCanGoGrid);
@@ -51,13 +56,16 @@ public:
 
 	CC_SYNTHESIZE(std::vector<int>, m_passColPath, RecordPassColPath);
 	CC_SYNTHESIZE(std::vector<int>, m_passRowPath, RecordPassRowPath);
+
+	void UpdateScoreItem(int addScore);
+
 private:
 	// to Check actor is runing?
 	bool m_bCheckActorRuning;
 
 	bool m_bActorRunDirector; //actor run director
 	
-	CCSprite* m_pActorSprite; // sprite addr
+	Sprite* m_pActorSprite; // sprite addr
 	char* m_szSpriteName; // init picture name
 
 	//四方向动画
@@ -80,6 +88,9 @@ private:
 
 	CallFunc* pCallFunc_MoveEnd;
 
+	DWORD m_ActorScore;
+
+	CArthurKingControl* m_pCtrl;
 private:
 
 	void GetCanGoColRowData(int iRandnum, int iCol, int iRow, int& iNextCol, int &iNextRow);

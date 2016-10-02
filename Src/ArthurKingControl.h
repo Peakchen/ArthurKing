@@ -10,14 +10,17 @@ class CArthurKingControl :
 public:
 	CArthurKingControl();
 	~CArthurKingControl();
-
-	void StartActorGo(std::vector<int> vecRowGo, std::vector<int> vecColGo, CArthurKing* pActor);
+	
+	void InitData(std::vector<int> vecRowGo, std::vector<int> vecColGo, CArthurKing* pActor);
+	void StartActorGo();
 	virtual bool init();
 
 	CC_SYNTHESIZE(std::vector<int>, m_passColPath, RecordPassColPath);
 	CC_SYNTHESIZE(std::vector<int>, m_passRowPath, RecordPassRowPath);
 
 	CREATE_FUNC(CArthurKingControl);
+
+	static CArthurKingControl* getActorCtrlInstance();
 
 private:
 	//四方向动画
@@ -46,4 +49,5 @@ private:
 	void OnPlayerMoveEnd();
 	void OnPlayerMove();
 };
+
 

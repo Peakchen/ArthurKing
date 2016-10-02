@@ -3,6 +3,8 @@
 #include "MapReader.h"
 #include "ConstUtil.h"
 #include "CardSprite.h"
+#include "ResCreator.h"
+#include "base\ccMacros.h"
 
 USING_NS_CC;
 
@@ -185,22 +187,7 @@ void CGameMainScene::onClick_StartControl(Object* pSender, Control::EventType ev
 		m_CurRandNum = iRandom;
 		//// 翻拍后 行走
 		schedule_count = 0;
-		schedule([this](float dt){
-			schedule_count += dt;
-			if (schedule_count >= 2)
-			{
-				unschedule("AfterOpen_Close");
-			}
-
-			if (m_pArthurKing == NULL || m_CurRandNum == 0)
-			{
-				return;
-			}
-
-			m_pArthurKing->GetPlayerGoPath(m_CurRandNum, g_MapReader.GetCanGoPathArr());
-			m_pArthurKing->PlayStartGo();
-		}
-		, 5.0f, 1, 0.0f, "AfterOpen_Close");
+		AfterOpenCard();
 	}
 }
 
@@ -211,12 +198,36 @@ void CGameMainScene::onClick_StartControl(Object* pSender, Control::EventType ev
 /************************************************************************/
 int CGameMainScene::GetRandomNum(int Randsize)
 {
-	int iRandom = rand() % (Randsize + 1);
-	if (iRandom == 0)
+	timeval psv;
+	cocos2d::gettimeofday(&psv, NULL);    // 计算时间种子   
+	unsigned int tsrans = psv.tv_sec * 1000 + psv.tv_usec / 1000;    // 初始化随机数   
+	srand(tsrans);
+
+	int arr_seq[RADN_COUNT] = { 0 };
+	int arr_RandResult[RADN_COUNT] = {0};
+	int iSub = RADN_COUNT - 1;
+
+	for (int i = 0; i < RADN_COUNT; ++i)
 	{
-		return GetRandomNum(Randsize);
+		int iRandom = CCRANDOM_0_1()*Randsize + 1;
+		CCLOG("rand num: %d ",iRandom);
+		arr_seq[i] = iRandom;
+		arr_RandResult[i] = iRandom;
 	}
-	return iRandom;
+
+	for (int index = 0; index < RADN_COUNT; ++index)
+	{
+		int iRandom = CCRANDOM_0_1()*Randsize + 1;
+		arr_RandResult[index] = arr_seq[iRandom];
+		CCLOG("arr_RandResult num: %d ", arr_RandResult[index]);
+		arr_seq[iRandom] = arr_seq[iSub];
+		--iSub;
+	}
+
+	int iendIndex = CCRANDOM_0_1()*RADN_COUNT;
+
+	CCLOG("Result num: %d ", arr_RandResult[iendIndex]);
+	return arr_RandResult[iendIndex];
 }
 
 /************************************************************************/
@@ -282,15 +293,15 @@ void CGameMainScene::addPlayer()
 		CCLOG("error：取得路径为0..");
 		return;
 	}
-	int iRand = GetRandomNum(iPathSize);
-	Vec2 vec2_p1 = pstVecMap->at(iRand);
+	//int iRand = GetRandomNum(iPathSize);
+	Vec2 vec2_p1 = pstVecMap->front();
 
-	CCLOG("Random Map x: %d , y: %d", vec2_p1.x, vec2_p1.y);
+	CCLOG("Random Map x: %02f , y: %02f", vec2_p1.x, vec2_p1.y);
 
-	/*vec2_p1.y += TILE_HEIGHT*1.5f;
-	vec2_p1.x += TILE_HEIGHT;*/
+	vec2_p1.y += TILE_HEIGHT/5;
+	//vec2_p1.x += TILE_HEIGHT/2;
 
-	CCLOG("player1 vec2_p1 x: %.2f , vec2_p1 y: %.2f", vec2_p1.x, vec2_p1.y);
+	CCLOG("After player1 vec2_p1 x: %.2f , vec2_p1 y: %.2f", vec2_p1.x, vec2_p1.y);
 
 	int iCol = (int)vec2_p1.y/TILE_HEIGHT;
 	int iRow = (int)vec2_p1.x/TILE_WIDTH;
@@ -369,21 +380,94 @@ void CGameMainScene::InitPlayerAnimation()
 	m_Pplayer_animate_right = Animate::create(pPlayer_1_Animation_right);
 }
 
-
 void CGameMainScene::AfterOpenCard()
 {
-	// 翻拍后 行走
-
-	if (schedule_count >= 1 )
-	{
-		unschedule("AfterOpen_Close");
-	}
-
+	// 取得路径，请求控制 角色行走
 	if (m_pArthurKing == NULL || m_CurRandNum == 0)
 	{
 		return;
 	}
 
 	m_pArthurKing->GetPlayerGoPath(m_CurRandNum, g_MapReader.GetCanGoPathArr());
-	m_pArthurKing->PlayStartGo();
+	m_pArthurKing->RequestActorCtrl();
+
+	// 翻拍后 显示 分数
+	
+	BeginFloatHead();
+
+	// 行走
+	
+	BeginActorGo();
+}
+
+int sche_aboutScore = 0;
+Vec2 g_Point;
+void CGameMainScene::BeginFloatHead()
+{
+	// 首先 判断是否能够 飘字
+	m_CurPalyer_1_Socre = 0;
+	std::vector<int>  vecRow = g_ResCreator.GetActorCtrlInstance()->getRecordPassRowPath();
+	if (vecRow.empty())
+	{
+		return;
+	}
+
+	std::vector<int>  vecCol = g_ResCreator.GetActorCtrlInstance()->getRecordPassColPath();
+	if (vecCol.empty())
+	{
+		return;
+	}
+
+	int iRow = vecRow.back();
+	int iCol = vecCol.back();
+	
+	float y = (float)1.0f * iRow * TILE_WIDTH;
+	float x = (float)1.0f * iCol * TILE_HEIGHT;
+
+	g_Point = Vec2(x, y);
+	if (!g_ResCreator.GetMapReaderInstance()->CheckCanTakeAddSocre(m_CurPalyer_1_Socre, g_Point))
+	{
+		return;
+	}
+
+	// 执行飘字操作
+	sche_aboutScore = 0;
+	schedule([this](float dt){
+		sche_aboutScore += dt;
+		if (sche_aboutScore >= 2)
+		{
+			unschedule("AfterOpen_Score");
+		}
+
+		std::string szMsg = String::createWithFormat("+%d", m_CurPalyer_1_Socre)->getCString();
+		g_ResCreator.GetFloatingHeadInstance()->createFloatingHead(this, szMsg, 3.0f, g_Point);
+	}
+	, 5.0f, 1, 0.0f, "AfterOpen_Score");
+}
+
+void CGameMainScene::BeginActorGo()
+{
+	schedule_count = 0;
+	schedule([this](float dt){
+
+		CCLOG("BeginActorGo: schedule  dt = %02f", dt);
+		schedule_count += dt;
+		if (schedule_count >= 1)
+		{
+			unschedule("AfterOpen_Close");
+		}
+
+		/*if (m_pArthurKing == NULL || m_CurRandNum == 0)
+		{
+		return;
+		}
+
+		m_pArthurKing->GetPlayerGoPath(m_CurRandNum, g_MapReader.GetCanGoPathArr());
+		m_pArthurKing->RequestActorCtrl();*/
+
+		m_pArthurKing->PlayStartGo();
+
+		//unschedule("AfterOpen_Close");
+	}
+	, 5.0f, 1, 0.0f, "AfterOpen_Close");
 }
