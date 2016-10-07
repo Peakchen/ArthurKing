@@ -31,6 +31,16 @@ date modified:
 
 #define Attack_Button	"bt.png"
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+enum EPLAYER_ACTION
+{
+	EACTOR_PLAYER_ACTION = 10001,
+	EAI_PLAYER_ACTION,
+};
+
+
+
 //typedef std::vector<Vec2> TVectorVec2;
 
 #endif

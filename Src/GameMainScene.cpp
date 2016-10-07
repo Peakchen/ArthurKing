@@ -5,6 +5,7 @@
 #include "CardSprite.h"
 #include "ResCreator.h"
 #include "base\ccMacros.h"
+#include "AIPlayer.h"
 
 USING_NS_CC;
 
@@ -14,6 +15,11 @@ bool CGameMainScene::init()
 	{
 		return false;
 	}
+
+	m_pAIplayer = NULL;
+	m_pArthurKing = NULL;
+
+	g_ResCreator.GetPersonMessageInstance()->ResetData();
 
 	visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -27,6 +33,7 @@ bool CGameMainScene::init()
 
 	InitPlayerAnimation();
 	addPlayer();
+	addAI();
 
 	return true;
 }
@@ -37,81 +44,6 @@ Scene* CGameMainScene::createMainScene()
 	auto layer = CGameMainScene::create();
 	scene->addChild(layer);
 	return scene;
-}
-
-void CGameMainScene::initMainLayout()
-{
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	// add "HelloWorld" splash screen"
-	auto sprite = Sprite::create(BgPicture);
-
-	// position the sprite on the center of the screen
-	sprite->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-
-	// add the sprite as a child to this layer
-	this->addChild(sprite, 0);
-
-	m_pRockerAction = CRockerAction::CreateRockerEntity(Rocker_Point, Rocker_BG, ccp(110, 60));
-	if (!m_pRockerAction)
-	{
-		CCLOG("创建 摇杆失败.");
-		return;
-	}
-	this->addChild(m_pRockerAction, 2);
-	m_pRockerAction->StartRockerAction(true);
-
-	
-
-	this->scheduleUpdate();
-}
-
-void CGameMainScene::update(float delta)
-{
-	CCLOG("frame begins update....");
-
-	bool bActorRunDirector = m_pRockerAction->GetRockerRunDirection();
-	if (!m_pArthurKing)
-	{
-		CCLOG("no begin...");
-		return;
-	}
-
-	switch (m_pRockerAction->GetRockerDirection())
-	{
-	case EnRocker_Right:
-	{
-		m_pArthurKing->SetAnimation(RunAnimation_List, RunAnimation_Png, "run_", 8, bActorRunDirector);
-		const Vec2 vec2ActorPoint = m_pArthurKing->getPosition();
-		CCLOG("Right: x:%lf , y:%lf ", vec2ActorPoint.x, vec2ActorPoint.y);
-		m_pArthurKing->setPosition(ccp(vec2ActorPoint.x + 1, vec2ActorPoint.y));
-	}
-	break;
-	case EnRocker_Up:
-	{
-		m_pArthurKing->SetAnimation(RunAnimation_List, RunAnimation_Png, "run_", 8, bActorRunDirector);
-		const Vec2 vec2ActorPoint = m_pArthurKing->getPosition();
-		CCLOG("Up: x:%lf , y:%lf ", vec2ActorPoint.x, vec2ActorPoint.y);
-		m_pArthurKing->setPosition(ccp(vec2ActorPoint.x + 2, vec2ActorPoint.y + 2));
-	}
-	case EnRocker_Left:
-	{
-		m_pArthurKing->SetAnimation(RunAnimation_List, RunAnimation_Png, "run_", 8, bActorRunDirector);
-		const Vec2 vec2ActorPoint = m_pArthurKing->getPosition();
-		CCLOG("Left: x:%lf , y:%lf ", vec2ActorPoint.x, vec2ActorPoint.y);
-		m_pArthurKing->setPosition(ccp(vec2ActorPoint.x - 2, vec2ActorPoint.y + 1));
-	}
-	case EnRocker_Down:
-	{
-		m_pArthurKing->SetAnimation(RunAnimation_List, RunAnimation_Png, "run_", 8, bActorRunDirector);
-		const Vec2 vec2ActorPoint = m_pArthurKing->getPosition();
-		CCLOG("Down: x:%lf , y:%lf ", vec2ActorPoint.x, vec2ActorPoint.y);
-		m_pArthurKing->setPosition(ccp(vec2ActorPoint.x, vec2ActorPoint.y - 1));
-	}
-	default:
-		CCLOG("Error Director...");
-		m_pArthurKing->StopAnimation();
-		break;
-	}
 }
 
 void CGameMainScene::AddSceneMap()
@@ -322,7 +254,7 @@ void CGameMainScene::addPlayer()
 
 void CGameMainScene::GetAnimateVec(int iMin, int iMax, TVecSpriteFrame &vecPlayer_director, EPlayer iState)
 {
-	char szPngName[10];
+	char szPngName[15];
 	memset(szPngName, 0, sizeof(szPngName));
 
 	switch (iState)
@@ -342,6 +274,21 @@ void CGameMainScene::GetAnimateVec(int iMin, int iMax, TVecSpriteFrame &vecPlaye
 			vecPlayer_director.pushBack(pSpriteFrame);
 		}
 	}
+		break;
+	case ESecondPlayer:
+		{
+			for (int idex = iMin; idex <= iMax; ++idex)
+			{
+				sprintf ( szPngName, "p_2_%d.png", idex );
+				std::string strName = szPngName;
+				SpriteFrame* pSpriteFrame = m_pPlayer_1_FrameCache->getSpriteFrameByName(strName);
+				if (pSpriteFrame == NULL)
+				{
+					continue;
+				}
+				vecPlayer_director.pushBack ( pSpriteFrame );
+			}
+		}
 		break;
 	default:
 		break;
@@ -378,6 +325,37 @@ void CGameMainScene::InitPlayerAnimation()
 	m_Pplayer_animate_left = Animate::create(pPlayer_1_Animation_left);
 	m_Pplayer_animate_up = Animate::create(pPlayer_1_Animation_up);
 	m_Pplayer_animate_right = Animate::create(pPlayer_1_Animation_right);
+	
+	///////////////////////////////////////////Create AI animatio //////////////////////////////////////////////////////
+
+	m_pPlayer_2_FrameCache = SpriteFrameCache::getInstance ( );
+	m_pPlayer_2_FrameCache->addSpriteFramesWithFile ( player_2_list, player_2_png );
+
+	// 角色四个方向 值
+
+	GetAnimateVec ( 1, 4, m_vecPAI_down, ESecondPlayer );
+	GetAnimateVec ( 5, 8, m_vecPAI_left, ESecondPlayer );
+	GetAnimateVec ( 9, 12, m_vecPAI_right, ESecondPlayer );
+	GetAnimateVec ( 13, 16, m_vecPAI_up, ESecondPlayer );
+
+	// 初始化四个方向动作
+	Animation* pPlayer_2_Animation_down = Animation::createWithSpriteFrames ( m_vecPAI_down, 0.1f );
+	Animation* pPlayer_2_Animation_left = Animation::createWithSpriteFrames ( m_vecPAI_left, 0.1f );
+	Animation* pPlayer_2_Animation_right = Animation::createWithSpriteFrames ( m_vecPAI_right, 0.1f );
+	Animation* pPlayer_2_Animation_up = Animation::createWithSpriteFrames ( m_vecPAI_up, 0.1f );
+
+	if (pPlayer_2_Animation_down == NULL || pPlayer_2_Animation_left == NULL ||
+		 pPlayer_2_Animation_right == NULL || pPlayer_2_Animation_up == NULL)
+	{
+		CCLOG ( "error: %s, 角色%d 方向创建失败...", __FUNCTION__, ESecondPlayer );
+		return;
+	}
+
+	m_PAI_animate_down = Animate::create ( pPlayer_2_Animation_down );
+	m_PAI_animate_left = Animate::create ( pPlayer_2_Animation_left );
+	m_PAI_animate_up = Animate::create ( pPlayer_2_Animation_up );
+	m_PAI_animate_right = Animate::create ( pPlayer_2_Animation_right );
+
 }
 
 void CGameMainScene::AfterOpenCard()
@@ -457,17 +435,62 @@ void CGameMainScene::BeginActorGo()
 			unschedule("AfterOpen_Close");
 		}
 
-		/*if (m_pArthurKing == NULL || m_CurRandNum == 0)
-		{
-		return;
-		}
-
-		m_pArthurKing->GetPlayerGoPath(m_CurRandNum, g_MapReader.GetCanGoPathArr());
-		m_pArthurKing->RequestActorCtrl();*/
-
 		m_pArthurKing->PlayStartGo();
 
-		//unschedule("AfterOpen_Close");
 	}
 	, 5.0f, 1, 0.0f, "AfterOpen_Close");
+}
+
+void CGameMainScene::addAI ( )
+{
+	SpriteFrame* pInitPlayFrame = m_pPlayer_2_FrameCache->getSpriteFrameByName ( player_2_01 );
+	if (pInitPlayFrame == NULL)
+	{
+		CCLOG ( "error: %s 取得精灵层失败...", __FUNCTION__ );
+		return;
+	}
+
+	m_pAIplayer = CAIPlayer::CreateAIPlayer ( pInitPlayFrame );
+	if (m_pAIplayer == NULL)
+	{
+		CCLOG ( "error： 当前AI创建失败." );
+		return;
+	}
+
+	std::vector<Vec2>* pstVecMap = g_MapReader.GetGoPathMap ( );
+	int iPathSize = pstVecMap->size ( );
+	if (iPathSize == 0)
+	{
+		CCLOG ( "error：取得路径为0.." );
+		return;
+	}
+
+	int index = CCRANDOM_0_1()*iPathSize;
+	while (index == 0)
+	{
+		index = CCRANDOM_0_1()*iPathSize;
+	}
+
+	Vec2 vec2_aiMap = pstVecMap->at(index);
+
+	CCLOG ( "Random Map x: %02f , y: %02f", vec2_aiMap.x, vec2_aiMap.y );
+
+	vec2_aiMap.y += TILE_HEIGHT / 5;
+	//vec2_p1.x += TILE_HEIGHT/2;
+
+	CCLOG ( "After AI vec2_p1 x: %.2f , vec2_p1 y: %.2f", vec2_aiMap.x, vec2_aiMap.y );
+
+	int iCol = ( int ) vec2_aiMap.y / TILE_HEIGHT;
+	int iRow = ( int ) vec2_aiMap.x / TILE_WIDTH;
+	m_pAIplayer->setPosition(vec2_aiMap);
+
+	CCLOG ( "AI x: %d , y: %d", iRow, iCol );
+
+	m_pAIplayer->setAnchorPoint ( ccp ( 0, 0 ) );
+	addChild ( m_pAIplayer );
+
+	m_pAIplayer->setvecAnim_down ( m_vecPAI_down );
+	m_pAIplayer->setvecAnim_Left ( m_vecPAI_left );
+	m_pAIplayer->setvecAnim_Right ( m_vecPAI_right );
+	m_pAIplayer->setvecAnim_up ( m_vecPAI_up );
 }

@@ -1,10 +1,10 @@
 #pragma once
 
 #include "cocos2d.h"
-#include "RockerAction.h"
 #include "ArthurKing.h"
 #include "cocos-ext.h"
 #include "MapReader.h"
+#include "AIPlayer.h"
 
 USING_NS_CC;
 USING_NS_CC_EXT;
@@ -20,6 +20,7 @@ enum EMainMenuItemTag
 enum EPlayer
 {
 	EFirstPlayer = 1,
+	ESecondPlayer,
 };
 
 class CGameMainScene :
@@ -30,11 +31,6 @@ public:
 
 	virtual bool init();
 	static Scene* createMainScene();
-	
-	void initMainLayout();
-
-	// update frame node 
-	virtual void update(float delta);
 
 	CREATE_FUNC(CGameMainScene);
 
@@ -54,6 +50,7 @@ private:
 	void InitPlayerAnimation();
 
 	void addPlayer();
+	void addAI ( );
 
 	void GetAnimateVec(int iMin, int iMax, TVecSpriteFrame &vecPlayer_director, EPlayer iState);
 	
@@ -66,11 +63,10 @@ private:
 private:
 	Size visibleSize;
 
-	CRockerAction* m_pRockerAction;
+	/////////////////////ACTOR ////////////////////////
 	CArthurKing* m_pArthurKing;
 
 	SpriteFrameCache* m_pPlayer_1_FrameCache;
-	SpriteFrameCache* m_pPlayer_2_FrameCache;
 
 	Animate *m_Pplayer_animate_down;
 	Animate *m_Pplayer_animate_up;
@@ -81,6 +77,23 @@ private:
 	TVecSpriteFrame m_vecPlayer_left;
 	TVecSpriteFrame m_vecPlayer_right;
 	TVecSpriteFrame m_vecPlayer_up;
+
+	/////////////////////AI ////////////////////////
+
+	CAIPlayer* m_pAIplayer;
+	SpriteFrameCache* m_pPlayer_2_FrameCache;
+
+	Animate *m_PAI_animate_down;
+	Animate *m_PAI_animate_up;
+	Animate *m_PAI_animate_left;
+	Animate *m_PAI_animate_right;
+
+	TVecSpriteFrame m_vecPAI_down;
+	TVecSpriteFrame m_vecPAI_left;
+	TVecSpriteFrame m_vecPAI_right;
+	TVecSpriteFrame m_vecPAI_up;
+
+	//////////////////////////////////////////
 
 	CallFunc* pCallFunc_AfterOpen;
 

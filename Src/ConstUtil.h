@@ -79,8 +79,29 @@
 #define player_1_15 "p_15.png"
 #define player_1_16 "p_16.png"
 
+//人物2
+#define player_2_png "Person/player_2.png"
+#define player_2_list "Person/player_2.plist"
+
+#define player_2_01 "p_2_1.png"
+#define player_2_02 "p_2_2.png"
+#define player_2_03 "p_2_3.png"
+#define player_2_04 "p_2_4.png"
+#define player_2_05 "p_2_5.png"
+#define player_2_06 "p_2_6.png"
+#define player_2_07 "p_2_7.png"
+#define player_2_08 "p_2_8.png"
+#define player_2_09 "p_2_9.png"
+#define player_2_10 "p_2_10.png"
+#define player_2_11 "p_2_11.png"
+#define player_2_12 "p_2_12.png"
+#define player_2_13 "p_2_13.png"
+#define player_2_14 "p_2_14.png"
+#define player_2_15 "p_2_15.png"
+#define player_2_16 "p_2_16.png"
+
 // 方向
-#define Go_Direction 4 	
+#define Go_Direction	4 	
 #define Direction_Up	0
 #define Direction_Down	1
 #define Direction_Left  2

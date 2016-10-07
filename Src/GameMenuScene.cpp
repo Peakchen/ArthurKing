@@ -67,6 +67,10 @@ void CGameMenuScene::AddBackground()
 
 void CGameMenuScene::AddMenuButton()
 {
+
+	// 新增人物选项
+
+
 	//游戏开始 按钮 
 	Scale9Sprite* pBtn_NormalSprite = Scale9Sprite::create(NORMAL_MENU);
 	Scale9Sprite* pBtn_PressSprite = Scale9Sprite::create(PRESS_MENU);

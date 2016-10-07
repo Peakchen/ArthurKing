@@ -15,6 +15,7 @@ version: 1.0
 #include "FloatingHead.h"
 #include "MapReader.h"
 #include "ArthurKingControl.h"
+#include "PersonMessageEventHandle.h"
 
 class CResCreator
 {
@@ -52,6 +53,17 @@ public:
 	/************************************************************************/
 	CArthurKingControl* GetActorCtrlInstance(){ return	&m_oActorCtrl; }
 
+	/************************************************************************/
+	/* 
+		func: GetPersonMessageInstance
+		Desc: get Player Message Instance , to ... 
+		param: No
+		date: 20161007
+		return : CPersonMessageEventHandle*
+	*/
+	/************************************************************************/
+	CPersonMessageEventHandle* GetPersonMessageInstance ( ){ return &m_oPersonMessageHandle; }
+
 private:
 	
 	/************************************************************************/
@@ -74,6 +86,13 @@ private:
 	*/
 	/************************************************************************/
 	CArthurKingControl m_oActorCtrl;
+
+	/************************************************************************/
+	/* 
+		Player Event Message
+	*/
+	/************************************************************************/
+	CPersonMessageEventHandle m_oPersonMessageHandle;
 };
 
 extern CResCreator g_ResCreator;

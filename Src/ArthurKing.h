@@ -8,11 +8,14 @@ USING_NS_CC;
 USING_NS_CC_EXT;
 
 #pragma once
+#include "ActorBase.h"
+#include "PersonMessageEventHandle.h"
 
 class CArthurKingControl;
 
 class CArthurKing :
-	public Sprite
+	public CActorBase,
+	public IAIPersonMessageSink
 {
 public:
 	CArthurKing();
@@ -26,38 +29,39 @@ public:
 	*************************/
 	static CArthurKing* CreateArthurKing(SpriteFrame* pFrame);
 
-	/******************************
-	func: SetAnimation  , to set Current actor animation
-	param: szNameList  , config animation
-	param: szPngName , Png's name
-	param: szEachName, public name
-	param: nPngCount, png count
-	param: bRunDirector, Run Director , if is false, right, else left
-	*****************************/
-	void SetAnimation(const char* szName_list, const char* szPngName, const char* szEachName, const UINT32 nPngCount, bool bRunDirector );
-
-	// Stop Animation
-	void StopAnimation();
-
 	bool init();
-
-	CC_SYNTHESIZE(Vector<SpriteFrame*>, vecPlayer_anim_Left, vecAnim_Left);
-	CC_SYNTHESIZE(Vector<SpriteFrame*>, vecPlayer_anim_right, vecAnim_Right);
-	CC_SYNTHESIZE(Vector<SpriteFrame*>, vecPlayer_anim_down, vecAnim_down);
-	CC_SYNTHESIZE(Vector<SpriteFrame*>, vecPlayer_anim_up, vecAnim_up);
 
 	void RequestActorCtrl();
 
 	void PlayStartGo();
 
-	void GetPlayerGoPath(int iStepCount, int** arrCanGoGrid);
+	virtual void UpdateScoreItem ( int addScore );
 
-	//CREATE_FUNC(CArthurKing);
+	/************************************************************************/
+	/* 
+		CActorBase:
+			
+			OnEnter()
+	*/
+	/************************************************************************/
+	virtual void OnEnter ( );
 
-	CC_SYNTHESIZE(std::vector<int>, m_passColPath, RecordPassColPath);
-	CC_SYNTHESIZE(std::vector<int>, m_passRowPath, RecordPassRowPath);
+	/************************************************************************/
+	/* 
+		CActorBase:
+			
+			OnLeave()
+	*/
+	/************************************************************************/
+	virtual void OnLeave ( );
 
-	void UpdateScoreItem(int addScore);
+	/************************************************************************/
+	/*
+	IAIPersonMessageSink
+	*/
+	/************************************************************************/
+
+	virtual void  OnExecMessageHandle ( DWORD nMsgID, LPCSTR szDesc );
 
 private:
 	// to Check actor is runing?
@@ -91,12 +95,6 @@ private:
 	DWORD m_ActorScore;
 
 	CArthurKingControl* m_pCtrl;
-private:
-
-	void GetCanGoColRowData(int iRandnum, int iCol, int iRow, int& iNextCol, int &iNextRow);
-	void OnPlayerMove();
-
-	void OnPlayerMoveEnd();
 };
 
 #endif

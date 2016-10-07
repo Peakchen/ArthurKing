@@ -1,6 +1,5 @@
 #include "HelloWorldScene.h"
 #include "MacroDefine.h"
-#include "RockerAction.h"
 #include "ArthurKing.h"
 #include "CCFileUtils.h"
 #include "OpenScreenScene.h"
