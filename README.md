@@ -32,5 +32,12 @@ date:20161006 15:00
 modify: delete two class file, their are no use.
 
 
+date:20161007 23:00
+
+
+modify: add some class, about Ai , MessageEvent
+
+
+
 
 
