@@ -2,6 +2,7 @@
 #include "ArthurKing.h"
 #include "ConstUtil.h"
 #include "ResCreator.h"
+#include "PlayerManager.h"
 
 
 CArthurKingControl::CArthurKingControl()
@@ -30,6 +31,16 @@ void CArthurKingControl::OnPlayerMoveEnd()
 	stPlayerMovePath.iStepCount++;
 	if (stPlayerMovePath.iStepCount >= (m_passRowPath.size() - 1))
 	{
+		EPLAYER_ACTION iCurAction = g_PalyerManager.getRecordNextPlayerAction();
+		g_PalyerManager.DoChangeState(iCurAction);
+		int iNextAction = (iCurAction % Player_Max_Count);
+		if (iNextAction == 0 )
+		{
+			iNextAction += 1;
+		}
+
+		g_PalyerManager.setRecordCurPlayerAction(iCurAction);
+		g_PalyerManager.setRecordNextPlayerAction(( EPLAYER_ACTION ) iNextAction);
 		return;
 	}
 
@@ -110,8 +121,10 @@ void CArthurKingControl::OnPlayerMove()
 	m_pActor->runAction(pSequence);
 }
 
-void CArthurKingControl::InitData(std::vector<int> vecRowGo, std::vector<int> vecColGo, CArthurKing* pActor)
+void CArthurKingControl::InitData(std::vector<int> vecRowGo, std::vector<int> vecColGo, CActorBase* pActor)
 {
+	m_pActor = NULL;
+
 	AnimationCache* pAnimationInstance = AnimationCache::getInstance();
 	if (pAnimationInstance == NULL)
 	{

@@ -27,6 +27,12 @@ public:
 
 	virtual void GetPlayerGoPath(int iStepCount, int** arrCanGoGrid);
 
+	/************************************************************************/
+	/* 
+		func: update score
+		return : void
+	*/
+	/************************************************************************/
 	virtual void UpdateScoreItem ( int addScore ) ;
 
 	/************************************************************************/
@@ -46,6 +52,23 @@ public:
 	*/
 	/************************************************************************/
 	virtual void OnLeave ( ) = 0;
+
+	/************************************************************************/
+	/* 
+		func: request ctrl action
+		return: void
+
+	*/
+	/************************************************************************/
+	virtual void RequestActorCtrl() = 0;
+
+	/************************************************************************/
+	/* 
+		func: player start go
+		return: void
+	*/
+	/************************************************************************/
+	virtual void PlayStartGo() = 0;
 
 private:
 	void GetCanGoColRowData(int iRandnum, int iCol, int iRow, int& iNextCol, int &iNextRow);

@@ -5,6 +5,7 @@
 #include "cocos-ext.h"
 #include "MapReader.h"
 #include "AIPlayer.h"
+#include "PersonMessageEventHandle.h"
 
 USING_NS_CC;
 USING_NS_CC_EXT;
@@ -24,13 +25,22 @@ enum EPlayer
 };
 
 class CGameMainScene :
-	public Layer
+	public Layer,
+	public IAIPersonMessageSink
 {
 	typedef Vector<SpriteFrame*> TVecSpriteFrame;
 public:
 
 	virtual bool init();
 	static Scene* createMainScene();
+
+	/************************************************************************/
+	/*
+	IAIPersonMessageSink
+	*/
+	/************************************************************************/
+
+	virtual void  OnExecMessageHandle(DWORD nMsgID, LPCSTR szDesc);
 
 	CREATE_FUNC(CGameMainScene);
 
@@ -60,8 +70,12 @@ private:
 
 	void BeginActorGo();
 
+	void TurnToGoAction(Object* pSender, Control::EventType event);
+
 private:
 	Size visibleSize;
+
+	CActorBase* m_pCurAction;
 
 	/////////////////////ACTOR ////////////////////////
 	CArthurKing* m_pArthurKing;
@@ -98,6 +112,6 @@ private:
 	CallFunc* pCallFunc_AfterOpen;
 
 	int m_CurRandNum;
-	DWORD m_CurPalyer_1_Socre;
+	DWORD m_CurPalyer_Socre;
 };
 

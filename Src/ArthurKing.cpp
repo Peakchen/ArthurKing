@@ -16,7 +16,7 @@ CArthurKing::CArthurKing()
 	m_pActorSprite = NULL;
 	m_szSpriteName = NULL;
 
-	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(AI_START, this, "½ÇÉ«¶¯×÷");
+	//g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(AI_START, this, "player action");
 }
 
 
@@ -70,25 +70,10 @@ void CArthurKing::UpdateScoreItem ( int addScore )
 
 void CArthurKing::OnEnter ( )
 {
-	
+	g_ResCreator.GetPersonMessageInstance()->FireMessage(ACTOR_START, "player action");
 }
 
-void CArthurKing::OnLeave ( )
+void CArthurKing::OnLeave()
 {
-	
-}
-
-void CArthurKing::OnExecMessageHandle ( DWORD nMsgID, LPCSTR szDesc )
-{
-	switch (nMsgID)
-	{
-		case AI_START:
-			{
-
-			}
-			break;
-		default:
-			CCLOG ( "error: %s message is wrong...", __FUNCTION__ );
-			break;
-	}
+	CCLOG("ArthurKing leave...");
 }

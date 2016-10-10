@@ -6,6 +6,7 @@
 #include "ResCreator.h"
 #include "base\ccMacros.h"
 #include "AIPlayer.h"
+#include "PlayerManager.h"
 
 USING_NS_CC;
 
@@ -16,10 +17,14 @@ bool CGameMainScene::init()
 		return false;
 	}
 
+	m_pCurAction = NULL;
 	m_pAIplayer = NULL;
 	m_pArthurKing = NULL;
 
 	g_ResCreator.GetPersonMessageInstance()->ResetData();
+
+	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(ACTOR_START, this, "player action");
+	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(AI_START, this, "AI action");
 
 	visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -34,6 +39,8 @@ bool CGameMainScene::init()
 	InitPlayerAnimation();
 	addPlayer();
 	addAI();
+
+	g_PalyerManager.Create(m_pCurAction);
 
 	return true;
 }
@@ -98,29 +105,7 @@ void CGameMainScene::AddButton_Test()
 int schedule_count = 0;
 void CGameMainScene::onClick_StartControl(Object* pSender, Control::EventType event)
 {
-	if (getChildByTag(ECARD_TEST))
-	{
-		removeChildByTag(ECARD_TEST);
-	}
-	
-	//AddFadeSprite_Test();
-	m_CurRandNum = 0;
-	if (event == Control::EventType::TOUCH_DOWN)
-	{
-		int iRandom = GetRandomNum(KAPAI_COUNT);
-		const char* strInCard = CCString::createWithFormat("kapai/k_%d.png", iRandom)->getCString();
-		CCardSprite* pCardSprite = CCardSprite::create(strInCard, FACE_KAPAI, 5.0f);
-		if (pCardSprite)
-		{
-			pCardSprite->setTag(ECARD_TEST);
-			addChild(pCardSprite);
-		}
-		
-		m_CurRandNum = iRandom;
-		//// 翻拍后 行走
-		schedule_count = 0;
-		AfterOpenCard();
-	}
+	TurnToGoAction(pSender, event);
 }
 
 /************************************************************************/
@@ -249,7 +234,7 @@ void CGameMainScene::addPlayer()
 	m_pArthurKing->setvecAnim_Right(m_vecPlayer_right);
 	m_pArthurKing->setvecAnim_up(m_vecPlayer_up);
 
-
+	m_pCurAction = m_pArthurKing;
 }
 
 void CGameMainScene::GetAnimateVec(int iMin, int iMax, TVecSpriteFrame &vecPlayer_director, EPlayer iState)
@@ -281,7 +266,7 @@ void CGameMainScene::GetAnimateVec(int iMin, int iMax, TVecSpriteFrame &vecPlaye
 			{
 				sprintf ( szPngName, "p_2_%d.png", idex );
 				std::string strName = szPngName;
-				SpriteFrame* pSpriteFrame = m_pPlayer_1_FrameCache->getSpriteFrameByName(strName);
+				SpriteFrame* pSpriteFrame = m_pPlayer_2_FrameCache->getSpriteFrameByName(strName);
 				if (pSpriteFrame == NULL)
 				{
 					continue;
@@ -361,13 +346,13 @@ void CGameMainScene::InitPlayerAnimation()
 void CGameMainScene::AfterOpenCard()
 {
 	// 取得路径，请求控制 角色行走
-	if (m_pArthurKing == NULL || m_CurRandNum == 0)
+	if (m_pCurAction == NULL || m_CurRandNum == 0)
 	{
 		return;
 	}
 
-	m_pArthurKing->GetPlayerGoPath(m_CurRandNum, g_MapReader.GetCanGoPathArr());
-	m_pArthurKing->RequestActorCtrl();
+	m_pCurAction->GetPlayerGoPath(m_CurRandNum, g_MapReader.GetCanGoPathArr());
+	m_pCurAction->RequestActorCtrl();
 
 	// 翻拍后 显示 分数
 	
@@ -383,7 +368,7 @@ Vec2 g_Point;
 void CGameMainScene::BeginFloatHead()
 {
 	// 首先 判断是否能够 飘字
-	m_CurPalyer_1_Socre = 0;
+	m_CurPalyer_Socre = 0;
 	std::vector<int>  vecRow = g_ResCreator.GetActorCtrlInstance()->getRecordPassRowPath();
 	if (vecRow.empty())
 	{
@@ -403,7 +388,7 @@ void CGameMainScene::BeginFloatHead()
 	float x = (float)1.0f * iCol * TILE_HEIGHT;
 
 	g_Point = Vec2(x, y);
-	if (!g_ResCreator.GetMapReaderInstance()->CheckCanTakeAddSocre(m_CurPalyer_1_Socre, g_Point))
+	if (!g_ResCreator.GetMapReaderInstance()->CheckCanTakeAddSocre(m_CurPalyer_Socre, g_Point))
 	{
 		return;
 	}
@@ -417,7 +402,7 @@ void CGameMainScene::BeginFloatHead()
 			unschedule("AfterOpen_Score");
 		}
 
-		std::string szMsg = String::createWithFormat("+%d", m_CurPalyer_1_Socre)->getCString();
+		std::string szMsg = String::createWithFormat("+%d", m_CurPalyer_Socre)->getCString();
 		g_ResCreator.GetFloatingHeadInstance()->createFloatingHead(this, szMsg, 3.0f, g_Point);
 	}
 	, 5.0f, 1, 0.0f, "AfterOpen_Score");
@@ -435,7 +420,7 @@ void CGameMainScene::BeginActorGo()
 			unschedule("AfterOpen_Close");
 		}
 
-		m_pArthurKing->PlayStartGo();
+		m_pCurAction->PlayStartGo();
 
 	}
 	, 5.0f, 1, 0.0f, "AfterOpen_Close");
@@ -493,4 +478,58 @@ void CGameMainScene::addAI ( )
 	m_pAIplayer->setvecAnim_Left ( m_vecPAI_left );
 	m_pAIplayer->setvecAnim_Right ( m_vecPAI_right );
 	m_pAIplayer->setvecAnim_up ( m_vecPAI_up );
+}
+
+void CGameMainScene::OnExecMessageHandle(DWORD nMsgID, LPCSTR szDesc)
+{
+	switch (nMsgID)
+	{
+		case ACTOR_START:
+			{
+				// 翻牌， 走路...
+				m_pCurAction = m_pArthurKing;
+				CCLOG("-----------------------------player go ---------------------------");
+			}
+			break;
+
+		case AI_START:
+			{
+				// 自动翻牌， 走路...
+				m_pCurAction = m_pAIplayer;
+				CCLOG("-----------------------------ai go ---------------------------");
+			}
+			break;
+		default:
+			CCLOG("error: %s message is wrong...", __FUNCTION__);
+			break;
+	}
+
+	TurnToGoAction(NULL, Control::EventType::TOUCH_DOWN);
+}
+
+void CGameMainScene::TurnToGoAction(Object* pSender, Control::EventType event)
+{
+	if (getChildByTag(ECARD_TEST))
+	{
+		removeChildByTag(ECARD_TEST);
+	}
+
+	//AddFadeSprite_Test();
+	m_CurRandNum = 0;
+	/*if (event == Control::EventType::TOUCH_DOWN)
+	{*/
+		int iRandom = GetRandomNum(KAPAI_COUNT);
+		const char* strInCard = CCString::createWithFormat("kapai/k_%d.png", iRandom)->getCString();
+		CCardSprite* pCardSprite = CCardSprite::create(strInCard, FACE_KAPAI, 5.0f);
+		if (pCardSprite)
+		{
+			pCardSprite->setTag(ECARD_TEST);
+			addChild(pCardSprite);
+		}
+
+		m_CurRandNum = iRandom;
+		//// 翻拍后 行走
+		schedule_count = 0;
+		AfterOpenCard();
+	//}
 }

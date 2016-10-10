@@ -30,10 +30,12 @@ void CPersonMessageEventHandle::RegisterAIMessage( DWORD nMsgID, IAIPersonMessag
 	{
 		stMessageList.push_front(pAiMessageSink);
 	}
+
 }
 
 void CPersonMessageEventHandle::UnRegisterAIMessage( DWORD nMsgID, IAIPersonMessageSink* pAiMessageSink )
 {
+
 	TPersonMessageMap::iterator& itMessage = m_mapPersonMsg.find(nMsgID);
 	if (itMessage == m_mapPersonMsg.end())
 	{
@@ -51,6 +53,7 @@ void CPersonMessageEventHandle::UnRegisterAIMessage( DWORD nMsgID, IAIPersonMess
 
 void CPersonMessageEventHandle::FireMessage( DWORD nMsgID, LPCSTR szDesc )
 {
+
 	TPersonMessageMap::iterator itMessage = m_mapPersonMsg.find(nMsgID);
 	if (itMessage == m_mapPersonMsg.end())
 	{
@@ -72,3 +75,4 @@ void CPersonMessageEventHandle::ResetData()
 {
 	m_mapPersonMsg.clear();
 }
+

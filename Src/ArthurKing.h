@@ -9,13 +9,11 @@ USING_NS_CC_EXT;
 
 #pragma once
 #include "ActorBase.h"
-#include "PersonMessageEventHandle.h"
 
 class CArthurKingControl;
 
 class CArthurKing :
-	public CActorBase,
-	public IAIPersonMessageSink
+	public CActorBase
 {
 public:
 	CArthurKing();
@@ -31,9 +29,22 @@ public:
 
 	bool init();
 
-	void RequestActorCtrl();
+	/************************************************************************/
+	/*
+	func: request ctrl action
+	return: void
 
-	void PlayStartGo();
+	*/
+	/************************************************************************/
+	virtual void RequestActorCtrl();
+
+	/************************************************************************/
+	/*
+	func: player start go
+	return: void
+	*/
+	/************************************************************************/
+	virtual void PlayStartGo();
 
 	virtual void UpdateScoreItem ( int addScore );
 
@@ -55,14 +66,6 @@ public:
 	/************************************************************************/
 	virtual void OnLeave ( );
 
-	/************************************************************************/
-	/*
-	IAIPersonMessageSink
-	*/
-	/************************************************************************/
-
-	virtual void  OnExecMessageHandle ( DWORD nMsgID, LPCSTR szDesc );
-
 private:
 	// to Check actor is runing?
 	bool m_bCheckActorRuning;
@@ -77,20 +80,6 @@ private:
 	Animate* m_pActor_Right_Animate;
 	Animate* m_pActor_Up_Animate;
 	Animate* m_pActor_Down_Animate;
-
-	struct TMovePathData
-	{
-		int iCurCol;
-		int iCurRow;
-		int iNextCol;
-		int iNextRow;
-		
-		int iStepCount;
-	};
-
-	TMovePathData stPlayerMovePath;
-
-	CallFunc* pCallFunc_MoveEnd;
 
 	DWORD m_ActorScore;
 

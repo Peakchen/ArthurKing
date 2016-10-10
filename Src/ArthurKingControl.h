@@ -11,7 +11,7 @@ public:
 	CArthurKingControl();
 	~CArthurKingControl();
 	
-	void InitData(std::vector<int> vecRowGo, std::vector<int> vecColGo, CArthurKing* pActor);
+	void InitData(std::vector<int> vecRowGo, std::vector<int> vecColGo, CActorBase* pActor);
 	void StartActorGo();
 	virtual bool init();
 
@@ -43,7 +43,7 @@ private:
 
 	CallFunc* pCallFunc_MoveEnd;
 
-	CArthurKing* m_pActor;
+	CActorBase* m_pActor;
 
 private:
 	void OnPlayerMoveEnd();

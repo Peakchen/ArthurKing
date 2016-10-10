@@ -32,7 +32,8 @@ public:
 	// exec message
 	void FireMessage(DWORD nMsgID, LPCSTR szDesc);
 
+
 private:
 	TPersonMessageMap m_mapPersonMsg;
-	
+
 };
