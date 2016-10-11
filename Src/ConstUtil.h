@@ -56,7 +56,7 @@
 
 #define FACE_KAPAI	"kapai/k_face.png"
 #define KAPAI_COUNT	6
-#define RADN_COUNT	20
+#define RADN_COUNT	2000
  
 //»ÀŒÔ 1
 #define player_1_png "Person/player_1.png"

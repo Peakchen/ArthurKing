@@ -46,6 +46,16 @@ void CCardSprite::initCardData(const char* strInCard, const char* strOutCard, fl
 
 	m_isOpen = false;		// ³õÊ¼»¯ Î´·­¿ª
 
+	if (getChildByTag(EOutCard))
+	{
+		removeChildByTag(EOutCard);
+	}
+	
+	if (getChildByTag(EOutCard))
+	{
+		removeChildByTag(EInCard);
+	}
+	
 	Scale9Sprite* pBtn_NormalSprite = Scale9Sprite::create(strOutCard);
 	Scale9Sprite* pBtn_PressSprite = Scale9Sprite::create(strOutCard);
 	if (pBtn_NormalSprite == NULL)
@@ -118,7 +128,7 @@ void CCardSprite::GameChangeTouchDown(Object* pSender, Control::EventType event)
 	CCSequence* pSequenceIn = CCSequence::create(
 		CCDelayTime::create(0.5f), 
 		CCShow::create(), 
-		CCDelayTime::create(5.5f), 
+		CCDelayTime::create(3.5f), 
 		CCHide::create(), 
 		NULL
 		);
@@ -135,7 +145,7 @@ void CCardSprite::GameChangeTouchDown(Object* pSender, Control::EventType event)
 	CCSequence* pSequenceOut = CCSequence::create(
 		CCDelayTime::create(0.5f),
 		CCHide::create(),
-		CCDelayTime::create(0.5f),
+		CCDelayTime::create(5.5f),
 		pCallFunc_AfterOpen,
 		NULL
 		);
@@ -147,17 +157,17 @@ void CCardSprite::GameChangeTouchDown(Object* pSender, Control::EventType event)
 	}
 	m_pAnimOutOpen = CCSpawn::create(pOutCamera, pSequenceOut, NULL);
 
-	ControlButton* pOutCard = static_cast<ControlButton*>(getChildByTag(EOutCard));
-	if (pOutCard)
-	{
-		pOutCard->runAction(m_pAnimOutOpen);
-	}
 	Sprite* pInCard = static_cast<Sprite*>(getChildByTag(EInCard));
 	if (pInCard)
 	{
 		pInCard->runAction(m_pAnimInOpen);
 	}
 
+	ControlButton* pOutCard = static_cast< ControlButton* >( getChildByTag(EOutCard) );
+	if (pOutCard)
+	{
+		pOutCard->runAction(m_pAnimOutOpen);
+	}
 }
 
 bool CCardSprite::__CheckCardSpriteLoad()

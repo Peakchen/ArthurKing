@@ -459,11 +459,11 @@ void CGameMainScene::addAI ( )
 		return;
 	}
 
-	int index = CCRANDOM_0_1()*iPathSize;
-	while (index == 0)
+	int index = GetRandomNum(iPathSize);
+	/*while (index == 0)
 	{
-		index = CCRANDOM_0_1()*iPathSize;
-	}
+	index = CCRANDOM_0_1()*iPathSize;
+	}*/
 
 	Vec2 vec2_aiMap = pstVecMap->at(index);
 
@@ -513,6 +513,7 @@ void CGameMainScene::OnExecMessageHandle(DWORD nMsgID, LPCSTR szDesc)
 			{
 				CCLOG("-----------------------------Open Card ---------------------------");
 				AfterOpenCard();
+				return;
 			}
 		default:
 			CCLOG("error: %s message is wrong...", __FUNCTION__);
@@ -522,8 +523,9 @@ void CGameMainScene::OnExecMessageHandle(DWORD nMsgID, LPCSTR szDesc)
 	pCallFunc_CreateCard = CallFunc::create(CC_CALLBACK_0(CGameMainScene::TurnToGoAction, this));
 
 	CCSequence* pSequence_CreateCard = CCSequence::create(
-		CCDelayTime::create(8.5f),
+		CCDelayTime::create(5.5f),
 		pCallFunc_CreateCard,
+		//CCDelayTime::create(3.5f),
 		NULL
 		);
 	
