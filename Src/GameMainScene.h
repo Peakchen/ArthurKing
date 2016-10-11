@@ -70,7 +70,7 @@ private:
 
 	void BeginActorGo();
 
-	void TurnToGoAction(Object* pSender, Control::EventType event);
+	void TurnToGoAction();
 
 private:
 	Size visibleSize;
@@ -113,5 +113,7 @@ private:
 
 	int m_CurRandNum;
 	DWORD m_CurPalyer_Socre;
+
+	CallFunc* pCallFunc_CreateCard;
 };
 

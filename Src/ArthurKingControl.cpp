@@ -7,6 +7,10 @@
 
 CArthurKingControl::CArthurKingControl()
 {
+	m_pActor_Left_Animate = NULL;
+	m_pActor_Right_Animate = NULL;
+	m_pActor_Up_Animate = NULL;
+	m_pActor_Down_Animate = NULL;
 }
 
 
@@ -34,10 +38,7 @@ void CArthurKingControl::OnPlayerMoveEnd()
 		EPLAYER_ACTION iCurAction = g_PalyerManager.getRecordNextPlayerAction();
 		g_PalyerManager.DoChangeState(iCurAction);
 		int iNextAction = (iCurAction % Player_Max_Count);
-		if (iNextAction == 0 )
-		{
-			iNextAction += 1;
-		}
+		iNextAction += 1;
 
 		g_PalyerManager.setRecordCurPlayerAction(iCurAction);
 		g_PalyerManager.setRecordNextPlayerAction(( EPLAYER_ACTION ) iNextAction);
@@ -125,62 +126,24 @@ void CArthurKingControl::InitData(std::vector<int> vecRowGo, std::vector<int> ve
 {
 	m_pActor = NULL;
 
+
+	EPLAYER_ACTION iCurAction = g_PalyerManager.getRecordNextPlayerAction();
+
+	// 初始化 动画帧
 	AnimationCache* pAnimationInstance = AnimationCache::getInstance();
 	if (pAnimationInstance == NULL)
 	{
 		CCLOG("error: %s 取得animation  实例出错。", __FUNCTION__);
 		return;
 	}
-
-	// 初始化 动画帧
-	if (!pAnimationInstance->animationByName("EPlayer_Animation_Left"))
+	if (iCurAction == EACTOR_PLAYER_ACTION)
 	{
-		Animation* pLeftAnimation = Animation::createWithSpriteFrames(pActor->getvecAnim_Left(), 0.1f);
-		if (pLeftAnimation == NULL)
-		{
-			CCLOG("error: %s 取得pLeftAnimation  实例出错。", __FUNCTION__);
-			return;
-		}
-		pAnimationInstance->addAnimation(pLeftAnimation, "EPlayer_Animation_Left");
+		CheckAddAnimateByName(EACTOR_PLAYER_ACTION, "EPlayer", pActor);
 	}
-
-	if (!pAnimationInstance->animationByName("EPlayer_Animation_Right"))
+	else if (iCurAction == EAI_PLAYER_ACTION)
 	{
-		Animation* pRightAnimation = Animation::createWithSpriteFrames(pActor->getvecAnim_Right(), 0.1f);
-		if (pRightAnimation == NULL)
-		{
-			CCLOG("error: %s 取得pRightAnimation  实例出错。", __FUNCTION__);
-			return;
-		}
-		pAnimationInstance->addAnimation(pRightAnimation, "EPlayer_Animation_Right");
+		CheckAddAnimateByName(EAI_PLAYER_ACTION, "EAI", pActor);
 	}
-
-	if (!pAnimationInstance->animationByName("EPlayer_Animation_UP"))
-	{
-		Animation* pUpAnimation = Animation::createWithSpriteFrames(pActor->getvecAnim_up(), 0.1f);
-		if (pUpAnimation == NULL)
-		{
-			CCLOG("error: %s 取得pUpAnimation  实例出错。", __FUNCTION__);
-			return;
-		}
-		pAnimationInstance->addAnimation(pUpAnimation, "EPlayer_Animation_UP");
-	}
-
-	if (!pAnimationInstance->animationByName("EPlayer_Animation_Down"))
-	{
-		Animation* pDownAnimation = Animation::createWithSpriteFrames(pActor->getvecAnim_down(), 0.1f);
-		if (pDownAnimation == NULL)
-		{
-			CCLOG("error: %s 取得pDownAnimation  实例出错。", __FUNCTION__);
-			return;
-		}
-		pAnimationInstance->addAnimation(pDownAnimation, "EPlayer_Animation_Down");
-	}
-
-	m_pActor_Up_Animate = Animate::create(pAnimationInstance->animationByName("EPlayer_Animation_UP"));
-	m_pActor_Down_Animate = Animate::create(pAnimationInstance->animationByName("EPlayer_Animation_Down"));
-	m_pActor_Right_Animate = Animate::create(pAnimationInstance->animationByName("EPlayer_Animation_Right"));
-	m_pActor_Left_Animate = Animate::create(pAnimationInstance->animationByName("EPlayer_Animation_Left"));
 
 	m_pActor_Left_Animate->retain();
 	m_pActor_Right_Animate->retain();
@@ -212,4 +175,64 @@ CArthurKingControl* CArthurKingControl::getActorCtrlInstance()
 {
 	CArthurKingControl* pCtrl = new CArthurKingControl();
 	return pCtrl;
+}
+
+void CArthurKingControl::CheckAddAnimateByName(EPLAYER_ACTION iCurAction, std::string szName, CActorBase* pActor)
+{
+	AnimationCache* pAnimationInstance = AnimationCache::getInstance();
+	if (pAnimationInstance == NULL)
+	{
+		CCLOG("error: %s 取得animation  实例出错。", __FUNCTION__);
+		return;
+	}
+
+	if (!pAnimationInstance->animationByName(szName + "_Animation_Left"))
+	{
+		Animation* pLeftAnimation = Animation::createWithSpriteFrames(pActor->getvecAnim_Left(), 0.1f);
+		if (pLeftAnimation == NULL)
+		{
+			CCLOG("error: %s 取得pLeftAnimation  实例出错。", __FUNCTION__);
+			return;
+		}
+		pAnimationInstance->addAnimation(pLeftAnimation, szName + "_Animation_Left");
+	}
+
+	if (!pAnimationInstance->animationByName(szName + "_Animation_Right"))
+	{
+		Animation* pRightAnimation = Animation::createWithSpriteFrames(pActor->getvecAnim_Right(), 0.1f);
+		if (pRightAnimation == NULL)
+		{
+			CCLOG("error: %s 取得pRightAnimation  实例出错。", __FUNCTION__);
+			return;
+		}
+		pAnimationInstance->addAnimation(pRightAnimation, szName + "_Animation_Right");
+	}
+
+	if (!pAnimationInstance->animationByName(szName + "_Animation_UP"))
+	{
+		Animation* pUpAnimation = Animation::createWithSpriteFrames(pActor->getvecAnim_up(), 0.1f);
+		if (pUpAnimation == NULL)
+		{
+			CCLOG("error: %s 取得pUpAnimation  实例出错。", __FUNCTION__);
+			return;
+		}
+		pAnimationInstance->addAnimation(pUpAnimation, szName + "_Animation_UP");
+	}
+
+	if (!pAnimationInstance->animationByName(szName + "_Animation_Down"))
+	{
+		Animation* pDownAnimation = Animation::createWithSpriteFrames(pActor->getvecAnim_down(), 0.1f);
+		if (pDownAnimation == NULL)
+		{
+			CCLOG("error: %s 取得pDownAnimation  实例出错。", __FUNCTION__);
+			return;
+		}
+		pAnimationInstance->addAnimation(pDownAnimation, szName + "_Animation_Down");
+	}
+
+	m_pActor_Up_Animate = Animate::create(pAnimationInstance->animationByName(szName + "_Animation_UP"));
+	m_pActor_Down_Animate = Animate::create(pAnimationInstance->animationByName(szName + "_Animation_Down"));
+	m_pActor_Right_Animate = Animate::create(pAnimationInstance->animationByName(szName + "_Animation_Right"));
+	m_pActor_Left_Animate = Animate::create(pAnimationInstance->animationByName(szName + "_Animation_Left"));
+
 }

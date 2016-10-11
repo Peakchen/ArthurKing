@@ -1,5 +1,7 @@
 #include "CardSprite.h"
 #include "MapReader.h"
+#include "AIPersonMessageMacro.h"
+#include "ResCreator.h"
 
 
 CCardSprite::CCardSprite()
@@ -42,7 +44,6 @@ bool CCardSprite::init(const char* strInCard, const char* strOutCard, float fDur
 void CCardSprite::initCardData(const char* strInCard, const char* strOutCard, float fDuration)
 {
 
-	
 	m_isOpen = false;		// ³õÊ¼»¯ Î´·­¿ª
 
 	Scale9Sprite* pBtn_NormalSprite = Scale9Sprite::create(strOutCard);
@@ -120,9 +121,6 @@ void CCardSprite::GameChangeTouchDown(Object* pSender, Control::EventType event)
 		CCDelayTime::create(5.5f), 
 		CCHide::create(), 
 		NULL
-		/*CCDelayTime::create(fDuration),
-		CCShow::create(),
-		NULL*/
 		);
 
 	CCOrbitCamera* pInCamera = CCOrbitCamera::create(5.0f, 1.0f, 0.0f, ECardAngleIn, ECardAngleDelta, 0.0f, 0.0f);
@@ -132,13 +130,16 @@ void CCardSprite::GameChangeTouchDown(Object* pSender, Control::EventType event)
 	}
 	m_pAnimInOpen = CCSpawn::create(pSequenceIn, pInCamera, NULL);
 
+	pCallFunc_AfterOpen = CallFunc::create(CC_CALLBACK_0(CCardSprite::OnAfterOpenCard_FireEvent, this));
 
 	CCSequence* pSequenceOut = CCSequence::create(
-		CCDelayTime::create(0.5f), CCHide::create(), /*CCDelayTime::create(0.5f), CCShow::create(),*/ NULL
-		/*CCDelayTime::create(fDuration),
+		CCDelayTime::create(0.5f),
 		CCHide::create(),
-		NULL*/
+		CCDelayTime::create(0.5f),
+		pCallFunc_AfterOpen,
+		NULL
 		);
+
 	CCOrbitCamera* pOutCamera = CCOrbitCamera::create(5.0f, 1.0f, 0.0f, ECardAngleOut, -360, 0.0f, 0.0f);
 	if (pSequenceOut == NULL || pOutCamera == NULL)
 	{
@@ -157,13 +158,15 @@ void CCardSprite::GameChangeTouchDown(Object* pSender, Control::EventType event)
 		pInCard->runAction(m_pAnimInOpen);
 	}
 
-
-	/*this->removeChildByTag(EOutCard);
-	this->removeChildByTag(EInCard);*/
 }
 
 bool CCardSprite::__CheckCardSpriteLoad()
 {
 	return true;
+}
+
+void CCardSprite::OnAfterOpenCard_FireEvent()
+{
+	g_ResCreator.GetPersonMessageInstance()->FireMessage(OpenCard_Action, "Open Card Action");
 }
 

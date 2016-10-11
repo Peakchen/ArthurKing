@@ -11,11 +11,11 @@
 
 #define ACTOR_START		4		//actor start action
 
-#define ACTOR_MOVE	5		//AI Move
+#define ACTOR_MOVE		5		//AI Move
 
-#define ACTOR_STOP	6		//AI Stop 
+#define ACTOR_STOP		6		//AI Stop 
 
-
+#define OpenCard_Action	7
 
 //Any One can not use Max Value, and A custom Macro is In front.
 #define AI_MESSAGE_MAX_VALUE 256

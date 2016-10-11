@@ -1,6 +1,7 @@
 #pragma once
 #include "cocos2d.h"
 #include "ArthurKing.h"
+#include "MacroDefine.h"
 
 USING_NS_CC;
 
@@ -15,12 +16,14 @@ public:
 	void StartActorGo();
 	virtual bool init();
 
-	CC_SYNTHESIZE(std::vector<int>, m_passColPath, RecordPassColPath);
-	CC_SYNTHESIZE(std::vector<int>, m_passRowPath, RecordPassRowPath);
+	void CheckAddAnimateByName(EPLAYER_ACTION iCurAction, std::string  szName, CActorBase* pActor);
 
 	CREATE_FUNC(CArthurKingControl);
 
 	static CArthurKingControl* getActorCtrlInstance();
+
+	CC_SYNTHESIZE(std::vector<int>, m_passColPath, RecordPassColPath);
+	CC_SYNTHESIZE(std::vector<int>, m_passRowPath, RecordPassRowPath);
 
 private:
 	//四方向动画

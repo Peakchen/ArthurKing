@@ -17,10 +17,23 @@ public:
 	CActorBase();
 	~CActorBase();
 
-	CC_SYNTHESIZE(Vector<SpriteFrame*>, vecPlayer_anim_Left, vecAnim_Left);
+	virtual void setvecAnim_Left(Vector<SpriteFrame*> pSpriteFrame) = 0;
+	virtual Vector<SpriteFrame*> getvecAnim_Left() = 0;
+
+	virtual void setvecAnim_Right(Vector<SpriteFrame*> pSpriteFrame) = 0;
+	virtual Vector<SpriteFrame*> getvecAnim_Right() = 0;
+
+	virtual void setvecAnim_down(Vector<SpriteFrame*> pSpriteFrame) = 0;
+	virtual Vector<SpriteFrame*> getvecAnim_down() = 0;
+
+	virtual void setvecAnim_up(Vector<SpriteFrame*> pSpriteFrame) = 0;
+	virtual Vector<SpriteFrame*> getvecAnim_up() = 0;
+
+	/*CC_SYNTHESIZE(Vector<SpriteFrame*>, vecPlayer_anim_Left, vecAnim_Left);
 	CC_SYNTHESIZE(Vector<SpriteFrame*>, vecPlayer_anim_right, vecAnim_Right);
 	CC_SYNTHESIZE(Vector<SpriteFrame*>, vecPlayer_anim_down, vecAnim_down);
-	CC_SYNTHESIZE(Vector<SpriteFrame*>, vecPlayer_anim_up, vecAnim_up);
+	CC_SYNTHESIZE(Vector<SpriteFrame*>, vecPlayer_anim_up, vecAnim_up);*/
+
 
 	CC_SYNTHESIZE(std::vector<int>, m_passColPath, RecordPassColPath);
 	CC_SYNTHESIZE(std::vector<int>, m_passRowPath, RecordPassRowPath);

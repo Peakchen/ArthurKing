@@ -25,6 +25,7 @@ bool CGameMainScene::init()
 
 	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(ACTOR_START, this, "player action");
 	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(AI_START, this, "AI action");
+	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(OpenCard_Action, this, "Open Card action");
 
 	visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -105,7 +106,15 @@ void CGameMainScene::AddButton_Test()
 int schedule_count = 0;
 void CGameMainScene::onClick_StartControl(Object* pSender, Control::EventType event)
 {
-	TurnToGoAction(pSender, event);
+	TurnToGoAction();
+
+	ControlButton* pCtrlBtn = (ControlButton*)pSender;
+	if (pCtrlBtn == NULL)
+	{
+		return;
+	}
+
+	pCtrlBtn->setEnabled(false);
 }
 
 /************************************************************************/
@@ -313,15 +322,15 @@ void CGameMainScene::InitPlayerAnimation()
 	
 	///////////////////////////////////////////Create AI animatio //////////////////////////////////////////////////////
 
-	m_pPlayer_2_FrameCache = SpriteFrameCache::getInstance ( );
+	m_pPlayer_2_FrameCache = SpriteFrameCache::getInstance();
 	m_pPlayer_2_FrameCache->addSpriteFramesWithFile ( player_2_list, player_2_png );
 
 	// 角色四个方向 值
 
-	GetAnimateVec ( 1, 4, m_vecPAI_down, ESecondPlayer );
-	GetAnimateVec ( 5, 8, m_vecPAI_left, ESecondPlayer );
-	GetAnimateVec ( 9, 12, m_vecPAI_right, ESecondPlayer );
-	GetAnimateVec ( 13, 16, m_vecPAI_up, ESecondPlayer );
+	GetAnimateVec(1, 4, m_vecPAI_down, ESecondPlayer);
+	GetAnimateVec(5, 8, m_vecPAI_left, ESecondPlayer);
+	GetAnimateVec(9, 12, m_vecPAI_right, ESecondPlayer);
+	GetAnimateVec(13, 16, m_vecPAI_up, ESecondPlayer);
 
 	// 初始化四个方向动作
 	Animation* pPlayer_2_Animation_down = Animation::createWithSpriteFrames ( m_vecPAI_down, 0.1f );
@@ -499,15 +508,33 @@ void CGameMainScene::OnExecMessageHandle(DWORD nMsgID, LPCSTR szDesc)
 				CCLOG("-----------------------------ai go ---------------------------");
 			}
 			break;
+
+		case OpenCard_Action:
+			{
+				CCLOG("-----------------------------Open Card ---------------------------");
+				AfterOpenCard();
+			}
 		default:
 			CCLOG("error: %s message is wrong...", __FUNCTION__);
 			break;
 	}
+	
+	pCallFunc_CreateCard = CallFunc::create(CC_CALLBACK_0(CGameMainScene::TurnToGoAction, this));
 
-	TurnToGoAction(NULL, Control::EventType::TOUCH_DOWN);
+	CCSequence* pSequence_CreateCard = CCSequence::create(
+		CCDelayTime::create(8.5f),
+		pCallFunc_CreateCard,
+		NULL
+		);
+	
+	if (pSequence_CreateCard)
+	{
+		this->runAction(pSequence_CreateCard);
+	}
+	
 }
 
-void CGameMainScene::TurnToGoAction(Object* pSender, Control::EventType event)
+void CGameMainScene::TurnToGoAction()
 {
 	if (getChildByTag(ECARD_TEST))
 	{
@@ -516,20 +543,18 @@ void CGameMainScene::TurnToGoAction(Object* pSender, Control::EventType event)
 
 	//AddFadeSprite_Test();
 	m_CurRandNum = 0;
-	/*if (event == Control::EventType::TOUCH_DOWN)
-	{*/
-		int iRandom = GetRandomNum(KAPAI_COUNT);
-		const char* strInCard = CCString::createWithFormat("kapai/k_%d.png", iRandom)->getCString();
-		CCardSprite* pCardSprite = CCardSprite::create(strInCard, FACE_KAPAI, 5.0f);
-		if (pCardSprite)
-		{
-			pCardSprite->setTag(ECARD_TEST);
-			addChild(pCardSprite);
-		}
 
-		m_CurRandNum = iRandom;
-		//// 翻拍后 行走
-		schedule_count = 0;
-		AfterOpenCard();
-	//}
+	int iRandom = GetRandomNum(KAPAI_COUNT);
+	const char* strInCard = CCString::createWithFormat("kapai/k_%d.png", iRandom)->getCString();
+	CCardSprite* pCardSprite = CCardSprite::create(strInCard, FACE_KAPAI, 5.0f);
+	if (pCardSprite)
+	{
+		pCardSprite->setTag(ECARD_TEST);
+		addChild(pCardSprite);
+	}
+
+	m_CurRandNum = iRandom;
+	//// 翻拍后 行走
+	schedule_count = 0;
+	
 }

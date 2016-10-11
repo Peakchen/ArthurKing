@@ -55,11 +55,15 @@ private:
 	CArthurKing* m_pArthur;
 	int m_RandNum;
 
+	CallFunc* pCallFunc_AfterOpen;
+
 private:
 	void initCardData(const char* strInCard, const char* strOutCard, float fDuration);
 
 	bool __CheckCardSpriteLoad();
 
 	void AfterOpenCard();
+
+	void OnAfterOpenCard_FireEvent();
 };
 
