@@ -38,6 +38,8 @@ date:20161007 23:00
 modify: add some class, about Ai , MessageEvent
 
 
+date:20161011 23:00
 
+modify: fix some bugs, about ai can not go by path
 
 
