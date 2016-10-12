@@ -11,7 +11,7 @@ Scene* COpenScreenScene::createOpenScreenScene()
 
 bool COpenScreenScene::init()
 {
-	if (!Layer::init())
+	if (!LayerColor::initWithColor(Color4B::ORANGE))
 	{
 		return false;
 	}
@@ -112,7 +112,12 @@ void COpenScreenScene::startMoveSprite(float dt)
 void COpenScreenScene::gotoMenuScene()
 {
 	CCLOG("go to next scene ---- CGameMenuScene ");
-	Director::getInstance()->replaceScene(CGameMenuScene::createMenuScene());
+	TransitionShrinkGrow* pShrinkGrow = TransitionShrinkGrow::create(2.0f, CGameMenuScene::createMenuScene());
+	if (pShrinkGrow == NULL)
+	{
+		return;
+	}
+	Director::getInstance()->replaceScene(pShrinkGrow);
 }
 
 void COpenScreenScene::spriteFadeOut()

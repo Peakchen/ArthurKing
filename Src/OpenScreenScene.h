@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include "2d\CCLayer.h"
 #include "ConstUtil.h"
+#include "cocos-ext.h"
 
 USING_NS_CC;
 
@@ -10,7 +11,7 @@ const  double MOVE_SPLEED = 0.5f;
 const int ONE_SECOND = 1;
 
 class COpenScreenScene :
-	public Layer
+	public LayerColor
 {
 public:
 

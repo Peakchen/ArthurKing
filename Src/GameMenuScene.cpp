@@ -6,7 +6,7 @@ USING_NS_CC;
 
 bool CGameMenuScene::init()
 {
-	if (!LayerColor::initWithColor(Color4B(255, 255, 255, 255)))
+	if (!LayerColor::initWithColor(Color4B::GREEN))
 	{
 		return false;
 	}
@@ -234,7 +234,14 @@ void CGameMenuScene::GameStartTouchDown(Object* pSender, Control::EventType even
 					CCLOG("error: %s 主场景创建失败...", __FUNCTION__);
 					return;
 				}
-				Director::getInstance()->pushScene(pMainScene);
+
+				TransitionJumpZoom* pJumpZoom = TransitionJumpZoom::create(3.0f, pMainScene);
+				if (pJumpZoom == NULL)
+				{
+					return;
+				}
+				
+				Director::getInstance()->pushScene(pJumpZoom);
 			}
 			break;
 		case Btn_Save_Game_TAG:

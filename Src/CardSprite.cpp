@@ -85,7 +85,7 @@ void CCardSprite::initCardData(const char* strInCard, const char* strOutCard, fl
 	}
 	pCtrl_Btn->setBackgroundSpriteForState(pBtn_PressSprite, Control::State::SELECTED);
 
-	pCtrl_Btn->setPosition(ccp(visibleSize.width / 2, visibleSize.height/2));
+	pCtrl_Btn->setPosition(ccp(visibleSize.width / 2 - 220, visibleSize.height - 80));
 	pCtrl_Btn->setPreferredSize(Size(128, 128));
 	pCtrl_Btn->addTargetWithActionForControlEvents(this, cccontrol_selector(CCardSprite::GameChangeTouchDown), Control::EventType::TOUCH_DOWN);
 	pCtrl_Btn->setTag(EOutCard);
@@ -99,7 +99,7 @@ void CCardSprite::initCardData(const char* strInCard, const char* strOutCard, fl
 		CCLOG("error: 创建 pInCard 非法.");
 		return;
 	}
-	pInCard->setPosition(ccp(visibleSize.width/2, visibleSize.height/2));
+	pInCard->setPosition(ccp(visibleSize.width / 2 - 220, visibleSize.height - 80));
 	pInCard->setVisible(false);	  // hide 
 	pInCard->setTag(EInCard);
 	addChild(pInCard);
@@ -145,7 +145,7 @@ void CCardSprite::GameChangeTouchDown(Object* pSender, Control::EventType event)
 	CCSequence* pSequenceOut = CCSequence::create(
 		CCDelayTime::create(0.5f),
 		CCHide::create(),
-		CCDelayTime::create(5.5f),
+		CCDelayTime::create(3.5f),
 		pCallFunc_AfterOpen,
 		NULL
 		);

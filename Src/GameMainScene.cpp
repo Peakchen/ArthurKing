@@ -114,6 +114,9 @@ void CGameMainScene::onClick_StartControl(Object* pSender, Control::EventType ev
 		return;
 	}
 
+	pCtrlBtn->runAction(OrbitCamera::create(0.5f, 2.0f, 0.0f, 0.0f, 720.0f, 0.0f, 0.0f));
+
+	pCtrlBtn->setVisible(false);
 	pCtrlBtn->setEnabled(false);
 }
 
@@ -523,7 +526,7 @@ void CGameMainScene::OnExecMessageHandle(DWORD nMsgID, LPCSTR szDesc)
 	pCallFunc_CreateCard = CallFunc::create(CC_CALLBACK_0(CGameMainScene::TurnToGoAction, this));
 
 	CCSequence* pSequence_CreateCard = CCSequence::create(
-		CCDelayTime::create(5.5f),
+		CCDelayTime::create(3.5f),
 		pCallFunc_CreateCard,
 		//CCDelayTime::create(3.5f),
 		NULL
