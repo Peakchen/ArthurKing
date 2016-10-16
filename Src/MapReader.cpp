@@ -149,7 +149,8 @@ void CMapReader::setPathWay()
 	{
 		for (int j = 0; j < oMapsize.height; ++j)
 		{
-			Sprite* pGrid = pLayer->tileAt(Point(i, j));
+			Vec2 v = Point(i, j);
+			Sprite* pGrid = pLayer->tileAt(v);
 			if (pGrid)
 			{
 				float iLocX = pGrid->getPositionX();

@@ -64,6 +64,8 @@ public:
 	/************************************************************************/
 	CPersonMessageEventHandle* GetPersonMessageInstance ( ){ return &m_oPersonMessageHandle; }
 
+	
+
 private:
 	
 	/************************************************************************/

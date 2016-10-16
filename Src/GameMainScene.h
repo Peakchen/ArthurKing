@@ -55,12 +55,10 @@ private:
 	void  AddButton_Test();
 	void  AddFadeSprite_Test();
 
-	int GetRandomNum(int Randsize);
-
 	void InitPlayerAnimation();
 
 	void addPlayer();
-	void addAI ( );
+	void addAI();
 
 	void GetAnimateVec(int iMin, int iMax, TVecSpriteFrame &vecPlayer_director, EPlayer iState);
 	

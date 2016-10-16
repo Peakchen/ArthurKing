@@ -7,6 +7,7 @@
 #include "base\ccMacros.h"
 #include "AIPlayer.h"
 #include "PlayerManager.h"
+#include "GameToolAPI.h"
 
 USING_NS_CC;
 
@@ -120,44 +121,6 @@ void CGameMainScene::onClick_StartControl(Object* pSender, Control::EventType ev
 	pCtrlBtn->setEnabled(false);
 }
 
-/************************************************************************/
-/* func: 实现 卡牌 随机数字
-		情况一： 点击过快，导致随机数为0 的情况
-*/
-/************************************************************************/
-int CGameMainScene::GetRandomNum(int Randsize)
-{
-	timeval psv;
-	cocos2d::gettimeofday(&psv, NULL);    // 计算时间种子   
-	unsigned int tsrans = psv.tv_sec * 1000 + psv.tv_usec / 1000;    // 初始化随机数   
-	srand(tsrans);
-
-	int arr_seq[RADN_COUNT] = { 0 };
-	int arr_RandResult[RADN_COUNT] = {0};
-	int iSub = RADN_COUNT - 1;
-
-	for (int i = 0; i < RADN_COUNT; ++i)
-	{
-		int iRandom = CCRANDOM_0_1()*Randsize + 1;
-		CCLOG("rand num: %d ",iRandom);
-		arr_seq[i] = iRandom;
-		arr_RandResult[i] = iRandom;
-	}
-
-	for (int index = 0; index < RADN_COUNT; ++index)
-	{
-		int iRandom = CCRANDOM_0_1()*Randsize + 1;
-		arr_RandResult[index] = arr_seq[iRandom];
-		CCLOG("arr_RandResult num: %d ", arr_RandResult[index]);
-		arr_seq[iRandom] = arr_seq[iSub];
-		--iSub;
-	}
-
-	int iendIndex = CCRANDOM_0_1()*RADN_COUNT;
-
-	CCLOG("Result num: %d ", arr_RandResult[iendIndex]);
-	return arr_RandResult[iendIndex];
-}
 
 /************************************************************************/
 /* func： 实现终点闪烁                                                                     */
@@ -222,8 +185,8 @@ void CGameMainScene::addPlayer()
 		CCLOG("error：取得路径为0..");
 		return;
 	}
-	//int iRand = GetRandomNum(iPathSize);
-	Vec2 vec2_p1 = pstVecMap->front();
+	int iRand = g_GameToolAPI.GetRandomNum(iPathSize);
+	Vec2 vec2_p1 = pstVecMap->at(iRand);
 
 	CCLOG("Random Map x: %02f , y: %02f", vec2_p1.x, vec2_p1.y);
 
@@ -462,7 +425,7 @@ void CGameMainScene::addAI ( )
 		return;
 	}
 
-	int index = GetRandomNum(iPathSize);
+	int index = g_GameToolAPI.GetRandomNum(iPathSize);
 	/*while (index == 0)
 	{
 	index = CCRANDOM_0_1()*iPathSize;
@@ -549,7 +512,7 @@ void CGameMainScene::TurnToGoAction()
 	//AddFadeSprite_Test();
 	m_CurRandNum = 0;
 
-	int iRandom = GetRandomNum(KAPAI_COUNT);
+	int iRandom = g_GameToolAPI.GetRandomNum(KAPAI_COUNT);
 	const char* strInCard = CCString::createWithFormat("kapai/k_%d.png", iRandom)->getCString();
 	CCardSprite* pCardSprite = CCardSprite::create(strInCard, FACE_KAPAI, 5.0f);
 	if (pCardSprite)

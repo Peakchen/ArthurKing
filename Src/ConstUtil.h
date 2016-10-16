@@ -107,4 +107,13 @@
 #define Direction_Left  2
 #define Direction_Right 3
 
+
+// json file
+
+#define SEABAR_JSON_FILE "SeaBar.json"
+#define PERSON_JSON_FILE "personInfo.json"
+
+// º£Ñó¹ÝÊýÁ¿
+#define  SEABAR_COUNT 27
+
 #endif
