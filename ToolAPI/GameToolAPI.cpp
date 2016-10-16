@@ -111,7 +111,7 @@ void CGameToolAPI::CreateSeaBarRiseFallJsonFile(std::string filename)
 	for (int i=1; i<=7; ++i)
 	{
 		// every day data
-		for (int index = 1; index < SEABAR_COUNT; ++index)
+		for (int index = 1; index <= SEABAR_COUNT; ++index)
 		{
 			Json::Value stValue;
 

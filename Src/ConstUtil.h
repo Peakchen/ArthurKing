@@ -110,8 +110,9 @@
 
 // json file
 
-#define SEABAR_JSON_FILE "SeaBar.json"
-#define PERSON_JSON_FILE "personInfo.json"
+#define SEABAR_JSON_FILE	"SeaBar.json"
+#define PERSON_JSON_FILE	"personInfo.json"
+#define SEABAR_RISEFALL		"seabar_risefall.json"
 
 // º£Ñó¹ÝÊýÁ¿
 #define  SEABAR_COUNT 27

@@ -7,6 +7,11 @@
 
 #pragma once
 #include "MacroDefine.h"
+#include "common.h"
+
+#include "jsoncpp/include/json/json.h"
+
+using namespace Json;
 
 class CPlayerManager
 {
@@ -22,12 +27,12 @@ private:
 	};
 
 public:
-	CPlayerManager ( );
-	~CPlayerManager ( );
+	CPlayerManager();
+	~CPlayerManager();
 
 	void Create(CActorBase* pActor);
 
-	void Release ( );
+	void Release();
 
 	void DoChangeState ( EPLAYER_ACTION nState);
 
@@ -36,12 +41,45 @@ public:
 
 	CActorBase* GetCurentAction(){ return m_pActorBase; }
 
+	/************************************************************************/
+	/* 
+	@func:		LoadPersonInfoData
+	@param:		string filename
+	@return:	void
+	@Desc:		load all player info , about socre, location point and so on...
+	*/
+	/************************************************************************/
+
+	void LoadPersonInfoData(std::string filename);
+		
+	/************************************************************************/
+	/* 
+	@func:		LoadPersonInfoData
+	@param:		string filename
+	@return:	void
+	@Desc:		load all player info , about socre, location point and so on...
+	*/
+	/************************************************************************/
+
+	void SavePersonInfoData();
+
+	/************************************************************************/
+	/* 
+	@func:		GetPersonInfo
+	@param:		__int8 PDBID
+	@return:	void
+	Desc:		get person infomation by PDBID
+	*/
+	/************************************************************************/
+	inline TPersonInfo* GetPersonInfo(__int8 PDBID){ if (m_mapPersonLocation [PDBID] == NULL){ return NULL; } return m_mapPersonLocation [PDBID]; }
+
 private:
 
 	CActorBase*		m_pActorBase;
 	CAIPlayer		m_oAiPlayer;
 	CArthurKing		m_oArthur;
 
+	TPersonInfoMap  m_mapPersonLocation;
 };
 
 extern CPlayerManager g_PalyerManager;

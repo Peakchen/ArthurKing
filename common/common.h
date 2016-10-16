@@ -19,16 +19,16 @@ sea bar struct
 /************************************************************************/
 struct TSeaBarInfo
 {
-	__int8 iSeaBar_index;		// 下标 ，唯一标识	only index 
+	__int8			iSeaBar_index;		// 下标 ，唯一标识	only index 
 
 	// 注释： 如果被购买了，则有占有者，否则，没有占有者
 	//  is bought ? 1-> yes, 0->no	
-	__int8   is_Bought;			// 是否已被购买	 1->已被购买，0-> 未被购买
+	__int8			is_Bought;			// 是否已被购买	 1->已被购买，0-> 未被购买
 
-	__int8   iCur_OwnerID;		// 当前拥有者,	0-> no one, 1->any one
+	__int8			iCur_OwnerID;		// 当前拥有者,	0-> no one, 1->any one
 
-	int	   iCur_Price;			// 当前价格  current price
-	int	   iTip;				// 应付小费积分	should give tip to other
+	float			iCur_Score;			// 当前价格  current Score
+	float			iTip;				// 应付小费积分	should give tip to other
 
 	//DWORD  save_time;			// save time
 
@@ -36,8 +36,8 @@ struct TSeaBarInfo
 		iSeaBar_index = 1;
 		is_Bought = 0;
 		iCur_OwnerID = 0;
-		iCur_Price = 0;
-		iTip = 0;
+		iCur_Score = 0.0f;
+		iTip = 0.0f;
 		//save_time = 0;
 	}
 };
@@ -48,12 +48,12 @@ typedef std::map<__int8, TSeaBarInfo> TSeaBarInfoMap;
 // 人物信息 person info
 struct TPersonInfo
 {
-	DWORD  dw_save_time;			// save time
-	__int8 person_ID;			// only one id
-	float Loc_x;				// coordate x
-	float Loc_y;				// coordate y
+	double		dw_save_time;			// save time
+	__int8		person_ID;				// only one id
+	float		Loc_x;					// coordate x
+	float		Loc_y;					// coordate y
 
-	DWORD dw_score;				// score
+	float		dt_score;					// score
 
 	TPersonInfo()
 	{
@@ -61,11 +61,11 @@ struct TPersonInfo
 		person_ID = 0;
 		Loc_y = 0.0f;
 		Loc_x = 0.0f;
-		dw_score = 0;
+		dt_score = 0.0f;
 	}
 };
 
-typedef map<__int8, TPersonInfo> TPersonInfoMap;
+typedef map<__int8, TPersonInfo*> TPersonInfoMap;
 
 typedef long long LDWORD;
 

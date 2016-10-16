@@ -33,7 +33,7 @@ void CSeaBarInfoManager::LoadSeaBarData(std::string fileName)
 
 		__int8 iseaBar_Index = stFileMap ["seaBar_Index"].asInt();
 		stSeaBar.iCur_OwnerID = stFileMap ["ownerID"].asInt();
-		stSeaBar.iCur_Price = stFileMap ["current_price"].asInt();
+		stSeaBar.iCur_Score = stFileMap ["current_price"].asInt();
 		stSeaBar.is_Bought = stFileMap ["is_Bought"].asInt();
 		stSeaBar.iTip = stFileMap ["tip"].asInt();
 		stSeaBar.iSeaBar_index = iseaBar_Index;
@@ -94,7 +94,7 @@ void CSeaBarInfoManager::SaveToDataBase()
 		stValue["ownerID"] = stSeaBarInfo.iCur_OwnerID;
 		stValue["seaBar_Index"] = stSeaBarInfo.iSeaBar_index;
 		stValue["is_Bought"] = stSeaBarInfo.is_Bought;
-		stValue["current_price"] = stSeaBarInfo.iCur_Price;
+		stValue["current_score"] = stSeaBarInfo.iCur_Score;
 		stValue["tip"] = stSeaBarInfo.iTip;
 
 		stArrayList.append(stValue);
@@ -168,4 +168,10 @@ void CSeaBarInfoManager::LoadSeaBarRiseData(string fileName)
 	
 		m_stSeaBarRiseMap [stSeaBarRise.day_index] = stSeaBarRise;
 	}
+}
+
+void CSeaBarInfoManager::End()
+{
+	// stop timer
+	this->unschedule(schedule_selector(CSeaBarInfoManager::UpdateSeaBarData));
 }

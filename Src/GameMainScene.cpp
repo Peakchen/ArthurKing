@@ -44,6 +44,8 @@ bool CGameMainScene::init()
 
 	g_PalyerManager.Create(m_pCurAction);
 
+	//g_GameToolAPI.CreateSeaBarRiseFallJsonFile(SEABAR_RISEFALL);
+
 	return true;
 }
 
