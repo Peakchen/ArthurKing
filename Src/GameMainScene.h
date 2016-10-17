@@ -6,6 +6,7 @@
 #include "MapReader.h"
 #include "AIPlayer.h"
 #include "PersonMessageEventHandle.h"
+#include "common/common.h"
 
 USING_NS_CC;
 USING_NS_CC_EXT;
@@ -17,12 +18,6 @@ enum EMainMenuItemTag
 	EFADESPRITE_TEST,
 };
 
-// ½ÇÉ« Ã¶¾Ù
-enum EPlayer
-{
-	EFirstPlayer = 1,
-	ESecondPlayer,
-};
 
 class CGameMainScene :
 	public Layer,
@@ -40,7 +35,7 @@ public:
 	*/
 	/************************************************************************/
 
-	virtual void  OnExecMessageHandle(DWORD nMsgID, LPCSTR szDesc);
+	virtual void  OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc);
 
 	CREATE_FUNC(CGameMainScene);
 
@@ -110,7 +105,7 @@ private:
 	CallFunc* pCallFunc_AfterOpen;
 
 	int m_CurRandNum;
-	DWORD m_CurPalyer_Socre;
+	GWORD m_CurPalyer_Socre;
 
 	CallFunc* pCallFunc_CreateCard;
 };

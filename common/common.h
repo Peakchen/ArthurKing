@@ -30,7 +30,7 @@ struct TSeaBarInfo
 	float			iCur_Score;			// 当前价格  current Score
 	float			iTip;				// 应付小费积分	should give tip to other
 
-	//DWORD  save_time;			// save time
+	//GWORD  save_time;			// save time
 
 	TSeaBarInfo(){
 		iSeaBar_index = 1;
@@ -42,7 +42,7 @@ struct TSeaBarInfo
 	}
 };
 
-typedef std::map<__int8, TSeaBarInfo> TSeaBarInfoMap;
+typedef std::map<__int8, TSeaBarInfo*> TSeaBarInfoMap;
 
 ////////////////////////////////////////////////////////////////////////////////////
 // 人物信息 person info
@@ -67,7 +67,7 @@ struct TPersonInfo
 
 typedef map<__int8, TPersonInfo*> TPersonInfoMap;
 
-typedef long long LDWORD;
+typedef long long LGWORD;
 
 /************************************************************************/
 /* 
@@ -89,6 +89,23 @@ struct TSeaBarRiseData
 	}
 };
 
-typedef map<int, TSeaBarRiseData> TSeaBarRiseMap;
+typedef map<int, TSeaBarRiseData*> TSeaBarRiseMap;
+
+enum ESeaBarAttach
+{
+	ESeaBar_None = 0,
+	ESeaBar_other,
+	ESeaBar_self,
+	ESeaBar_Error,
+};
+
+// 角色 枚举
+enum EPlayer
+{
+	EFirstPlayer = 1,
+	ESecondPlayer,
+};
+
+typedef unsigned long GWORD;
 
 #endif

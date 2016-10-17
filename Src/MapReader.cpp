@@ -58,13 +58,13 @@ void CMapReader::ParseTileMap()
 		CCLOG("ParseTileMap		X: %s,		Y: %s", mapObject["x"].asString().c_str(), mapObject["y"].asString().c_str());
 		CCLOG("ParseTileMap		Type: %s", mapObject["Type"].asString().c_str());
 
-		DWORD dwScore = 0;
+		GWORD dwScore = 0;
 		//DoParseScore(mapObject, dwScore);
 	}
 	
 }
 
-bool CMapReader::CheckCanTakeAddSocre(DWORD &dwScore, Vec2 oPoint)
+bool CMapReader::CheckCanTakeAddSocre(GWORD &dwScore, Vec2 oPoint)
 {
 
 	CCLOG("Dest: x = %02f,   y = %02f ", oPoint.x, oPoint.y);
@@ -111,7 +111,7 @@ bool CMapReader::CheckCanTakeAddSocre(DWORD &dwScore, Vec2 oPoint)
 	return false;
 }
 
-bool CMapReader::DoParseScore(ValueMap mapObject, DWORD &dwScore)
+bool CMapReader::DoParseScore(ValueMap mapObject, GWORD &dwScore)
 {
 	if (strcmp(mapObject["name"].asString().c_str(), "Score") == 0)
 	{

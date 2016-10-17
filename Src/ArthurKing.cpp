@@ -3,6 +3,7 @@
 #include "MapReader.h"
 #include "ArthurKingControl.h"
 #include "ResCreator.h"
+#include "common.h"
 
 USING_NS_CC;
 
@@ -24,7 +25,7 @@ CArthurKing::~CArthurKing()
 {
 }
 
-CArthurKing* CArthurKing::CreateArthurKing(SpriteFrame* pFrame)
+CArthurKing* CArthurKing::CreateArthurKing(SpriteFrame* pFrame, __int8 PDBID)
 {
 	CArthurKing* pArthur = new CArthurKing();
 
@@ -76,4 +77,19 @@ void CArthurKing::OnEnter ( )
 void CArthurKing::OnLeave()
 {
 	CCLOG("ArthurKing leave...");
+}
+
+void CArthurKing::GetOwnerSelfScore(GWORD& score)
+{
+	score = m_ActorScore;
+}
+
+void CArthurKing::SetOwnerSelfScore(GWORD score)
+{
+	m_ActorScore = score;
+}
+
+__int8 CArthurKing::GetPDBID()
+{
+	return m_PDBID;
 }

@@ -173,7 +173,7 @@ void CGameMainScene::addPlayer()
 		return;
 	}
 
-	m_pArthurKing = CArthurKing::CreateArthurKing(pInitPlayFrame);
+	m_pArthurKing = CArthurKing::CreateArthurKing(pInitPlayFrame, EFirstPlayer);
 	if (m_pArthurKing == NULL)
 	{
 		CCLOG("error： 当前角色创建失败.");
@@ -412,7 +412,7 @@ void CGameMainScene::addAI ( )
 		return;
 	}
 
-	m_pAIplayer = CAIPlayer::CreateAIPlayer ( pInitPlayFrame );
+	m_pAIplayer = CAIPlayer::CreateAIPlayer ( pInitPlayFrame, ESecondPlayer );
 	if (m_pAIplayer == NULL)
 	{
 		CCLOG ( "error： 当前AI创建失败." );
@@ -457,7 +457,7 @@ void CGameMainScene::addAI ( )
 	m_pAIplayer->setvecAnim_up ( m_vecPAI_up );
 }
 
-void CGameMainScene::OnExecMessageHandle(DWORD nMsgID, LPCSTR szDesc)
+void CGameMainScene::OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc)
 {
 	switch (nMsgID)
 	{

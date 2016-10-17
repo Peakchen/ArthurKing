@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <Windows.h>
-#include <winuser.h>
+//#include <Windows.h>
+//#include <winuser.h>
 #include <map>
 #include <list>
 #include <iostream>
@@ -24,7 +24,7 @@ using namespace std;
 
 #define WIN32_LEAN_AND_MEAN             // 从 Windows 头中排除极少使用的资料
 
-//#define DWORD unsigned long 
+//#define GWORD unsigned long 
 //
 //#define LPCSTR char *
 

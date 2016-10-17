@@ -6,6 +6,7 @@
 
 #include "cocos2d.h"
 #include "ActorBase.h"
+#include "common.h"
 
 class CArthurKingControl;
 
@@ -58,9 +59,38 @@ public:
 	* param: strName is picture' name
 	* return: void
 	*************************/
-	static CAIPlayer* CreateAIPlayer ( SpriteFrame* pFrame );
+	static CAIPlayer* CreateAIPlayer ( SpriteFrame* pFrame , __int8 PDBID);
 
 	virtual void UpdateScoreItem(int addScore);
+
+	/************************************************************************/
+	/*
+	@func:		GetOwnerSelfScore()
+	@param:		GWORD score
+	@return:	no
+	@desc:		get own score
+	*/
+	/************************************************************************/
+	virtual void GetOwnerSelfScore(GWORD& score);
+
+	/************************************************************************/
+	/*
+	@func:		SetOwnerSelfScore()
+	@param:		GWORD score
+	@return:	no
+	@desc:		set own score
+	*/
+	/************************************************************************/
+	virtual void SetOwnerSelfScore(GWORD score);
+
+	/************************************************************************/
+	/*
+	@func:		GetPDBID()
+	@param:		no
+	@return:	__int8 PDBID
+	*/
+	/************************************************************************/
+	virtual __int8 GetPDBID();
 
 	/////////////////////////////////four Sprite Frame////////////////////////////////////////////////////////
 	inline virtual void setvecAnim_Left(Vector<SpriteFrame*> pSpriteFrame){ m_vecAnim_Left = pSpriteFrame; }
@@ -76,7 +106,9 @@ public:
 	inline virtual Vector<SpriteFrame*> getvecAnim_up(){ return m_vecAnim_Up; }
 
 private:
-	DWORD m_ActorScore;
+	GWORD m_ActorScore;
+
+	__int8 m_PDBID;
 
 	CArthurKingControl* m_pCtrl;
 

@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include "cocos-ext.h"
 #include "MacroDefine.h"
+#include "common.h"
 
 USING_NS_CC;
 USING_NS_CC_EXT;
@@ -36,7 +37,7 @@ private:
 	void initPlayer();
 	void ParseTileMap();
 
-	bool DoParseScore(ValueMap mapObject, DWORD &dwScore);
+	bool DoParseScore(ValueMap mapObject, GWORD &dwScore);
 
 	void setPathWay();
 
@@ -59,7 +60,7 @@ public:
 
 	void initPressGrid(int** arrPassGrid);
 
-	bool CheckCanTakeAddSocre(DWORD &iScore, Vec2 oPoint);
+	bool CheckCanTakeAddSocre(GWORD &iScore, Vec2 oPoint);
 };
 
 extern CMapReader g_MapReader;

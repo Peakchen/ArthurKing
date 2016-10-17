@@ -5,6 +5,8 @@
 #pragma once
 #include "IActorBase.h"
 #include "cocos2d.h"
+#include "common.h"
+#include "common.h"
 
 
 USING_NS_CC;
@@ -83,11 +85,40 @@ public:
 	/************************************************************************/
 	virtual void PlayStartGo() = 0;
 
+	/************************************************************************/
+	/* 
+		@func:		GetOwnerSelfScore()
+		@param:		GWORD score
+		@return:	no
+		@desc:		get own score
+	*/
+	/************************************************************************/
+	virtual void GetOwnerSelfScore(GWORD& score) = 0;
+
+	/************************************************************************/
+	/* 
+	@func:		SetOwnerSelfScore()
+	@param:		GWORD score
+	@return:	no
+	@desc:		set own score
+	*/
+	/************************************************************************/
+	virtual void SetOwnerSelfScore(GWORD score) = 0;
+
+	/************************************************************************/
+	/* 
+		@func:		GetPDBID()
+		@param:		no
+		@return:	__int8 PDBID
+	*/
+	/************************************************************************/
+	virtual __int8 GetPDBID() = 0;
+
 private:
 	void GetCanGoColRowData(int iRandnum, int iCol, int iRow, int& iNextCol, int &iNextRow);
 
 private:
-	DWORD m_dwScore;
+	GWORD m_dwScore;
 };
 
 #endif

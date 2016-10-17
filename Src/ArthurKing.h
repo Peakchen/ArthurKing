@@ -9,6 +9,7 @@ USING_NS_CC_EXT;
 
 #pragma once
 #include "ActorBase.h"
+#include "common.h"
 
 class CArthurKingControl;
 
@@ -25,7 +26,7 @@ public:
 	* param: strArthurKingName is picture' name
 	* return: void
 	*************************/
-	static CArthurKing* CreateArthurKing(SpriteFrame* pFrame);
+	static CArthurKing* CreateArthurKing(SpriteFrame* pFrame, __int8 PDBID);
 
 	bool init();
 
@@ -66,6 +67,36 @@ public:
 	/************************************************************************/
 	virtual void OnLeave ( );
 
+	/************************************************************************/
+	/*
+	@func:		GetOwnerSelfScore()
+	@param:		GWORD score
+	@return:	no
+	@desc:		get own score
+	*/
+	/************************************************************************/
+	virtual void GetOwnerSelfScore(GWORD& score);
+
+	/************************************************************************/
+	/*
+	@func:		SetOwnerSelfScore()
+	@param:		GWORD score
+	@return:	no
+	@desc:		set own score
+	*/
+	/************************************************************************/
+	virtual void SetOwnerSelfScore(GWORD score);
+
+	/************************************************************************/
+	/*
+	@func:		GetPDBID()
+	@param:		no
+	@return:	__int8 PDBID
+	*/
+	/************************************************************************/
+	virtual __int8 GetPDBID();
+
+
 	/////////////////////////////////four Sprite Frame////////////////////////////////////////////////////////
 	inline virtual void setvecAnim_Left(Vector<SpriteFrame*> pSpriteFrame){ m_vecAnim_Left = pSpriteFrame; }
 	inline virtual Vector<SpriteFrame*> getvecAnim_Left(){ return m_vecAnim_Left; }
@@ -94,7 +125,8 @@ private:
 	Animate* m_pActor_Up_Animate;
 	Animate* m_pActor_Down_Animate;
 
-	DWORD m_ActorScore;
+	GWORD m_ActorScore;
+	__int8 m_PDBID;
 
 	CArthurKingControl* m_pCtrl;
 

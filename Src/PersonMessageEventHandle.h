@@ -6,16 +6,17 @@
 #include "stdafx.h"
 
 #pragma once
+#include "common.h"
 
 struct IAIPersonMessageSink 
 {
-	virtual void  OnExecMessageHandle(DWORD nMsgID, LPCSTR szDesc ) = 0;
+	virtual void  OnExecMessageHandle(GWORD nMsgID, const char* szDesc ) = 0;
 };
 
 class CPersonMessageEventHandle
 {
 	typedef std::list<IAIPersonMessageSink*> TPersonMessageList;
-	typedef std::map<DWORD, TPersonMessageList> TPersonMessageMap;
+	typedef std::map<GWORD, TPersonMessageList> TPersonMessageMap;
 
 public:
 	CPersonMessageEventHandle(void);
@@ -24,13 +25,13 @@ public:
 	void ResetData();
 
 	// register message
-	void RegisterAIMessage(DWORD nMsgID, IAIPersonMessageSink* pAiMessageSink, LPCSTR szDesc);
+	void RegisterAIMessage(GWORD nMsgID, IAIPersonMessageSink* pAiMessageSink, const char*  szDesc);
 	
 	// unregister message
-	void UnRegisterAIMessage(DWORD nMsgID, IAIPersonMessageSink* pAiMessageSink);
+	void UnRegisterAIMessage(GWORD nMsgID, IAIPersonMessageSink* pAiMessageSink);
 
 	// exec message
-	void FireMessage(DWORD nMsgID, LPCSTR szDesc);
+	void FireMessage(GWORD nMsgID, const char*  szDesc);
 
 
 private:

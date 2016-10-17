@@ -131,3 +131,12 @@ void CPlayerManager::SavePersonInfoData()
 
 }
 
+TPersonInfo* CPlayerManager::GetPersonInfo(__int8 PDBID)
+{
+	if (m_mapPersonLocation [PDBID] == NULL)
+		return NULL; 
+	
+	return m_mapPersonLocation [PDBID];
+
+}
+

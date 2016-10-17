@@ -38,7 +38,7 @@ void CSeaBarInfoManager::LoadSeaBarData(std::string fileName)
 		stSeaBar.iTip = stFileMap ["tip"].asInt();
 		stSeaBar.iSeaBar_index = iseaBar_Index;
 
-		m_stSeaBarMap [iseaBar_Index] = stSeaBar;
+		m_stSeaBarMap [iseaBar_Index] = &stSeaBar;
 	}
 }
 
@@ -51,7 +51,7 @@ void CSeaBarInfoManager::LoadSeaBarData(std::string fileName)
 /************************************************************************/
 void CSeaBarInfoManager::UpdateSeaBarData(float dt)
 {
-	DWORD cur_time = 0;
+	GWORD cur_time = 0;
 	
 	g_GameToolAPI.GetGameCurrentTime(cur_time);
 	if (cur_time == 0)
@@ -59,7 +59,7 @@ void CSeaBarInfoManager::UpdateSeaBarData(float dt)
 		return;
 	}
 	g_GameToolAPI.GetGameCurrentTime(cur_time);
-	DWORD user_time = 0;
+	GWORD user_time = 0;
 	g_GameToolAPI.GetUserCurrentTime(user_time);
 	
 	// 同一天不更新海洋馆 价格数据
@@ -74,7 +74,7 @@ void CSeaBarInfoManager::UpdateSeaBarData(float dt)
 
 }
 
-void CSeaBarInfoManager::SaveToDataBase()
+void CSeaBarInfoManager::SaveALLSeaBarToDataBase()
 {
 	// cpp json
 	if (m_stSeaBarMap.size() == 0)
@@ -88,14 +88,14 @@ void CSeaBarInfoManager::SaveToDataBase()
 	TSeaBarInfoMap::iterator itBegin = m_stSeaBarMap.begin();
 	for (; itBegin != m_stSeaBarMap.end(); ++itBegin)
 	{
-		TSeaBarInfo stSeaBarInfo = itBegin->second;
+		TSeaBarInfo* stSeaBarInfo = itBegin->second;
 
 		Json::Value stValue;
-		stValue["ownerID"] = stSeaBarInfo.iCur_OwnerID;
-		stValue["seaBar_Index"] = stSeaBarInfo.iSeaBar_index;
-		stValue["is_Bought"] = stSeaBarInfo.is_Bought;
-		stValue["current_score"] = stSeaBarInfo.iCur_Score;
-		stValue["tip"] = stSeaBarInfo.iTip;
+		stValue["ownerID"]			= stSeaBarInfo->iCur_OwnerID;
+		stValue["seaBar_Index"]		= stSeaBarInfo->iSeaBar_index;
+		stValue["is_Bought"]		= stSeaBarInfo->is_Bought;
+		stValue["current_score"]	= stSeaBarInfo->iCur_Score;
+		stValue["tip"]				= stSeaBarInfo->iTip;
 
 		stArrayList.append(stValue);
 	}
@@ -166,7 +166,7 @@ void CSeaBarInfoManager::LoadSeaBarRiseData(string fileName)
 		stSeaBarRise.index = stFileMap ["index"].asInt();
 		stSeaBarRise.val_rise = stFileMap ["val_rise"].asInt();
 	
-		m_stSeaBarRiseMap [stSeaBarRise.day_index] = stSeaBarRise;
+		m_stSeaBarRiseMap [stSeaBarRise.day_index] = &stSeaBarRise;
 	}
 }
 
@@ -174,4 +174,25 @@ void CSeaBarInfoManager::End()
 {
 	// stop timer
 	this->unschedule(schedule_selector(CSeaBarInfoManager::UpdateSeaBarData));
+}
+
+TSeaBarInfo* CSeaBarInfoManager::GetSeaBarInfo(int iSeaBarIndex)
+{
+	if (m_stSeaBarMap [iSeaBarIndex] == NULL)
+		return NULL;	
+	
+	return m_stSeaBarMap [iSeaBarIndex];
+}
+
+void CSeaBarInfoManager::SetSeaBarOwnerInfo(int iSeaBarIndex, __int8 iOwner_PDBID)
+{
+	if (m_stSeaBarMap [iSeaBarIndex] == NULL)
+	{
+		Trace_In("error: %s m_stSeaBarMap is null.", __FUNCTION__);
+		return;
+	}
+
+	TSeaBarInfo& stSeaBarInfo = *(m_stSeaBarMap [iSeaBarIndex]);
+	stSeaBarInfo.is_Bought		= 1;
+	stSeaBarInfo.iCur_OwnerID	= iOwner_PDBID;
 }

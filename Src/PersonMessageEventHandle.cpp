@@ -9,7 +9,7 @@ CPersonMessageEventHandle::~CPersonMessageEventHandle(void)
 {
 }
 
-void CPersonMessageEventHandle::RegisterAIMessage( DWORD nMsgID, IAIPersonMessageSink* pAiMessageSink, LPCSTR szDesc )
+void CPersonMessageEventHandle::RegisterAIMessage(GWORD nMsgID, IAIPersonMessageSink* pAiMessageSink, const char*  szDesc)
 {
 	if (m_mapPersonMsg.empty())
 	{
@@ -33,13 +33,13 @@ void CPersonMessageEventHandle::RegisterAIMessage( DWORD nMsgID, IAIPersonMessag
 
 }
 
-void CPersonMessageEventHandle::UnRegisterAIMessage( DWORD nMsgID, IAIPersonMessageSink* pAiMessageSink )
+void CPersonMessageEventHandle::UnRegisterAIMessage( GWORD nMsgID, IAIPersonMessageSink* pAiMessageSink )
 {
 
 	TPersonMessageMap::iterator& itMessage = m_mapPersonMsg.find(nMsgID);
 	if (itMessage == m_mapPersonMsg.end())
 	{
-		MessageBoxA(NULL, "NO Find This Message", "ERROR", 0);
+		//MessageBoxA(NULL, "NO Find This Message", "ERROR", 0);
 		return;
 	}
 
@@ -51,13 +51,13 @@ void CPersonMessageEventHandle::UnRegisterAIMessage( DWORD nMsgID, IAIPersonMess
 	}
 }
 
-void CPersonMessageEventHandle::FireMessage( DWORD nMsgID, LPCSTR szDesc )
+void CPersonMessageEventHandle::FireMessage(GWORD nMsgID, const char*  szDesc)
 {
 
 	TPersonMessageMap::iterator itMessage = m_mapPersonMsg.find(nMsgID);
 	if (itMessage == m_mapPersonMsg.end())
 	{
-		MessageBoxA(NULL, "NO Find This Message", "ERROR", 0);
+		//MessageBoxA(NULL, "NO Find This Message", "ERROR", 0);
 		return;
 	}
 

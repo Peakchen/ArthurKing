@@ -13,13 +13,11 @@ verison: 1.0
 
 #include "jsoncpp/include/json/json.h"
 #include "cocos2d.h"
-//#include "json/rapidjson.h"
-//#include "json/document.h"
 
 
 #pragma once
 #include "common.h"
-#include <string>
+
 
 USING_NS_CC;
 
@@ -64,7 +62,7 @@ public:
 	*/
 	/************************************************************************/
 
-	void SaveToDataBase();
+	void SaveALLSeaBarToDataBase();
 
 	/************************************************************************/
 	/* 
@@ -75,6 +73,27 @@ public:
 	*/
 	/************************************************************************/
 	void LoadSeaBarRiseData(string fileName);
+
+	/************************************************************************/
+	/* 
+	@func:		GetSeaBarInfo(int iSeaBarIndex)
+	@param:		int iSeaBarIndex
+	@return:	TSeaBarInfo 
+	@desc:		there is a sea bar index, the only one, by which you can judge if you can get this sea bar info. 
+	*/
+	/************************************************************************/
+
+	TSeaBarInfo* GetSeaBarInfo(int iSeaBarIndex);
+
+	/************************************************************************/
+	/* 
+	@func:		SetSeaBarOwnerInfo(int iSeaBarIndex)
+	@param:		int iSeaBarIndex
+	@return:	void
+	@desc:
+	*/
+	/************************************************************************/
+	void SetSeaBarOwnerInfo(int iSeaBarIndex, __int8 iOwner_PDBID);
 
 	void Start();
 

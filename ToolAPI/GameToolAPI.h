@@ -9,6 +9,7 @@ USING_NS_CC;
 using namespace Json;
 
 #pragma once
+#include "common.h"
 class CGameToolAPI
 {
 public:
@@ -33,7 +34,7 @@ public:
 	*/
 	/************************************************************************/
 
-	void GetGameCurrentTime(DWORD &dw_time);
+	void GetGameCurrentTime(GWORD &dw_time);
 
 
 	/************************************************************************/
@@ -53,7 +54,7 @@ public:
 	return: void
 	*/
 	/************************************************************************/
-	void GetUserCurrentTime(DWORD &dw_time);
+	void GetUserCurrentTime(GWORD &dw_time);
 
 	/************************************************************************/
 	/* 

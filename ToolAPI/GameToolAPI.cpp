@@ -48,7 +48,7 @@ int CGameToolAPI::GetRandomNum(int Randsize)
 	return arr_RandResult [iendIndex];
 }
 
-void CGameToolAPI::GetGameCurrentTime(DWORD &dw_time)
+void CGameToolAPI::GetGameCurrentTime(GWORD &dw_time)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	struct timeval tval;
@@ -71,14 +71,14 @@ void CGameToolAPI::GetGameCurrentTime(DWORD &dw_time)
 
 void CGameToolAPI::SaveUserCurrentTime()
 {
-	DWORD dwTime = 0;
+	GWORD dwTime = 0;
 	g_GameToolAPI.GetGameCurrentTime(dwTime);
 	Data userData;
 	userData.copy(( unsigned char* ) &dwTime, sizeof(dwTime));
 	UserDefault::getInstance()->setDataForKey("cur_time", userData);
 }
 
-void CGameToolAPI::GetUserCurrentTime(DWORD &dw_time)
+void CGameToolAPI::GetUserCurrentTime(GWORD &dw_time)
 {
 	auto userTime = UserDefault::getInstance()->getDataForKey("cur_time", Data());
 	
