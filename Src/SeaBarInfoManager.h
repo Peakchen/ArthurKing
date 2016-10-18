@@ -17,6 +17,8 @@ verison: 1.0
 
 #pragma once
 #include "common.h"
+#include "ActorBase.h"
+
 
 
 USING_NS_CC;
@@ -89,21 +91,39 @@ public:
 	/* 
 	@func:		SetSeaBarOwnerInfo(int iSeaBarIndex)
 	@param:		int iSeaBarIndex
+	@param:		__int8 iOwner_PDBID
 	@return:	void
-	@desc:
+	@desc:		add ower seabar score
 	*/
 	/************************************************************************/
 	void SetSeaBarOwnerInfo(int iSeaBarIndex, __int8 iOwner_PDBID);
+
+	/************************************************************************/
+	/* 
+		@func:		SpendScoreForSeaBarTips
+		@param:		int iSeaBarIndex
+		@param:		__int8 iOwner_PDBID
+		@param:		CActorBase* pPayActor
+		@return:	void
+		@desc:
+	*/
+	/************************************************************************/
+
+	void SpendScoreForSeaBarTips(int iSeaBarIndex, __int8 iOwner_PDBID, CActorBase* pPayActor);
 
 	void Start();
 
 	virtual bool init();
 
 	void End();
+
 private:
 
 	TSeaBarInfoMap m_stSeaBarMap;
 	TSeaBarRiseMap m_stSeaBarRiseMap;
+
+	/////////////////////////////////////
+	
 };
 
 extern CSeaBarInfoManager g_SealBarManager;

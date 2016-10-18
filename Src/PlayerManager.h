@@ -73,6 +73,26 @@ public:
 	/************************************************************************/
 	TPersonInfo* GetPersonInfo(__int8 PDBID);
 
+	/************************************************************************/
+	/* 
+	@func:		GetActorInstace
+	@param:		__int8 PDBID
+	@return:	void
+	Desc:		get person Instance by PDBID
+	*/
+	/************************************************************************/
+	CActorBase*	GetActorInstace(__int8 PDBID);
+
+	/************************************************************************/
+	/* 
+	@func:		AddActorInstace
+	@param:		CActorBase* pActor
+	@return:	void
+	Desc:		add person Instance
+	*/
+	/************************************************************************/
+	void AddActorInstace(CActorBase* pActor);
+
 private:
 
 	CActorBase*		m_pActorBase;
@@ -80,6 +100,11 @@ private:
 	CArthurKing		m_oArthur;
 
 	TPersonInfoMap  m_mapPersonLocation;
+	 
+	// save all actor instance
+	typedef map<__int8, CActorBase*> TActorInstanceMap;
+
+	TActorInstanceMap m_mapActorInstanceMap;
 };
 
 extern CPlayerManager g_PalyerManager;

@@ -16,7 +16,8 @@ class CAIPlayer :
 	public CActorBase
 {
 public:
-	CAIPlayer ( );
+	CAIPlayer();
+	CAIPlayer(__int8 PDBID);
 	~CAIPlayer ( );
 
 	/************************************************************************/

@@ -2,9 +2,14 @@
 #include "ResCreator.h"
 
 
-CAIPlayer::CAIPlayer ( )
+CAIPlayer::CAIPlayer(__int8 PDBID) :m_PDBID(PDBID)
 {
 	//g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(AI_START, this, "AI action");
+}
+
+CAIPlayer::CAIPlayer()
+{
+
 }
 
 
@@ -24,7 +29,7 @@ void CAIPlayer::OnLeave()
 
 CAIPlayer* CAIPlayer::CreateAIPlayer(SpriteFrame* pFrame, __int8 PDBID)
 {
-	CAIPlayer* pAi = new CAIPlayer();
+	CAIPlayer* pAi = new CAIPlayer(PDBID);
 
 	if (pAi && pAi->initWithSpriteFrame ( pFrame ))
 	{

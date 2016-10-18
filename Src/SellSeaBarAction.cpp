@@ -9,3 +9,4 @@ CSellSeaBarAction::CSellSeaBarAction()
 CSellSeaBarAction::~CSellSeaBarAction()
 {
 }
+

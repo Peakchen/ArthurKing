@@ -7,4 +7,5 @@ struct IActorBase
 	virtual void GetPlayerGoPath(int iStepCount, int** arrCanGoGrid) = 0;
 };
 
+
 #endif

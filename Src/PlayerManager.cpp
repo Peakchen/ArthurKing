@@ -140,3 +140,16 @@ TPersonInfo* CPlayerManager::GetPersonInfo(__int8 PDBID)
 
 }
 
+void CPlayerManager::AddActorInstace(CActorBase* pActor)
+{
+	assert(pActor != NULL);
+	m_mapActorInstanceMap [pActor->GetPDBID()] = pActor;
+}
+
+CActorBase* CPlayerManager::GetActorInstace(__int8 PDBID)
+{
+	if (PDBID <= 0)
+		return NULL;
+	return m_mapActorInstanceMap [PDBID];
+}
+

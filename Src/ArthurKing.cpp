@@ -7,7 +7,7 @@
 
 USING_NS_CC;
 
-CArthurKing::CArthurKing()
+CArthurKing::CArthurKing(__int8 PDBID) :m_PDBID(PDBID)
 {
 	m_ActorScore = 0;
 	m_pCtrl = NULL;
@@ -20,6 +20,11 @@ CArthurKing::CArthurKing()
 	//g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(AI_START, this, "player action");
 }
 
+CArthurKing::CArthurKing()
+{
+
+}
+
 
 CArthurKing::~CArthurKing()
 {
@@ -27,7 +32,7 @@ CArthurKing::~CArthurKing()
 
 CArthurKing* CArthurKing::CreateArthurKing(SpriteFrame* pFrame, __int8 PDBID)
 {
-	CArthurKing* pArthur = new CArthurKing();
+	CArthurKing* pArthur = new CArthurKing(PDBID);
 
 	if (pArthur && pArthur->initWithSpriteFrame(pFrame))
 	{

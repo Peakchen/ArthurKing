@@ -18,6 +18,7 @@ class CArthurKing :
 {
 public:
 	CArthurKing();
+	CArthurKing(__int8 PDBID);
 	~CArthurKing();
 
 	// Create Arthur King 

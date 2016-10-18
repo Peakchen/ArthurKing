@@ -16,6 +16,10 @@ version: 1.0
 #include "MapReader.h"
 #include "ArthurKingControl.h"
 #include "PersonMessageEventHandle.h"
+#include "BuySeaBarAction.h"
+#include "GiveTipAction.h"
+#include "SellSeaBarAction.h"
+
 
 class CResCreator
 {
@@ -64,7 +68,16 @@ public:
 	/************************************************************************/
 	CPersonMessageEventHandle* GetPersonMessageInstance ( ){ return &m_oPersonMessageHandle; }
 
-	
+	/************************************************************************/
+	/* 
+	func: GetPersonMessageInstance
+	Desc: get Buy SeaBar ActionInstance , toDO
+	param: No
+	date: 20161018
+	return : CBuySeaBarAction*
+	*/
+	/************************************************************************/
+	CBuySeaBarAction*			GetBuySeaBarActionInstance(){ return&m_oBuySeaBarAction; }
 
 private:
 	
@@ -95,6 +108,10 @@ private:
 	*/
 	/************************************************************************/
 	CPersonMessageEventHandle m_oPersonMessageHandle;
+
+	CBuySeaBarAction	m_oBuySeaBarAction;
+	/*CGiveTipAction		m_oGiveTipAction;
+	CSellSeaBarAction	m_oSellSeaBarAction;*/
 };
 
 extern CResCreator g_ResCreator;
