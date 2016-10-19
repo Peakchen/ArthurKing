@@ -70,7 +70,7 @@ public:
 
 	/************************************************************************/
 	/* 
-	func: GetPersonMessageInstance
+	func: GetBuySeaBarActionInstance
 	Desc: get Buy SeaBar ActionInstance , toDO
 	param: No
 	date: 20161018
@@ -78,6 +78,28 @@ public:
 	*/
 	/************************************************************************/
 	CBuySeaBarAction*			GetBuySeaBarActionInstance(){ return&m_oBuySeaBarAction; }
+
+	/************************************************************************/
+	/*
+	func: GetGiveTipInstance
+	Desc: get Give Tip to SeaBar's owner ActionInstance , toDO...
+	param: No
+	date: 20161019
+	return : CGiveTipAction*
+	*/
+	/************************************************************************/
+	CGiveTipAction*				GetGiveTipInstance(){ return &m_oGiveTipAction; }
+
+	/************************************************************************/
+	/*
+	func: GetSellSeaBarInstance
+	Desc: get SellSeaBar ActionInstance , toDO...
+	param: No
+	date: 20161019
+	return : CSellSeaBarAction*
+	*/
+	/************************************************************************/
+	CSellSeaBarAction*			GetSellSeaBarInstance(){ return &m_oSellSeaBarAction; }
 
 private:
 	
@@ -110,8 +132,8 @@ private:
 	CPersonMessageEventHandle m_oPersonMessageHandle;
 
 	CBuySeaBarAction	m_oBuySeaBarAction;
-	/*CGiveTipAction		m_oGiveTipAction;
-	CSellSeaBarAction	m_oSellSeaBarAction;*/
+	CGiveTipAction		m_oGiveTipAction;
+	CSellSeaBarAction	m_oSellSeaBarAction;
 };
 
 extern CResCreator g_ResCreator;

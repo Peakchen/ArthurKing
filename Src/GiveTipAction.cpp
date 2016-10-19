@@ -1,7 +1,6 @@
 #include "GiveTipAction.h"
-#include "common.h"
-#include "ActorBase.h"
 #include "PlayerManager.h"
+#include "SeaBarInfoManager.h"
 
 bool CGiveTipAction::CheckCanGiveTipToOthers(int iSeaBar_Index, CActorBase* pActor)
 {
@@ -64,5 +63,15 @@ void CGiveTipAction::DoGiveTipToOther(int iSeaBar_Index, CActorBase* pActor)
 	// then add tips to ownerself.
 	GWORD gw_curBuyerScore = gw_oldBuyScore + pSeaBarInfo->iTip;
 	pBuyer->SetOwnerSelfScore(gw_curBuyerScore);
+}
+
+CGiveTipAction::CGiveTipAction()
+{
+
+}
+
+CGiveTipAction::~CGiveTipAction()
+{
+
 }
 

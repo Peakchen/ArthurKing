@@ -1,9 +1,20 @@
+/************************************************************************/
+/*
+author:		StefanChen
+mail:		chenfeng1790291543@163.com
+date:		20161018
+version:	1.0
+*/
+/************************************************************************/
+
 #ifndef _GIVETIP_ACTION_
 #define _GIVETIP_ACTION_
 
-#include "SeaBarInfoManager.h"
-
 #pragma once
+#include "common.h"
+#include "ActorBase.h"
+
+
 class CGiveTipAction
 {
 public:

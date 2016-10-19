@@ -98,3 +98,13 @@ __int8 CArthurKing::GetPDBID()
 {
 	return m_PDBID;
 }
+
+void CArthurKing::AddScore(GWORD iaddScore)
+{
+	m_ActorScore += iaddScore;
+}
+
+void CArthurKing::SubScore(GWORD iSubScore)
+{
+	m_ActorScore -= iSubScore;
+}

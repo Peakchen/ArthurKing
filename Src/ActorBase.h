@@ -114,6 +114,27 @@ public:
 	/************************************************************************/
 	virtual __int8 GetPDBID() = 0;
 
+	/************************************************************************/
+	/* 
+	@func:		AddScore()
+	@param:		GWORD iaddScore
+	@return:	no
+	@desc:		add some score to owner score
+	*/
+	/************************************************************************/
+	virtual void AddScore(GWORD iaddScore) = 0;
+	
+	/************************************************************************/
+	/*
+	@func:		SubScore()
+	@param:		GWORD iSubScore
+	@return:	no
+	@desc:		sub some score from owner score
+	*/
+	/************************************************************************/
+	virtual void SubScore(GWORD iSubScore) = 0;
+
+		
 private:
 	void GetCanGoColRowData(int iRandnum, int iCol, int iRow, int& iNextCol, int &iNextRow);
 

@@ -100,7 +100,7 @@ public:
 
 	/************************************************************************/
 	/* 
-		@func:		SpendScoreForSeaBarTips
+		@func:		SellSeaBarforScore
 		@param:		int iSeaBarIndex
 		@param:		__int8 iOwner_PDBID
 		@param:		CActorBase* pPayActor
@@ -109,7 +109,7 @@ public:
 	*/
 	/************************************************************************/
 
-	void SpendScoreForSeaBarTips(int iSeaBarIndex, __int8 iOwner_PDBID, CActorBase* pPayActor);
+	bool SellSeaBarforScore(int iSeaBarIndex, CActorBase* pPayActor);
 
 	void Start();
 

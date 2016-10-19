@@ -197,13 +197,16 @@ void CSeaBarInfoManager::SetSeaBarOwnerInfo(int iSeaBarIndex, __int8 iOwner_PDBI
 	stSeaBarInfo.iCur_OwnerID	= iOwner_PDBID;
 }
 
-void CSeaBarInfoManager::SpendScoreForSeaBarTips(int iSeaBarIndex, __int8 iOwner_PDBID, CActorBase* pPayActor)
+bool CSeaBarInfoManager::SellSeaBarforScore(int iSeaBarIndex,  CActorBase* pSellerActor)
 {
 	if (m_stSeaBarMap [iSeaBarIndex] == NULL)
 	{
 		Trace_In("error: %s m_stSeaBarMap is null.", __FUNCTION__);
-		return;
+		return false;
 	}
 	TSeaBarInfo& stSeaBarInfo = *( m_stSeaBarMap [iSeaBarIndex] );
-	
+	stSeaBarInfo.iCur_OwnerID = ESeaBar_None;
+	pSellerActor->AddScore(stSeaBarInfo.iCur_Score);
+
+	return true;
 }

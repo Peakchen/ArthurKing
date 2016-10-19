@@ -78,3 +78,13 @@ __int8 CAIPlayer::GetPDBID()
 {
 	return m_PDBID;
 }
+
+void CAIPlayer::AddScore(GWORD iaddScore)
+{
+	m_ActorScore += iaddScore;
+}
+
+void CAIPlayer::SubScore(GWORD iSubScore)
+{
+	m_ActorScore -= iSubScore;
+}

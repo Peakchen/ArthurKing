@@ -97,6 +97,25 @@ public:
 	/************************************************************************/
 	virtual __int8 GetPDBID();
 
+	/************************************************************************/
+	/*
+	@func:		AddScore()
+	@param:		GWORD iaddScore
+	@return:	no
+	@desc:		add some score to owner score
+	*/
+	/************************************************************************/
+	virtual void AddScore(GWORD iaddScore);
+
+	/************************************************************************/
+	/*
+	@func:		SubScore()
+	@param:		GWORD iSubScore
+	@return:	no
+	@desc:		sub some score from owner score
+	*/
+	/************************************************************************/
+	virtual void SubScore(GWORD iSubScore);
 
 	/////////////////////////////////four Sprite Frame////////////////////////////////////////////////////////
 	inline virtual void setvecAnim_Left(Vector<SpriteFrame*> pSpriteFrame){ m_vecAnim_Left = pSpriteFrame; }
