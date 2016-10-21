@@ -17,8 +17,8 @@ class CAIPlayer :
 {
 public:
 	CAIPlayer();
-	CAIPlayer(__int8 PDBID);
-	~CAIPlayer ( );
+	explicit CAIPlayer(__int8 PDBID);
+	~CAIPlayer();
 
 	/************************************************************************/
 	/*

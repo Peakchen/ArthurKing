@@ -91,12 +91,14 @@ struct TSeaBarRiseData
 
 typedef map<int, TSeaBarRiseData*> TSeaBarRiseMap;
 
+// º£Ñó¹Ý ¹éÊô
+// seabar owner
 enum ESeaBarAttach
 {
-	ESeaBar_None = 0,
-	ESeaBar_other,
-	ESeaBar_self,
-	ESeaBar_Error,
+	ESeaBar_None = 0,		// no one 
+	ESeaBar_other,			// other
+	ESeaBar_self,			// self
+	ESeaBar_Error,			// but error
 };
 
 // ½ÇÉ« Ã¶¾Ù
@@ -107,5 +109,6 @@ enum EPlayer
 };
 
 typedef unsigned long GWORD;
+
 
 #endif

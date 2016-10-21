@@ -115,6 +115,16 @@
 #define SEABAR_RISEFALL		"seabar_risefall.json"
 
 // 海洋馆数量
-#define  SEABAR_COUNT 27
+#define  SEABAR_COUNT		27
+
+// 透明度
+#define  Opacity_Normal		 128
+#define  Opacity_Dimmed		 255
+
+// 字体 类型
+
+#define		EFontType_MarkerFelt	"fonts/Marker Felt.ttf"
+#define		EFontType_Arial			"fonts/arial.ttf"	
+
 
 #endif
