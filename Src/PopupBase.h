@@ -41,7 +41,7 @@ public:
 	@brief:		you can add menuitem which type is font to map, then join in and construct menu
 	*/
 	/************************************************************************/
-	void	CreateMenuItemByfontCallback(const char* szBtnName, ccMenuCallback callback, int oFontSize, const char* szFontName, MenuItem* pMenuItem, Point oPoint = Point::ZERO, Size oSize = CCSizeZero);
+	void	CreateMenuItemByfontCallback(const char* szBtnName, ccMenuCallback callback, int oFontSize, const char* szFontName, MenuItemLabel** pMenuItem, Point oPoint = Point::ZERO, Size oSize = CCSizeZero);
 
 	
 	/************************************************************************/

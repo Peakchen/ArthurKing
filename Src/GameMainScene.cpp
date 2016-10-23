@@ -8,6 +8,7 @@
 #include "AIPlayer.h"
 #include "PlayerManager.h"
 #include "GameToolAPI.h"
+#include "SettingMenu.h"
 
 USING_NS_CC;
 
@@ -35,7 +36,7 @@ bool CGameMainScene::init()
 
 	AddSceneMap();
 
-	AddButton_Test();
+	AddButton_StartGoAction();
 	//initMainLayout();
 
 	InitPlayerAnimation();
@@ -45,6 +46,27 @@ bool CGameMainScene::init()
 	g_PalyerManager.Create(m_pCurAction);
 
 	//g_GameToolAPI.CreateSeaBarRiseFallJsonFile(SEABAR_RISEFALL);
+
+	AddButton_SettingMenu();
+
+	// touch event
+	this->setTouchEnabled(true);
+
+	EventDispatcher* pEventDispatcher = Director::getInstance()->getEventDispatcher();
+	if (pEventDispatcher != NULL)
+	{
+		auto pTouchOneByOne = EventListenerTouchOneByOne::create();
+		if (pTouchOneByOne)
+		{
+			pTouchOneByOne->onTouchBegan		= CC_CALLBACK_2(CGameMainScene::onTouchBegan, this);
+			pTouchOneByOne->onTouchMoved		= CC_CALLBACK_2(CGameMainScene::onTouchMoved, this);
+			pTouchOneByOne->onTouchEnded		= CC_CALLBACK_2(CGameMainScene::onTouchEnded, this);
+			pTouchOneByOne->onTouchCancelled	= CC_CALLBACK_2(CGameMainScene::onTouchCancelled, this);
+			pEventDispatcher->addEventListenerWithSceneGraphPriority(pTouchOneByOne, this);
+
+			pTouchOneByOne->setSwallowTouches(true);
+		}
+	}
 
 	return true;
 }
@@ -71,7 +93,7 @@ void CGameMainScene::AddSetItem()
 
 }
 
-void CGameMainScene::AddButton_Test()
+void CGameMainScene::AddButton_StartGoAction()
 {
 	Scale9Sprite* pNormal_Scale = Scale9Sprite::create(GO_NORMAL);
 	Scale9Sprite* pPress_Scale = Scale9Sprite::create(GO_PRESS);
@@ -93,12 +115,11 @@ void CGameMainScene::AddButton_Test()
 	pBtn_Go->setBackgroundSpriteForState(pPress_Scale, Control::State::SELECTED);
 	pBtn_Go->addTargetWithActionForControlEvents(this, cccontrol_selector(CGameMainScene::onClick_StartControl), Control::EventType::TOUCH_DOWN);
 	pBtn_Go->setPreferredSize(Size(82, 82));
-	pBtn_Go->setPosition(ccp(visibleSize.width / 2 - 250 , visibleSize.height - 50));
-	pBtn_Go->setTag(ESTART_TEST);
+	pBtn_Go->setPosition(ccp(visibleSize.width/2 - 250, visibleSize.height - 50));
+	pBtn_Go->setTag(ESTART_Go);
 	/*pBtn_Go->setScale(0.6f);*/
 	addChild(pBtn_Go);
 
-	
 }
 
 /************************************************************************/
@@ -527,4 +548,79 @@ void CGameMainScene::TurnToGoAction()
 	//// ·­ÅÄºó ÐÐ×ß
 	schedule_count = 0;
 	
+}
+
+void CGameMainScene::onClick_StartShowSettingMenu(Object* pSender, Control::EventType event)
+{
+	Trace_In("%s is start ", __FUNCTION__);
+
+	if (getChildByTag(ESTART_SETTINGMENU))
+	{
+		removeChildByTag(ESTART_SETTINGMENU);
+	}
+	
+	CSettingMenu* pSettingMenu = CSettingMenu::create();
+	pSettingMenu->setTag(ESTART_SETTINGMENU);
+	addChild(pSettingMenu);
+	
+}
+
+void CGameMainScene::AddButton_SettingMenu()
+{
+	Scale9Sprite* pNormal_Scale = Scale9Sprite::create(SETTING_MENU);
+
+	if (pNormal_Scale == NULL)
+	{
+		CCLOG("%s error :  create ScaleSprite....", __FUNCTION__);
+		return;
+	}
+
+	LabelTTF* pGoTTF = LabelTTF::create("", FONT_MENU, 20);
+	if (pGoTTF == NULL)
+	{
+		CCLOG("error: %s create LabelTTF...", __FUNCTION__);
+		return;
+	}
+
+	ControlButton* pBtn_SettingMenu = ControlButton::create(pGoTTF, pNormal_Scale);
+	pBtn_SettingMenu->addTargetWithActionForControlEvents(this, cccontrol_selector(CGameMainScene::onClick_StartShowSettingMenu), Control::EventType::TOUCH_DOWN);
+	pBtn_SettingMenu->setPreferredSize(Size(34, 34));
+	pBtn_SettingMenu->setPosition(ccp(visibleSize.width - 50, visibleSize.height - 150));
+	//pBtn_SettingMenu->setTag(ESTART_SETTINGMENU);
+	/*pBtn_Go->setScale(0.6f);*/
+	addChild(pBtn_SettingMenu, 128);
+}
+
+bool CGameMainScene::onTouchBegan(Touch *touch, Event *unused_event)
+{
+	CCLOG("%s is starting -------------------------", __FUNCTION__);
+	if (getChildByTag(ESTART_SETTINGMENU))
+	{
+		CSettingMenu* pMenu = static_cast<CSettingMenu*>( getChildByTag(ESTART_SETTINGMENU) );
+		if (pMenu == nullptr)
+		{
+			return false;
+		}
+
+		pMenu->ccTouchBegan(touch, unused_event);
+
+		return true;
+	}
+
+	return false;
+}
+
+void CGameMainScene::onTouchMoved(Touch *touch, Event *unused_event)
+{
+	Trace_In("%s is starting -------------------------", __FUNCTION__);
+}
+
+void CGameMainScene::onTouchEnded(Touch *touch, Event *unused_event)
+{
+	Trace_In("%s is starting -------------------------", __FUNCTION__);
+}
+
+void CGameMainScene::onTouchCancelled(Touch *touch, Event *unused_event)
+{
+	Trace_In("%s is starting -------------------------", __FUNCTION__);
 }

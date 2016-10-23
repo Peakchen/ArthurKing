@@ -13,9 +13,10 @@ USING_NS_CC_EXT;
 
 enum EMainMenuItemTag
 {
-	ESTART_TEST = 2001, 
+	ESTART_SETTINGMENU = 2001, 
 	ECARD_TEST,
 	EFADESPRITE_TEST,
+	ESTART_Go,
 };
 
 
@@ -41,13 +42,54 @@ public:
 
 	void onClick_StartControl(Object* pSender, Control::EventType event);
 
+	/************************************************************************/
+	/* 
+	@func:		onClick_StartShowSettingMenu
+	@param:		Object* pSender
+	@param:		Control::EventType event
+	@return:	void
+	@brief:		if this Buttun Event is hinted, then create Menu UI 
+	*/
+	/************************************************************************/
+	void onClick_StartShowSettingMenu(Object* pSender, Control::EventType event);
+
+	/** Callback function for touch began.
+	*
+	* @param touch Touch information.
+	* @param unused_event Event information.
+	* @return if return false, onTouchMoved, onTouchEnded, onTouchCancelled will never called.
+	* @js NA
+	*/
+	virtual bool onTouchBegan(Touch *touch, Event *unused_event);
+	/** Callback function for touch moved.
+	*
+	* @param touch Touch information.
+	* @param unused_event Event information.
+	* @js NA
+	*/
+	virtual void onTouchMoved(Touch *touch, Event *unused_event);
+	/** Callback function for touch ended.
+	*
+	* @param touch Touch information.
+	* @param unused_event Event information.
+	* @js NA
+	*/
+	virtual void onTouchEnded(Touch *touch, Event *unused_event);
+	/** Callback function for touch cancelled.
+	*
+	* @param touch Touch information.
+	* @param unused_event Event information.
+	* @js NA
+	*/
+	virtual void onTouchCancelled(Touch *touch, Event *unused_event);
+
 private:
 	void AddSceneMap();
 
 	void AddSetItem();
 
 	// for test 
-	void  AddButton_Test();
+	void  AddButton_SettingMenu();
 	void  AddFadeSprite_Test();
 
 	void InitPlayerAnimation();
@@ -64,6 +106,16 @@ private:
 	void BeginActorGo();
 
 	void TurnToGoAction();
+
+	/************************************************************************/
+	/*	
+	@func:		AddButton_StartGoAction
+	@param:		no
+	@return:	no
+	@brief:		player start go
+	*/
+	/************************************************************************/
+	void AddButton_StartGoAction();
 
 private:
 	Size visibleSize;

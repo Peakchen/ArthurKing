@@ -126,5 +126,12 @@
 #define		EFontType_MarkerFelt	"fonts/Marker Felt.ttf"
 #define		EFontType_Arial			"fonts/arial.ttf"	
 
+// popup
+
+#define		SETTING_MENU		"settingMenu.png"
+#define		SETTING_MENU_BG		"map/sea_item.png"
+#define		POPPLAYER_BG		"popuplayer/dialog_bg.png"
+#define		POPPLAYER_CLOSE		"popuplayer/close.png"
+#define		POPPLAYER_HIDE		"popuplayer/hide.png"
 
 #endif

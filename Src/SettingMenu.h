@@ -13,8 +13,10 @@ Desc:		Setting Menu,	parent:	Popup Base
 
 #include "cocos2d.h"
 #include "PopupBase.h"
+#include "cocos-ext.h"
 
 USING_NS_CC;
+USING_NS_CC_EXT;
 
 #pragma once
 class CSettingMenu
@@ -33,8 +35,11 @@ public:
 	@brief:		todo someing
 	*/
 	/************************************************************************/
-	void	Create();
+	CREATE_FUNC(CSettingMenu);
 
+	static CSettingMenu*	create(const char* szTitle);
+
+	
 	/************************************************************************/
 	/*
 	@func:		Release
@@ -45,6 +50,53 @@ public:
 	*/
 	/************************************************************************/
 	void	Release();
+	
+	virtual bool init();
+
+	/************************************************************************/
+	/* 
+	@func:	father class -> Layer
+	*/
+	/************************************************************************/
+	virtual void onEnter();
+
+	/************************************************************************/
+	/*
+	@func:	father class -> Layer
+	*/
+	/************************************************************************/
+	virtual void onExit();
+
+
+	/** Callback function for touch began.
+	*
+	* @param touch Touch information.
+	* @param unused_event Event information.
+	* @return if return false, onTouchMoved, onTouchEnded, onTouchCancelled will never called.
+	* @js NA
+	*/
+	virtual bool onTouchBegan(Touch *touch, Event *unused_event);
+	/** Callback function for touch moved.
+	*
+	* @param touch Touch information.
+	* @param unused_event Event information.
+	* @js NA
+	*/
+	virtual void onTouchMoved(Touch *touch, Event *unused_event);
+	/** Callback function for touch ended.
+	*
+	* @param touch Touch information.
+	* @param unused_event Event information.
+	* @js NA
+	*/
+	virtual void onTouchEnded(Touch *touch, Event *unused_event);
+	/** Callback function for touch cancelled.
+	*
+	* @param touch Touch information.
+	* @param unused_event Event information.
+	* @js NA
+	*/
+	virtual void onTouchCancelled(Touch *touch, Event *unused_event);
 
 private:
 	/************************************************************************/
@@ -76,7 +128,7 @@ private:
 	@brief:		Exit SettingMenu, then todo ...
 	*/
 	/************************************************************************/
-	void	OnEixtSettingMenuCallBack();
+	void	OnEixtSettingMenuCallBack(Object* pSender, Control::EventType event);
 
 	/************************************************************************/
 	/* 

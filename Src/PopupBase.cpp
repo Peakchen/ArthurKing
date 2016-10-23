@@ -11,16 +11,16 @@ CPopupBase::~CPopupBase()
 {
 }
 
-void CPopupBase::CreateMenuItemByfontCallback(const char* szBtnName, ccMenuCallback callback, int oFontSize, const char* szFontName, MenuItem* pMenuItem, Point oPoint /*= Point::ZERO*/, Size oSize /*= CCSizeZero */)
+void CPopupBase::CreateMenuItemByfontCallback(const char* szBtnName, ccMenuCallback callback, int oFontSize, const char* szFontName, MenuItemLabel** pMenuItem, Point oPoint /*= Point::ZERO*/, Size oSize /*= CCSizeZero */)
 {
-	auto	pFontMenuItem = MenuItemFont::create(szBtnName, callback);
+	MenuItemFont*	pFontMenuItem = MenuItemFont::create(szBtnName, callback);
 	assert(pFontMenuItem != nullptr);
 
 	pFontMenuItem->setPosition(oPoint);
 	pFontMenuItem->setFontSizeObj(oFontSize);
 	pFontMenuItem->setFontName(szFontName);
 	//pFontMenuItem->setContentSize(oSize);
-	pMenuItem = pFontMenuItem;
+	*pMenuItem = pFontMenuItem;
 }
 
 void CPopupBase::CreateMenuItemByLabelCallBack(const char* szBtnName, const char* szFontType, ccMenuCallback callback, MenuItem* pMenuItem, Point point /*= Point::ZERO*/, Size oSize /*= CCSizeZero */)
