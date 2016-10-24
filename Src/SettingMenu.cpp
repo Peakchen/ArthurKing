@@ -16,15 +16,25 @@ void CSettingMenu::InitSettingMenu( Point point /*= Point::ZERO*/)
 {
 	Size oSize = Director::getInstance()->getVisibleSize();
 
+	Size oWinSize = Size::ZERO;
+
+	if (getChildByTag(EBackGround) == NULL)
+	{
+		Size srcWinSize = Director::getInstance()->getWinSize();
+		oWinSize = Size(srcWinSize.width / 2, srcWinSize.height / 2);
+	}
+	else
+		oWinSize = getChildByTag(EBackGround)->getContentSize();
+
 	MenuItemLabel* pMenuItem = nullptr;
 	cocos2d::ccMenuCallback pCallBack = CC_CALLBACK_0(CSettingMenu::OnCancleSettingMenuAction, this);
 	CreateMenuItemByfontCallback("Exit",
 								 pCallBack,
 								 20,
 								 EFontType_MarkerFelt,
-								 &pMenuItem,
-								 Point::ZERO,
-								 Size::ZERO
+								 &pMenuItem
+								/* Point(oWinSize.width, oWinSize.height - 50),
+								 Size::ZERO*/
 								 );
 
 	if (pMenuItem == nullptr)
@@ -32,30 +42,76 @@ void CSettingMenu::InitSettingMenu( Point point /*= Point::ZERO*/)
 
 	m_vecMenuItem.pushBack(pMenuItem);
 
+	// this a game exit button
+	MenuItemImage* pMenuCloseBtn = nullptr;
+	cocos2d::ccMenuCallback pCloseCallBack = CC_CALLBACK_0(CSettingMenu::OnEixtGameCallBack, this);
+	CreatMenuItemByeImageCallback(SETTINGMENU_EXIT_NORMAL, 
+								  SETTINGMENU_EXIT_SELECTED, 
+								  SETTINGMENU_EXIT_SELECTED,
+								  pCloseCallBack,
+								  &pMenuCloseBtn
+								  //Point(point.x / 2 - 20, point.y/2 - 20)
+								  //Size::ZERO
+								  );
+
+	
+	if (pMenuCloseBtn == nullptr)
+		return;
+
+	pMenuCloseBtn->setPosition(ccp(point.x / 2 - 100, point.y / 2 - 120));
+
+	m_vecMenuItem.pushBack(pMenuCloseBtn);
+
+
+	// add a music play button
+	MenuItemImage* pMenuMusicPlayBtn = nullptr;
+	cocos2d::ccMenuCallback pMusicPlayCallBack = CC_CALLBACK_0(CSettingMenu::OnPlayGameBgMusicCallBack, this);
+	CreatMenuItemByeImageCallback(SETTINGMENU_MUSCI_NORMAL,
+								  "",
+								  SETTINGMENU_MUSIC_SELECTED,
+								  pMusicPlayCallBack,
+								  &pMenuMusicPlayBtn
+								  //Point(point.x/2 - 50, point.y/2 - 50)
+								 /*Size::ZERO*/
+								  );
+
+
+	
+	if (pMenuMusicPlayBtn == nullptr)
+		return;
+
+	pMenuMusicPlayBtn->setPosition(ccp(point.x / 2 - 150, point.y / 2 - 150));
+	m_vecMenuItem.pushBack(pMenuMusicPlayBtn);
 
 	//////////////////////////////////////////////////////////////////////////////
 	if (m_vecMenuItem.empty()){
 		return;
 	}
 
-	m_pMainMenu = Menu::createWithArray(m_vecMenuItem);
-
-	auto oWinSize = m_pMainMenu->getContentSize();
-	int index = 0;
-	for each ( const auto &child in m_pMainMenu->getChildren() )
+	for (int i = 0 ; i < m_vecMenuItem.size(); ++i)
 	{
-		auto dstPostion = child->getPosition();
-		int ioffset = oWinSize.width/2 + 10;
-		if (index % 2 == 0)
-			ioffset = -ioffset;
-
-		child->setPosition(Vec2(dstPostion.x + ioffset, dstPostion.y));
-		++index;
+		//m_vecMenuItem.at(i)->setPosition(point.x / 2 - i * 5, point.y / 2 - i * 5);
 	}
+
+	m_pMainMenu = Menu::createWithArray(m_vecMenuItem);
+	//m_pMainMenu = Menu::create(pMenuMusicPlayBtn, pMenuCloseBtn);
+	m_pMainMenu->alignItemsVertically();
+
+	int index = 0;
+	//for( const auto &child : m_pMainMenu->getChildren() )
+	//{
+	//	auto dstPostion = child->getPosition();
+	//	float dtoffset = oWinSize.width/3 - 5*index;
+	//	/*if (index % 2 == 0)
+	//		ioffset = -ioffset;*/
+
+	//	child->setPosition(Vec2(dstPostion.x + dtoffset, dstPostion.y));
+	//	++index;
+	//}
 
 	//m_pMainMenu->addChild(Sprite::create(SETTING_MENU_BG));
 	m_pMainMenu->setPosition(point);
-	m_pMainMenu->alignItemsVerticallyWithPadding(20.0f);
+	m_pMainMenu->setScale(1.2f);
 	m_pMainMenu->setOnEnterCallback(CC_CALLBACK_0(CSettingMenu::OnEnterSettingMenuCallBack, this));
 	m_pMainMenu->setOnExitCallback(CC_CALLBACK_0(CSettingMenu::OnCancleSettingMenuAction, this));
 
@@ -97,9 +153,7 @@ bool CSettingMenu::init()
 		return false;
 	}
 	
-	Size oSize = Director::getInstance()->getVisibleSize();
-	InitSettingMenu(Point(oSize.height / 2, oSize.width / 2));
-	addChild(m_pMainMenu);
+	m_isPlayMusic = true;
 	return true;
 }
 
@@ -135,7 +189,8 @@ void CSettingMenu::onEnter()
 	pCloseBtn->setPosition(ccp(dtCloseLoc_x, dtCloseLoc_y));
 	
 	pBg->addChild(pCloseBtn);
-	addChild(pBg);
+	pBg->setTag(EBackGround);
+	//addChild(pBg);
 
 	// touch event
 	this->setTouchEnabled(true);
@@ -154,6 +209,13 @@ void CSettingMenu::onEnter()
 			pTouchOneByOne->setSwallowTouches(true);
 		}
 	}
+
+	// finally todo... build main setting menu
+	Size oSize = Director::getInstance()->getVisibleSize();
+	InitSettingMenu(Point(oSize.height / 2, oSize.width / 2));
+
+	addChild(pBg);
+	addChild(m_pMainMenu);
 
 }
 
@@ -185,4 +247,29 @@ void CSettingMenu::onTouchEnded(Touch *touch, Event *unused_event)
 void CSettingMenu::onTouchCancelled(Touch *touch, Event *unused_event)
 {
 	Trace_In("%s is starting -------------------------", __FUNCTION__);
+}
+
+void CSettingMenu::OnEixtGameCallBack()
+{
+	//exit sence
+	Director::getInstance()->end();
+}
+
+void CSettingMenu::OnPlayGameBgMusicCallBack()
+{
+	if (SimpleAudioEngine::getInstance()->isBackgroundMusicPlaying())
+	{
+		CCLOG("bg musci is playing. --------------------------------");
+	}
+
+	if (m_isPlayMusic)
+	{
+		SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
+		m_isPlayMusic = false;
+	}
+	else
+	{
+		SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+		m_isPlayMusic = true;
+	}
 }

@@ -5,6 +5,10 @@
 #include "ConstUtil.h"
 #include "cocos-ext.h"
 
+#include "SimpleAudioEngine.h"
+
+using namespace CocosDenshion;
+
 USING_NS_CC;
 
 const  double MOVE_SPLEED = 0.5f;

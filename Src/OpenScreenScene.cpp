@@ -16,6 +16,14 @@ bool COpenScreenScene::init()
 		return false;
 	}
 
+	//init game background music 
+	SimpleAudioEngine::getInstance()->preloadBackgroundMusic(SETTINGMENU_BG_MUSIC);
+	SimpleAudioEngine::getInstance()->preloadEffect(SETTINGMENU_EFFECT_MUSIC);
+
+	SimpleAudioEngine::getInstance()->playBackgroundMusic(SETTINGMENU_BG_MUSIC, true);
+	SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.8f);
+	SimpleAudioEngine::getInstance()->setEffectsVolume(0.8f);
+
 	visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 

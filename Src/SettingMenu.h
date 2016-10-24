@@ -15,13 +15,21 @@ Desc:		Setting Menu,	parent:	Popup Base
 #include "PopupBase.h"
 #include "cocos-ext.h"
 
+#include "SimpleAudioEngine.h"
+
 USING_NS_CC;
 USING_NS_CC_EXT;
+
+using namespace CocosDenshion;
 
 #pragma once
 class CSettingMenu
 	:	public	CPopupBase
 {
+	enum ESettingMenuTag
+	{
+		EBackGround = 100,
+	};
 public:
 	CSettingMenu();
 	~CSettingMenu();
@@ -150,10 +158,32 @@ private:
 	/************************************************************************/
 	void	OnCancleSettingMenuAction();
 
+	/************************************************************************/
+	/*
+	@func:		OnEixtGameCallBack()
+	@param:		no
+	@return:	void
+	@brief:		Exit Game, then todo ...
+	*/
+	/************************************************************************/
+	void	OnEixtGameCallBack();
+
+	/************************************************************************/
+	/*
+	@func:		OnPlayGameBgMusicCallBack()
+	@param:		no
+	@return:	void
+	@brief:		Play Game Bg Music, then todo ...
+	*/
+	/************************************************************************/
+	void	OnPlayGameBgMusicCallBack();
+
 private:
 	TVecMenuItem m_vecMenuItem;
 
 	Menu*	m_pMainMenu;
+
+	bool	m_isPlayMusic;
 };
 
 #endif

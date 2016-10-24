@@ -123,15 +123,28 @@
 
 // ◊÷ÃÂ ¿‡–Õ
 
-#define		EFontType_MarkerFelt	"fonts/Marker Felt.ttf"
-#define		EFontType_Arial			"fonts/arial.ttf"	
+#define		EFontType_MarkerFelt		"fonts/Marker Felt.ttf"
+#define		EFontType_Arial				"fonts/arial.ttf"	
 
 // popup
 
-#define		SETTING_MENU		"settingMenu.png"
-#define		SETTING_MENU_BG		"map/sea_item.png"
-#define		POPPLAYER_BG		"popuplayer/dialog_bg.png"
-#define		POPPLAYER_CLOSE		"popuplayer/close.png"
-#define		POPPLAYER_HIDE		"popuplayer/hide.png"
+#define		SETTING_MENU				"settingMenu.png"
+#define		SETTING_MENU_BG				"map/sea_item.png"
+#define		POPPLAYER_BG				"popuplayer/dialog_bg.png"
+#define		POPPLAYER_CLOSE				"popuplayer/close.png"
+#define		POPPLAYER_HIDE				"popuplayer/hide.png"
+
+// setting button
+
+// exit
+#define		SETTINGMENU_EXIT_NORMAL		"btn/btn-Exit-normal.png"
+#define		SETTINGMENU_EXIT_SELECTED	"btn/btn-Exit-selected.png"
+
+// music
+#define		SETTINGMENU_MUSCI_NORMAL	"btn/btn-Music-normal.png"
+#define		SETTINGMENU_MUSIC_SELECTED	"btn/btn-Music-selected.png"
+
+#define		SETTINGMENU_BG_MUSIC			"music/bg_music.mp3"
+#define		SETTINGMENU_EFFECT_MUSIC		"music/effect_music.wav"
 
 #endif

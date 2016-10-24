@@ -41,7 +41,7 @@ public:
 	@brief:		you can add menuitem which type is font to map, then join in and construct menu
 	*/
 	/************************************************************************/
-	void	CreateMenuItemByfontCallback(const char* szBtnName, ccMenuCallback callback, int oFontSize, const char* szFontName, MenuItemLabel** pMenuItem, Point oPoint = Point::ZERO, Size oSize = CCSizeZero);
+	void	CreateMenuItemByfontCallback(const char* szBtnName, ccMenuCallback callback, int oFontSize, const char* szFontName, MenuItemLabel** pMenuItem, Point oPoint = Point::ZERO, Size oSize = Size::ZERO);
 
 	
 	/************************************************************************/
@@ -57,7 +57,7 @@ public:
 	@brief:		you can add menuitem which type is Label  to map, then join in and construct menu
 	*/
 	/************************************************************************/
-	void	CreateMenuItemByLabelCallBack(const char*	szBtnName, const char*	szFontType, ccMenuCallback callback, MenuItem* pMenuItem, Point point = Point::ZERO, Size oSize = CCSizeZero);
+	void	CreateMenuItemByLabelCallBack(const char*	szBtnName, const char*	szFontType, ccMenuCallback callback, MenuItem** pMenuItem, Point point = Point::ZERO, Size oSize = Size::ZERO);
 
 	/************************************************************************/
 	/*
@@ -66,14 +66,14 @@ public:
 	@param:		const char* szSelectpic
 	@param:		const char* szDisablepic
 	@param:		ccMenuCallback callback
-	@param:		MenuItem* pMenuItem
+	@param:		MenuItemImage* pMenuItem
 	@param:		Point oPoint,		Default Value:	Point::ZERO,
 	@param:		Size oSize			Default Value:	CCSizeZero
 	@return:	void
 	@brief:		you can add menuitem which type is Image  to map, then join in and construct menu
 	*/
 	/************************************************************************/
-	void	CreatMenuItemByeImageCallback(const char*  szNormalpic, const char* szSelectpic, const char* szDisablepic, ccMenuCallback callback, MenuItem* pMenuItem, Point point = Point::ZERO, Size oSize = CCSizeZero);
+	void	CreatMenuItemByeImageCallback(const char*  szNormalpic, const char* szSelectpic, const char* szDisablepic, ccMenuCallback callback, MenuItemImage** pMenuItem, Point point = Point::ZERO, Size oSize = Size::ZERO);
 
 	/************************************************************************/
 	/* 
@@ -89,7 +89,7 @@ public:
 	*/
 	/************************************************************************/
 
-	void	CreateMenuItemBySpriteCallBack(const char* szNormalpic, const char* szSelectpic, const char* szdisablepic, ccMenuCallback callback, MenuItem* pMenuItem, Point point = Point::ZERO, Size oSize = CCSizeZero);
+	void	CreateMenuItemBySpriteCallBack(const char* szNormalpic, const char* szSelectpic, const char* szdisablepic, ccMenuCallback callback, MenuItem** pMenuItem, Point point = Point::ZERO, Size oSize = Size::ZERO);
 
 };
 
