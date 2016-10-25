@@ -137,14 +137,21 @@
 // setting button
 
 // exit
-#define		SETTINGMENU_EXIT_NORMAL		"btn/btn-Exit-normal.png"
-#define		SETTINGMENU_EXIT_SELECTED	"btn/btn-Exit-selected.png"
+#define		SETTINGMENU_EXIT_NORMAL			"btn/btn-Exit-normal.png"
+#define		SETTINGMENU_EXIT_SELECTED		"btn/btn-Exit-selected.png"
 
 // music
-#define		SETTINGMENU_MUSCI_NORMAL	"btn/btn-Music-normal.png"
-#define		SETTINGMENU_MUSIC_SELECTED	"btn/btn-Music-selected.png"
+#define		SETTINGMENU_MUSCI_NORMAL		"btn/btn-Music-normal.png"
+#define		SETTINGMENU_MUSIC_SELECTED		"btn/btn-Music-selected.png"
 
 #define		SETTINGMENU_BG_MUSIC			"music/bg_music.mp3"
 #define		SETTINGMENU_EFFECT_MUSIC		"music/effect_music.wav"
+
+// sea bar
+#define		SETTINGMENU_YES_NORMAL			"btn/btn-yes-normal.png"
+#define		SETTINGMENU_YES_SELECTED		"btn/btn-yes-selected.png"
+	
+#define		SETTINGMENU_NO_NORMAL			"btn/btn-yes-normal.png"
+#define		SETTINGMENU_NO_SELECTED			"btn/btn-yes-selected.png"
 
 #endif

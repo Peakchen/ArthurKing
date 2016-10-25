@@ -14,8 +14,17 @@ Desc:		Popup Base
 #pragma once
 
 #include "cocos2d.h"
+#include "cocos-ext.h"
 
 USING_NS_CC;
+USING_NS_CC_EXT;
+
+enum ESettingMenuTag
+{
+	EBackGround = 100,
+	EBG_Music,
+	EBG_EXIT,
+};
 
 class CPopupBase :
 	public Layer
@@ -91,6 +100,37 @@ public:
 
 	void	CreateMenuItemBySpriteCallBack(const char* szNormalpic, const char* szSelectpic, const char* szdisablepic, ccMenuCallback callback, MenuItem** pMenuItem, Point point = Point::ZERO, Size oSize = Size::ZERO);
 
+
+	/************************************************************************/
+	/*
+	@func:		OnEixtSettingMenuCallBack()
+	@param:		no
+	@return:	void
+	@brief:		Exit SettingMenu, then todo ...
+	*/
+	/************************************************************************/
+	void	OnEixtSettingMenuCallBack(Object* pSender, Control::EventType event);
+
+	/************************************************************************/
+	/*
+	@func:		CreatePopupModule
+	@param:		no
+	@return:	no
+	@brief:		create common pop module for child class
+	*/
+	/************************************************************************/
+	void	CreatePopupModule();
+
+	/************************************************************************/
+	/* 
+	@func:		setPopContext
+	@param:		const char * szTitle
+	@param:		const char * szContext
+	@return:	no
+	@brief:		set pop dialog title and context
+	*/
+	/************************************************************************/
+	virtual void  setPopContext(const char * szTitle, const char* szContext) = 0;
 };
 
 #endif

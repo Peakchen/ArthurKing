@@ -26,12 +26,7 @@ using namespace CocosDenshion;
 class CSettingMenu
 	:	public	CPopupBase
 {
-	enum ESettingMenuTag
-	{
-		EBackGround = 100,
-		EBG_Music,
-		EBG_EXIT,
-	};
+	
 public:
 	CSettingMenu();
 	~CSettingMenu();
@@ -107,6 +102,17 @@ public:
 	* @js NA
 	*/
 	virtual void onTouchCancelled(Touch *touch, Event *unused_event);
+
+	/************************************************************************/
+	/*
+	@func:		setPopContext
+	@param:		const char * szTitle
+	@param:		const char * szContext
+	@return:	no
+	@brief:		set pop dialog title and context
+	*/
+	/************************************************************************/
+	virtual void  setPopContext(const char * szTitle, const char* szContext){}
 
 private:
 	/************************************************************************/
