@@ -40,7 +40,7 @@ void CSettingMenu::InitSettingMenu( Point point /*= Point::ZERO*/)
 	if (pMenuItem == nullptr)
 		return;
 
-	m_vecMenuItem.pushBack(pMenuItem);
+	//m_vecMenuItem.pushBack(pMenuItem);
 
 	// this a game exit button
 	MenuItemImage* pMenuCloseBtn = nullptr;
@@ -58,16 +58,14 @@ void CSettingMenu::InitSettingMenu( Point point /*= Point::ZERO*/)
 	if (pMenuCloseBtn == nullptr)
 		return;
 
-	pMenuCloseBtn->setPosition(ccp(point.x / 2 - 100, point.y / 2 - 120));
-
-	m_vecMenuItem.pushBack(pMenuCloseBtn);
-
+	pMenuCloseBtn->setPosition(ccp(80, 80));
+	pMenuCloseBtn->setTag(EBG_EXIT);
 
 	// add a music play button
 	MenuItemImage* pMenuMusicPlayBtn = nullptr;
 	cocos2d::ccMenuCallback pMusicPlayCallBack = CC_CALLBACK_0(CSettingMenu::OnPlayGameBgMusicCallBack, this);
 	CreatMenuItemByeImageCallback(SETTINGMENU_MUSCI_NORMAL,
-								  "",
+								  SETTINGMENU_MUSIC_SELECTED,
 								  SETTINGMENU_MUSIC_SELECTED,
 								  pMusicPlayCallBack,
 								  &pMenuMusicPlayBtn
@@ -80,8 +78,12 @@ void CSettingMenu::InitSettingMenu( Point point /*= Point::ZERO*/)
 	if (pMenuMusicPlayBtn == nullptr)
 		return;
 
-	pMenuMusicPlayBtn->setPosition(ccp(point.x / 2 - 150, point.y / 2 - 150));
+	pMenuMusicPlayBtn->setPosition(ccp(100,100));
+	pMenuMusicPlayBtn->setTag(EBG_Music);
+
+	// music up
 	m_vecMenuItem.pushBack(pMenuMusicPlayBtn);
+	m_vecMenuItem.pushBack(pMenuCloseBtn);
 
 	//////////////////////////////////////////////////////////////////////////////
 	if (m_vecMenuItem.empty()){
@@ -94,22 +96,18 @@ void CSettingMenu::InitSettingMenu( Point point /*= Point::ZERO*/)
 	}
 
 	m_pMainMenu = Menu::createWithArray(m_vecMenuItem);
-	//m_pMainMenu = Menu::create(pMenuMusicPlayBtn, pMenuCloseBtn);
 	m_pMainMenu->alignItemsVertically();
 
 	int index = 0;
-	//for( const auto &child : m_pMainMenu->getChildren() )
-	//{
-	//	auto dstPostion = child->getPosition();
-	//	float dtoffset = oWinSize.width/3 - 5*index;
-	//	/*if (index % 2 == 0)
-	//		ioffset = -ioffset;*/
+	for( const auto &child : m_pMainMenu->getChildren() )
+	{
+		auto dstPostion = child->getPosition();
+		float dtoffset = oWinSize.width/3;
 
-	//	child->setPosition(Vec2(dstPostion.x + dtoffset, dstPostion.y));
-	//	++index;
-	//}
+		child->setPosition(Vec2(dstPostion.x + dtoffset, dstPostion.y - 50));
+		++index;
+	}
 
-	//m_pMainMenu->addChild(Sprite::create(SETTING_MENU_BG));
 	m_pMainMenu->setPosition(point);
 	m_pMainMenu->setScale(1.2f);
 	m_pMainMenu->setOnEnterCallback(CC_CALLBACK_0(CSettingMenu::OnEnterSettingMenuCallBack, this));
@@ -214,8 +212,11 @@ void CSettingMenu::onEnter()
 	Size oSize = Director::getInstance()->getVisibleSize();
 	InitSettingMenu(Point(oSize.height / 2, oSize.width / 2));
 
-	addChild(pBg);
-	addChild(m_pMainMenu);
+	this->setContentSize(Size(362.0f, 187.0f));
+	pBg->setContentSize(Size(362.0f, 147.0f));
+	m_pMainMenu->setContentSize(Size(362.0f, 147.0f));
+	this->addChild(pBg);
+	this->addChild(m_pMainMenu);
 
 }
 
@@ -230,6 +231,7 @@ bool CSettingMenu::onTouchBegan(Touch *touch, Event *unused_event)
 	CCLOG("%s is start...", __FUNCTION__);
 
 	CCLOG("Paddle::onTouchBegan id = %d, x = %f, y = %f", touch->getID(), touch->getLocation().x, touch->getLocation().y);
+	m_VecOldPoint = Director::getInstance()->convertToGL(touch->getLocationInView());
 
 	return true;
 }
@@ -237,11 +239,16 @@ bool CSettingMenu::onTouchBegan(Touch *touch, Event *unused_event)
 void CSettingMenu::onTouchMoved(Touch *touch, Event *unused_event)
 {
 	Trace_In("%s is starting -------------------------", __FUNCTION__);
+	//auto  vecOldPoint = touch->getPreviousLocationInView();
+	auto  vecNewPoint = Director::getInstance()->convertToGL(touch->getLocationInView());
+
+	setPosition(vecNewPoint.x - m_VecOldPoint.x, vecNewPoint.y - m_VecOldPoint.y);
 }
 
 void CSettingMenu::onTouchEnded(Touch *touch, Event *unused_event)
 {
 	Trace_In("%s is starting -------------------------", __FUNCTION__);
+
 }
 
 void CSettingMenu::onTouchCancelled(Touch *touch, Event *unused_event)
@@ -266,10 +273,26 @@ void CSettingMenu::OnPlayGameBgMusicCallBack()
 	{
 		SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 		m_isPlayMusic = false;
+
+		Node* pSelectedNode = Sprite::create(SETTINGMENU_MUSIC_SELECTED);
+		if (pSelectedNode == NULL)
+		{
+			return;
+		}
+
+		( static_cast<MenuItemImage*>( m_pMainMenu->getChildByTag(EBG_Music) ) )->setSelectedImage(pSelectedNode);
 	}
 	else
 	{
 		SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 		m_isPlayMusic = true;
+
+		Node* pNormalNode = Sprite::create(SETTINGMENU_MUSCI_NORMAL);
+		if (pNormalNode == NULL)
+		{
+			return;
+		}
+
+		( static_cast< MenuItemImage* >( m_pMainMenu->getChildByTag(EBG_Music) ) )->setSelectedImage(pNormalNode);
 	}
 }

@@ -29,6 +29,8 @@ class CSettingMenu
 	enum ESettingMenuTag
 	{
 		EBackGround = 100,
+		EBG_Music,
+		EBG_EXIT,
 	};
 public:
 	CSettingMenu();
@@ -184,6 +186,8 @@ private:
 	Menu*	m_pMainMenu;
 
 	bool	m_isPlayMusic;
+
+	Vec2	m_VecOldPoint;
 };
 
 #endif
