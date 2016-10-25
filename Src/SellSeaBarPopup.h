@@ -1,11 +1,11 @@
 /************************************************************************/
-/* 
+/*
 author:	StefanChen
 mail:	chenfeng1790291543@163.com
 date:	20161025
 verion:	1.0
 Desc:	parent: Seabar Base
-		CExchangeSeaBarPopup
+		CSellSeaBarPopup
 */
 /************************************************************************/
 
@@ -15,12 +15,12 @@ Desc:	parent: Seabar Base
 #pragma once
 #include "SeaBarPopBase.h"
 
-class CExchangeSeaBarPopup :
+class CSellSeaBarPopup :
 	public CSeaBarPopBase
 {
 public:
-	CExchangeSeaBarPopup();
-	~CExchangeSeaBarPopup();
+	CSellSeaBarPopup();
+	~CSellSeaBarPopup();
 
 	/////////////////////////////////Layer////////////////////////////////
 
