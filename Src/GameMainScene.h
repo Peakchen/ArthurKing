@@ -160,5 +160,8 @@ private:
 	GWORD m_CurPalyer_Socre;
 
 	CallFunc* pCallFunc_CreateCard;
+
+	//ai auto open card state
+	bool m_bAiAutoOpen;
 };
 

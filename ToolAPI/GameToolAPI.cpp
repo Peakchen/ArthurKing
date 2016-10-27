@@ -27,7 +27,7 @@ int CGameToolAPI::GetRandomNum(int Randsize)
 
 	for (int i = 0; i < RADN_COUNT; ++i)
 	{
-		int iRandom = rand()%Randsize + 1;
+		int iRandom = CCRANDOM_0_1() * Randsize;
 		Trace_In("rand num: %d ", iRandom);
 		arr_seq [i] = iRandom;
 		arr_RandResult [i] = iRandom;
@@ -35,14 +35,14 @@ int CGameToolAPI::GetRandomNum(int Randsize)
 
 	for (int index = 0; index < RADN_COUNT; ++index)
 	{
-		int iRandom = rand() % Randsize + 1;
+		int iRandom = CCRANDOM_0_1() * Randsize;
 		arr_RandResult [index] = arr_seq [iRandom];
 		Trace_In("arr_RandResult num: %d ", arr_RandResult [index]);
 		arr_seq [iRandom] = arr_seq [iSub];
 		--iSub;
 	}
 
-	int iendIndex = rand() % RADN_COUNT;
+	int iendIndex = CCRANDOM_0_1() * RADN_COUNT;
 
 	Trace_In("Result num: %d ", arr_RandResult [iendIndex]);
 	return arr_RandResult [iendIndex];

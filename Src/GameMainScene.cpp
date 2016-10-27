@@ -23,6 +23,8 @@ bool CGameMainScene::init()
 	m_pAIplayer = NULL;
 	m_pArthurKing = NULL;
 
+	m_bAiAutoOpen = false;
+
 	g_ResCreator.GetPersonMessageInstance()->ResetData();
 
 	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(ACTOR_START, this, "player action");
@@ -486,6 +488,8 @@ void CGameMainScene::OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc)
 			{
 				// 翻牌， 走路...
 				m_pCurAction = m_pArthurKing;
+
+				m_bAiAutoOpen = false;
 				CCLOG("-----------------------------player go ---------------------------");
 			}
 			break;
@@ -494,6 +498,7 @@ void CGameMainScene::OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc)
 			{
 				// 自动翻牌， 走路...
 				m_pCurAction = m_pAIplayer;
+				m_bAiAutoOpen = true;
 				CCLOG("-----------------------------ai go ---------------------------");
 			}
 			break;
@@ -536,18 +541,24 @@ void CGameMainScene::TurnToGoAction()
 	m_CurRandNum = 0;
 
 	int iRandom = g_GameToolAPI.GetRandomNum(KAPAI_COUNT);
+	if (iRandom == 0)
+	{
+		iRandom += 1;
+	}
+
+	m_CurRandNum = iRandom;
+	schedule_count = 0;
+
 	const char* strInCard = CCString::createWithFormat("kapai/k_%d.png", iRandom)->getCString();
-	CCardSprite* pCardSprite = CCardSprite::create(strInCard, FACE_KAPAI, 5.0f);
+	CCardSprite* pCardSprite = CCardSprite::create(strInCard, FACE_KAPAI, 5.0f, m_bAiAutoOpen);
 	if (pCardSprite)
 	{
 		pCardSprite->setTag(ECARD_TEST);
 		addChild(pCardSprite);
 	}
 
-	m_CurRandNum = iRandom;
-	//// 翻拍后 行走
-	schedule_count = 0;
 	
+	//// 翻拍后 行走
 }
 
 void CGameMainScene::onClick_StartShowSettingMenu(Object* pSender, Control::EventType event)

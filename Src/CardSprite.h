@@ -38,9 +38,9 @@ public:
 	CCardSprite();
 	~CCardSprite();
 
-	virtual bool init(const char* strInCard, const char* strOutCard, float fDuration);
+	virtual bool init(const char* strInCard, const char* strOutCard, float fDuration, bool bAiAutoOpen);
 
-	static	CCardSprite* create(const char* strInCard, const char* strOutCard, float fDuration);
+	static	CCardSprite* create(const char* strInCard, const char* strOutCard, float fDuration, bool bAiAutoOpen);
 	void  DoOpenCard();
 
 	void GameChangeTouchDown(Object* pSender, Control::EventType event);
@@ -58,7 +58,7 @@ private:
 	CallFunc* pCallFunc_AfterOpen;
 
 private:
-	void initCardData(const char* strInCard, const char* strOutCard, float fDuration);
+	void initCardData(const char* strInCard, const char* strOutCard, float fDuration, bool bAiAutoOpen);
 
 	bool __CheckCardSpriteLoad();
 

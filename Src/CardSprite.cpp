@@ -16,10 +16,10 @@ CCardSprite::~CCardSprite()
 {
 }
 
-CCardSprite* CCardSprite::create(const char* strInCard, const char* strOutCard, float fDuration)
+CCardSprite* CCardSprite::create(const char* strInCard, const char* strOutCard, float fDuration, bool bAiAutoOpen)
 {
 	CCardSprite* pCardSprite = new CCardSprite();
-	if (pCardSprite && pCardSprite->init(strInCard, strOutCard, fDuration))
+	if (pCardSprite && pCardSprite->init(strInCard, strOutCard, fDuration, bAiAutoOpen))
 	{
 		pCardSprite->autorelease();
 		return pCardSprite;
@@ -29,7 +29,7 @@ CCardSprite* CCardSprite::create(const char* strInCard, const char* strOutCard, 
 	return NULL;
 }
 
-bool CCardSprite::init(const char* strInCard, const char* strOutCard, float fDuration)
+bool CCardSprite::init(const char* strInCard, const char* strOutCard, float fDuration, bool bAiAutoOpen)
 {
 	if (!Sprite::init())
 	{
@@ -37,11 +37,11 @@ bool CCardSprite::init(const char* strInCard, const char* strOutCard, float fDur
 	}
 
 	visibleSize = Director::getInstance()->getVisibleSize();
-	initCardData(strInCard, strOutCard, fDuration);
+	initCardData(strInCard, strOutCard, fDuration, bAiAutoOpen);
 	return true;
 }
 
-void CCardSprite::initCardData(const char* strInCard, const char* strOutCard, float fDuration)
+void CCardSprite::initCardData(const char* strInCard, const char* strOutCard, float fDuration, bool bAiAutoOpen)
 {
 
 	m_isOpen = false;		// ³õÊ¼»¯ Î´·­¿ª
@@ -92,6 +92,13 @@ void CCardSprite::initCardData(const char* strInCard, const char* strOutCard, fl
 	pCtrl_Btn->setVisible(true);
 	addChild(pCtrl_Btn);
 
+	if (bAiAutoOpen)
+	{
+		pCtrl_Btn->setEnabled(false);
+		GameChangeTouchDown(NULL, Control::EventType::TOUCH_DOWN);
+		OnAfterOpenCard_FireEvent();
+	}
+
 	// in card
 	Sprite* pInCard = Sprite::create(strInCard);
 	if (pInCard == NULL)
@@ -103,7 +110,6 @@ void CCardSprite::initCardData(const char* strInCard, const char* strOutCard, fl
 	pInCard->setVisible(false);	  // hide 
 	pInCard->setTag(EInCard);
 	addChild(pInCard);
-
 }
 
 void CCardSprite::DoOpenCard()
