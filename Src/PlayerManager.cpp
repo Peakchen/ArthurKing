@@ -47,6 +47,9 @@ void CPlayerManager::Create(CActorBase* pActor)
 
 	m_CurPlayerAction = EACTOR_PLAYER_ACTION;
 	m_NextPlayerAction = EAI_PLAYER_ACTION;
+
+	m_mapActorInstanceMap.clear();
+
 }
 
 CPlayerManager::CPlayerManager()
@@ -268,7 +271,12 @@ bool CPlayerManager::CheckActionSplit(Vec2 opint, CActorBase* pActor)
 			TSPLITHANDLERMAP::iterator it = pSplitAction->find(szName);
 			if (it != pSplitAction->end())
 			{
-				it->second->CheckCurrentAction(szName, szType, pActor);
+				TTileLayerGridProperty oTileGridPeperty;
+				__GetTileContextByName(szName, &oTileGridPeperty, mapObject);
+
+				RemoveActorInstace(pActor->GetPDBID());
+
+				it->second->CheckCurrentAction(&oTileGridPeperty, pActor, &m_mapActorInstanceMap);
 				return true;
 			}
 			else
@@ -281,4 +289,69 @@ bool CPlayerManager::CheckActionSplit(Vec2 opint, CActorBase* pActor)
 	}
 
 	return false;
+}
+
+void CPlayerManager::__GetTileContextByName(const char* szName, TTileLayerGridProperty *pTileContext, ValueMap mapObject)
+{
+	pTileContext->szName = ( char* ) mapObject ["name"].asString().c_str();
+	pTileContext->szType = ( char* ) mapObject ["Type"].asString().c_str();
+
+	if (strcmp(szName, ETILELAYER_ONCEAGAIN) == 0)
+	{
+		return;
+	}
+	else if (strcmp(szName, ETILELAYER_BLUE_DOUBLESTAR) == 0)
+	{
+		pTileContext->iTimes = mapObject ["times"].asInt();
+	}
+	else if (strcmp(szName, ETILELAYER_BLUE_STAR) == 0)
+	{
+		pTileContext->iTimes = mapObject ["times"].asInt();
+		pTileContext->iScoreMult = mapObject ["ScoreMult"].asInt();
+	}
+	else if (strcmp(szName, ETILELAYER_FOOT_BLUE) == 0)
+	{
+		pTileContext->iStopTimes = mapObject ["stoptimes"].asInt();
+	}
+	else if (strcmp(szName, ETILELAYER_FOOT_RED) == 0)
+	{
+		pTileContext->iStopTimes = mapObject ["stoptimes"].asInt();
+	}
+	else if (strcmp(szName, ETILELAYER_QUESTION) == 0)
+	{
+		
+	}
+	else if (strcmp(szName, ETILELAYER_RED_DOUBLESTAR) == 0)
+	{
+		pTileContext->iScoreMult = mapObject ["ScoreMult"].asInt();
+		pTileContext->iTimes = mapObject["times"].asInt();
+	}
+	else if (strcmp(szName, ETILELAYER_SCORE) == 0)
+	{
+		pTileContext->iScoreValue = mapObject ["value"].asInt();
+	}
+	else if (strcmp(szName, ETILELAYER_SEABAR) == 0)
+	{
+		pTileContext->iSeaBarIndex = mapObject ["index"].asInt();
+		pTileContext->iSeaBarPrice = mapObject["price"].asInt();
+		pTileContext->iSeaBarTip = mapObject ["tip"].asInt();
+	}
+	else if (strcmp(szName, ETILELAYER_TUEN_FREE) == 0)
+	{
+		pTileContext->iTimes = mapObject ["times"].asInt();
+	}
+	else if (strcmp(szName, ETILELAYER_YELLOW_STAR) == 0)
+	{
+		pTileContext->iTimes = mapObject ["times"].asInt();
+	}
+}
+
+void CPlayerManager::RemoveActorInstace(__int8 PDBID)
+{
+	if (m_mapActorInstanceMap.empty())
+	{
+		return;
+	}
+
+	m_mapActorInstanceMap.erase(PDBID);
 }

@@ -40,6 +40,8 @@ public:
 	/************************************************************************/
 	virtual void	setPopContext(const char * szTitle, const char* szContext);
 
+	static CExchangeSeaBarPopup* CreateExchangeSeaBarPopup();
+
 private:
 
 	Menu* m_pPopPlayer;

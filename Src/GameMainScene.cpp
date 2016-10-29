@@ -9,6 +9,7 @@
 #include "PlayerManager.h"
 #include "GameToolAPI.h"
 #include "SettingMenu.h"
+#include "ActionSpiltManager.h"
 
 USING_NS_CC;
 
@@ -70,6 +71,11 @@ bool CGameMainScene::init()
 		}
 	}
 
+	g_ActionSpiltManager.CreateALiveMsg();
+
+	g_PalyerManager.AddActorInstace(m_pArthurKing);
+	g_PalyerManager.AddActorInstace(m_pAIplayer);
+
 	return true;
 }
 
@@ -117,7 +123,7 @@ void CGameMainScene::AddButton_StartGoAction()
 	pBtn_Go->setBackgroundSpriteForState(pPress_Scale, Control::State::SELECTED);
 	pBtn_Go->addTargetWithActionForControlEvents(this, cccontrol_selector(CGameMainScene::onClick_StartControl), Control::EventType::TOUCH_DOWN);
 	pBtn_Go->setPreferredSize(Size(82, 82));
-	pBtn_Go->setPosition(ccp(visibleSize.width/2 - 250, visibleSize.height - 50));
+	pBtn_Go->setPosition(ccp(visibleSize.width/2 - 220, visibleSize.height - 50));
 	pBtn_Go->setTag(ESTART_Go);
 	/*pBtn_Go->setScale(0.6f);*/
 	addChild(pBtn_Go);
@@ -354,13 +360,13 @@ void CGameMainScene::AfterOpenCard()
 	m_pCurAction->GetPlayerGoPath(m_CurRandNum, g_MapReader.GetCanGoPathArr());
 	m_pCurAction->RequestActorCtrl();
 
-	// 翻拍后 显示 分数
-	
-	BeginFloatHead();
-
 	// 行走
 	
 	BeginActorGo();
+
+	// 翻拍后 显示 分数
+
+	BeginFloatHead();
 }
 
 int sche_aboutScore = 0;
@@ -381,14 +387,19 @@ void CGameMainScene::BeginFloatHead()
 		return;
 	}
 
-	int iRow = vecRow.back();
-	int iCol = vecCol.back();
+	float iRow = vecRow.back();
+	float iCol = vecCol.back();
 	
-	float y = (float)1.0f * iRow * TILE_WIDTH;
-	float x = (float)1.0f * iCol * TILE_HEIGHT;
+	float y = (float)1.0f*iRow * TILE_WIDTH;
+	float x = (float)1.0f*iCol * TILE_HEIGHT;
 
 	g_Point = Vec2(x, y);
-	if (!g_ResCreator.GetMapReaderInstance()->CheckCanTakeAddSocre(m_CurPalyer_Socre, g_Point))
+	if (!g_PalyerManager.CheckCanTakeAddSocre(m_CurPalyer_Socre, g_Point))
+	{
+		return;
+	}
+
+	if (m_CurPalyer_Socre == 0)
 	{
 		return;
 	}

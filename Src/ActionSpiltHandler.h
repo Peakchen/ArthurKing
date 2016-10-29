@@ -15,9 +15,27 @@
 
 struct IArthurActionSpiltHandler
 {
+	/************************************************************************/
+	/* 
+	@func:		GetActionName
+	@param:		no
+	@return:	char*
+	@brief:		each Handler have only Name
+	*/
+	/************************************************************************/
 	virtual char* GetActionName() = 0;
 
-	virtual void  CheckCurrentAction(const char*  szName, const char* szType, CActorBase* pActor) = 0;
+	/************************************************************************/
+	/* 
+	@func:		CheckCurrentAction
+	@param:		const TTileLayerGridProperty *pTileLayerPeperty			为了效率高，省去过多的重复
+	@param:		CActorBase* pSelfActor									当前角色
+	@param:		TActorInstanceMap* pOtherActors							其他角色，当前除了本尊外，只有一个，为以后扩展俩个人以上，方便
+	@return:	no
+	@brief:		override, sub drivers achive self todo something
+	*/
+	/************************************************************************/
+	virtual void  CheckCurrentAction(const TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pSelfActor, TActorInstanceMap* pOtherActors) = 0;
 };
 
 typedef map<char*, IArthurActionSpiltHandler*> TSPLITHANDLERMAP;

@@ -5,7 +5,7 @@
 
 
 
-bool CBuySeaBarAction::CheckCanExchangeSeaBar(int iSeaBarIndex, __int8 Buyer_DBID, ESeaBarAttach& attchFlag, CActorBase* pActor)
+bool CBuySeaBarAction::CheckCanExchangeSeaBar(int iSeaBarIndex, ESeaBarAttach& attchFlag, CActorBase* pActor)
 {
 	TSeaBarInfo* pSeaBarInfo = g_SealBarManager.GetSeaBarInfo(iSeaBarIndex);
 	if (pSeaBarInfo == NULL)
@@ -19,12 +19,12 @@ bool CBuySeaBarAction::CheckCanExchangeSeaBar(int iSeaBarIndex, __int8 Buyer_DBI
 	{
 		attchFlag = ESeaBar_None;
 	}
-	else if (pSeaBarInfo->iCur_OwnerID != Buyer_DBID)
+	else if (pSeaBarInfo->iCur_OwnerID != pActor->GetPDBID())
 	{
 		attchFlag = ESeaBar_other;
 		return false;
 	}
-	else if (pSeaBarInfo->iCur_OwnerID == Buyer_DBID)
+	else if (pSeaBarInfo->iCur_OwnerID == pActor->GetPDBID())
 	{
 		attchFlag = ESeaBar_self;
 		return false;

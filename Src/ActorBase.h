@@ -6,7 +6,6 @@
 #include "IActorBase.h"
 #include "cocos2d.h"
 #include "common.h"
-#include "common.h"
 
 
 USING_NS_CC;

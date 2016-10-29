@@ -57,3 +57,18 @@ void CExchangeSeaBarPopup::setPopContext(const char * szTitle, const char* szCon
 	pLabelTitle->setPosition(dstPoint.x / 2, dstPoint.y);
 	this->getChildByTag(EBackGround)->addChild(pLabelTitle);
 }
+
+CExchangeSeaBarPopup* CExchangeSeaBarPopup::CreateExchangeSeaBarPopup()
+{
+	CExchangeSeaBarPopup* pExchangeInstance = new CExchangeSeaBarPopup();
+	if (pExchangeInstance == nullptr)
+	{
+		CC_SAFE_DELETE(pExchangeInstance);
+		return nullptr;
+	}
+
+	pExchangeInstance->OnEnter();
+
+	pExchangeInstance->autorelease();
+	return pExchangeInstance;
+}

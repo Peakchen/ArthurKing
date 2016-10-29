@@ -12,6 +12,8 @@
 
 #include "stdafx.h"
 
+class CActorBase;
+
 /************************************************************************/
 /*
 sea bar struct
@@ -128,6 +130,18 @@ const string TILELAYER_NAME [] = {
 							"Blue_DoubleStar",
 							};
 
+#define		ETILELAYER_ONCEAGAIN	"OnceAgain"
+#define		ETILELAYER_SEABAR		"sea"
+#define		ETILELAYER_SCORE		"Score"
+#define		ETILELAYER_QUESTION		"Question"
+#define		ETILELAYER_TUEN_FREE		"Turn_Free"
+#define		ETILELAYER_FOOT_RED		"Foot_red"
+#define		ETILELAYER_YELLOW_STAR	"Yellow_Star"
+#define		ETILELAYER_RED_DOUBLESTAR	"Red_DoubleStar"
+#define		ETILELAYER_FOOT_BLUE		"Foot_Blue"
+#define		ETILELAYER_BLUE_STAR		"Blue_Star"
+#define		ETILELAYER_BLUE_DOUBLESTAR	"Blue_DoubleStar"
+
 
 // custom type
 const string TILELAYER_CUSTOM_TYPE [] = { 
@@ -139,6 +153,33 @@ const string TILELAYER_CUSTOM_TYPE [] = {
 								  "Down",
 								};
 
+struct TTileLayerGridProperty
+{
+	char*	szName;
+	char*	szType;
+	int		iScoreValue;
+	int		iSeaBarIndex;
+	int		iSeaBarPrice;
+	int		iSeaBarTip;
+	int		iTimes;
+	int		iStopTimes;
+	int		iScoreMult;
 
+	TTileLayerGridProperty()
+	{
+		szName = "";
+		szType = "";
+		iScoreValue = 0;
+		iSeaBarIndex = 0;
+		iSeaBarPrice = 0;
+		iSeaBarTip = 0;
+		iTimes = 0;
+		iStopTimes = 0;
+		iScoreMult = 0;
+	}
+
+};
+
+typedef map<__int8, CActorBase*> TActorInstanceMap;
 
 #endif

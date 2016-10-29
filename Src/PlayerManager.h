@@ -119,6 +119,16 @@ public:
 
 	bool CheckActionSplit(Vec2 opint, CActorBase* pActor);
 
+	/************************************************************************/
+	/* 
+	@func:		RemoveActorInstace
+	@param:		__int8 PDBID
+	@return:	void
+	Desc:		remove person Instance
+	*/
+	/************************************************************************/
+	void	RemoveActorInstace(__int8 PDBID);
+
 private:
 
 	/************************************************************************/
@@ -131,6 +141,19 @@ private:
 	*/
 	/************************************************************************/
 	bool DoParseScore(ValueMap mapObject, GWORD &dwScore);
+	
+	/************************************************************************/
+	/* 
+	@func:		__GetTileContextByName
+	@param:		const char* szName
+	@param:		TTileLayerGridProperty *pTileContext
+	@param:		ValueMap mapObject
+	@return:	no
+	Desc:		get  tile  data context 
+	*/
+	/************************************************************************/
+
+	void __GetTileContextByName(const char* szName, TTileLayerGridProperty *pTileContext, ValueMap mapObject);
 
 private:
 
@@ -141,7 +164,6 @@ private:
 	TPersonInfoMap  m_mapPersonLocation;
 	 
 	// save all actor instance
-	typedef map<__int8, CActorBase*> TActorInstanceMap;
 
 	TActorInstanceMap m_mapActorInstanceMap;
 };

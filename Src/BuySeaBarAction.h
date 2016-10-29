@@ -20,14 +20,13 @@ class CBuySeaBarAction
 		/*
 		@func:		CheckCanExchangeSeaBar
 		@param:		int iSeaBarIndex
-		@param:		__int8 Buyer_DBID
 		@param:		ESeaBarAttach attchFlag
 		@param:		CActorBase* pActor
 		@return:	bool
 		@Desc:		check you can exchange this sea, where you go finally.
 		
 		************************************************************************/
-		bool CheckCanExchangeSeaBar(int iSeaBarIndex, __int8 Buyer_DBID, ESeaBarAttach& attchFlag, CActorBase* pActor);
+		bool CheckCanExchangeSeaBar(int iSeaBarIndex,  ESeaBarAttach& attchFlag, CActorBase* pActor);
 
 		/************************************************************************/
 		/* 
