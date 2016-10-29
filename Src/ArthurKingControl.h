@@ -5,6 +5,7 @@
 
 USING_NS_CC;
 
+
 class CArthurKingControl :
 	public Layer
 {
@@ -51,6 +52,8 @@ private:
 private:
 	void OnPlayerMoveEnd();
 	void OnPlayerMove();
+
+	void FindNextPlayer();
 };
 
 

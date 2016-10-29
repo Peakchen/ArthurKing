@@ -92,13 +92,6 @@ void CCardSprite::initCardData(const char* strInCard, const char* strOutCard, fl
 	pCtrl_Btn->setVisible(true);
 	addChild(pCtrl_Btn);
 
-	if (bAiAutoOpen)
-	{
-		pCtrl_Btn->setEnabled(false);
-		GameChangeTouchDown(NULL, Control::EventType::TOUCH_DOWN);
-		OnAfterOpenCard_FireEvent();
-	}
-
 	// in card
 	Sprite* pInCard = Sprite::create(strInCard);
 	if (pInCard == NULL)
@@ -110,6 +103,13 @@ void CCardSprite::initCardData(const char* strInCard, const char* strOutCard, fl
 	pInCard->setVisible(false);	  // hide 
 	pInCard->setTag(EInCard);
 	addChild(pInCard);
+
+	if (bAiAutoOpen)
+	{
+		pCtrl_Btn->setEnabled(false);
+		GameChangeTouchDown(NULL, Control::EventType::TOUCH_DOWN);
+		OnAfterOpenCard_FireEvent();
+	}
 }
 
 void CCardSprite::DoOpenCard()

@@ -101,7 +101,8 @@ enum ESeaBarAttach
 	ESeaBar_Error,			// but error
 };
 
-// 角色 枚举
+// 角色 枚举 
+// actor menu
 enum EPlayer
 {
 	EFirstPlayer = 1,
@@ -109,6 +110,35 @@ enum EPlayer
 };
 
 typedef unsigned long GWORD;
+
+
+// eleven tile layer type name
+// date:  20161029
+const string TILELAYER_NAME [] = {
+							"OnceAgain", 
+							"sea", 
+							"Score",
+							"Question",
+							"Turn_Free",
+							"Foot_red",
+							"Yellow_Star",
+							"Red_DoubleStar",
+							"Foot_Blue",
+							"Blue_Star",
+							"Blue_DoubleStar",
+							};
+
+
+// custom type
+const string TILELAYER_CUSTOM_TYPE [] = { 
+								  "rand_num",
+								  "Bar",
+								  "int",
+								  "random",
+								  "Up",
+								  "Down",
+								};
+
 
 
 #endif

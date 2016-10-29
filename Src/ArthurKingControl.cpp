@@ -35,13 +35,15 @@ void CArthurKingControl::OnPlayerMoveEnd()
 	stPlayerMovePath.iStepCount++;
 	if (stPlayerMovePath.iStepCount >= (m_passRowPath.size() - 1))
 	{
-		EPLAYER_ACTION iCurAction = g_PalyerManager.getRecordNextPlayerAction();
-		g_PalyerManager.DoChangeState(iCurAction);
-		int iNextAction = (iCurAction % Player_Max_Count);
-		iNextAction += 1;
+		//
+		Vec2 opoint = Vec2(( float ) 1.0f*m_passRowPath.back()*TILE_WIDTH, (float) 1.0f*m_passColPath.back()*TILE_HEIGHT);
 
-		g_PalyerManager.setRecordCurPlayerAction(iCurAction);
-		g_PalyerManager.setRecordNextPlayerAction(( EPLAYER_ACTION ) iNextAction);
+		if (!g_PalyerManager.CheckActionSplit(opoint, m_pActor))
+		{
+			CCLOG("action split is faild....");
+		}
+		// 
+		FindNextPlayer();
 		return;
 	}
 
@@ -235,4 +237,15 @@ void CArthurKingControl::CheckAddAnimateByName(EPLAYER_ACTION iCurAction, std::s
 	m_pActor_Right_Animate = Animate::create(pAnimationInstance->animationByName(szName + "_Animation_Right"));
 	m_pActor_Left_Animate = Animate::create(pAnimationInstance->animationByName(szName + "_Animation_Left"));
 
+}
+
+void CArthurKingControl::FindNextPlayer()
+{
+	EPLAYER_ACTION iCurAction = g_PalyerManager.getRecordNextPlayerAction();
+	g_PalyerManager.DoChangeState(iCurAction);
+	int iNextAction = ( iCurAction % Player_Max_Count );
+	iNextAction += 1;
+
+	g_PalyerManager.setRecordCurPlayerAction(iCurAction);
+	g_PalyerManager.setRecordNextPlayerAction(( EPLAYER_ACTION ) iNextAction);
 }

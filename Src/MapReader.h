@@ -8,8 +8,6 @@
 USING_NS_CC;
 USING_NS_CC_EXT;
 
-const float CoordinateDiff = 3.0f;
-
 class CMapReader :
 	public LayerColor
 {
@@ -37,7 +35,7 @@ private:
 	void initPlayer();
 	void ParseTileMap();
 
-	bool DoParseScore(ValueMap mapObject, GWORD &dwScore);
+	//bool DoParseScore(ValueMap mapObject, GWORD &dwScore);
 
 	void setPathWay();
 
@@ -60,7 +58,7 @@ public:
 
 	void initPressGrid(int** arrPassGrid);
 
-	bool CheckCanTakeAddSocre(GWORD &iScore, Vec2 oPoint);
+	//bool CheckCanTakeAddSocre(GWORD &iScore, Vec2 oPoint);
 };
 
 extern CMapReader g_MapReader;

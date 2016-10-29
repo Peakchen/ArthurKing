@@ -13,6 +13,8 @@
 
 using namespace Json;
 
+const float CoordinateDiff = 3.0f;
+
 class CPlayerManager
 {
 
@@ -92,6 +94,43 @@ public:
 	*/
 	/************************************************************************/
 	void AddActorInstace(CActorBase* pActor);
+
+	/************************************************************************/
+	/* 
+	@func:		CheckCanTakeAddSocre
+	@param:		GWORD &iScore
+	@param:		Vec2 oPoint
+	@return:	bool
+	Desc:		check if add score
+	*/
+	/************************************************************************/
+	
+	bool CheckCanTakeAddSocre(GWORD &iScore, Vec2 oPoint);
+
+	/************************************************************************/
+	/* 
+	@func:		CheckActionSplit
+	@param:		CActorBase* pActor
+	@param:		Vec2 oPoint
+	@return:	bool
+	Desc:		check action split
+	*/
+	/************************************************************************/
+
+	bool CheckActionSplit(Vec2 opint, CActorBase* pActor);
+
+private:
+
+	/************************************************************************/
+	/*
+	@func:		CheckCanTakeAddSocre
+	@param:		GWORD &iScore
+	@param:		Vec2 oPoint
+	@return:	bool
+	Desc:		check if add score
+	*/
+	/************************************************************************/
+	bool DoParseScore(ValueMap mapObject, GWORD &dwScore);
 
 private:
 
