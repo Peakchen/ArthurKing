@@ -10,7 +10,7 @@ bool CBuySeaBarAction::CheckCanExchangeSeaBar(int iSeaBarIndex, ESeaBarAttach& a
 	TSeaBarInfo* pSeaBarInfo = g_SealBarManager.GetSeaBarInfo(iSeaBarIndex);
 	if (pSeaBarInfo == NULL)
 	{
-		attchFlag = ESeaBar_Error;
+		attchFlag = ESeaBar_None;
 		return false;
 	}
 

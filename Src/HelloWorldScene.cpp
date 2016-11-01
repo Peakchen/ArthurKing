@@ -3,6 +3,8 @@
 #include "ArthurKing.h"
 #include "CCFileUtils.h"
 #include "OpenScreenScene.h"
+#include "GameMainScene.h"
+#include "ResCreator.h"
 
 USING_NS_CC;
 
@@ -67,8 +69,12 @@ bool HelloWorld::init()
     //// add the label as a child to this layer
     //this->addChild(label, 1);
 
-	Scene* pOpenScreen = COpenScreenScene::createOpenScreenScene();
+	/*Scene* pOpenScreen = COpenScreenScene::createOpenScreenScene();
 	this->addChild(pOpenScreen);
+	*/
+	auto pMain = CGameMainScene::createMainScene();
+
+	addChild(pMain);
     return true;
 }
 

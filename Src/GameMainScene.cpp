@@ -10,6 +10,7 @@
 #include "GameToolAPI.h"
 #include "SettingMenu.h"
 #include "ActionSpiltManager.h"
+#include "ExchangeSeaBarPopup.h"
 
 USING_NS_CC;
 
@@ -31,6 +32,7 @@ bool CGameMainScene::init()
 	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(ACTOR_START, this, "player action");
 	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(AI_START, this, "AI action");
 	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(OpenCard_Action, this, "Open Card action");
+	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(SH_SEABAR_ACTION, this, "SH SEABAR action");
 
 	visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -76,6 +78,8 @@ bool CGameMainScene::init()
 	g_PalyerManager.AddActorInstace(m_pArthurKing);
 	g_PalyerManager.AddActorInstace(m_pAIplayer);
 
+	//g_ResCreator.SetMainSceneInstance(this);
+
 	return true;
 }
 
@@ -85,6 +89,16 @@ Scene* CGameMainScene::createMainScene()
 	auto layer = CGameMainScene::create();
 	scene->addChild(layer);
 	return scene;
+
+	/*CGameMainScene* pMainScene = new CGameMainScene();
+	if (pMainScene)
+	{
+		pMainScene->autorelease();
+		return pMainScene;
+	}
+
+	CC_SAFE_DELETE(pMainScene);
+	return nullptr;*/
 }
 
 void CGameMainScene::AddSceneMap()
@@ -520,12 +534,24 @@ void CGameMainScene::OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc)
 				AfterOpenCard();
 				return;
 			}
+		case SH_SEABAR_ACTION:
+			{
+				CCLOG("-----------------------------SH seabar ---------------------------");
+
+				OnEvent_DealWithSpiltActionCallBack();
+				
+			}
 		default:
 			CCLOG("error: %s message is wrong...", __FUNCTION__);
 			break;
 	}
 	
 	pCallFunc_CreateCard = CallFunc::create(CC_CALLBACK_0(CGameMainScene::TurnToGoAction, this));
+
+	if (getChildByTag(ESTART_EXCHANGE))
+	{
+		CCLOG("event is existing..............................");
+	}
 
 	CCSequence* pSequence_CreateCard = CCSequence::create(
 		CCDelayTime::create(3.5f),
@@ -646,3 +672,178 @@ void CGameMainScene::onTouchCancelled(Touch *touch, Event *unused_event)
 {
 	Trace_In("%s is starting -------------------------", __FUNCTION__);
 }
+
+void CGameMainScene::OnEvent_DealWithSpiltActionCallBack()
+{
+
+	// get the data which is the last step  data
+	Vec2 *pVecLastPoint = nullptr;
+	if (!GetTheLastStepPoint(&pVecLastPoint))
+	{
+		CCLOG("error: %s get the last point  faild....", __FUNCTION__);
+		return;
+	}
+
+	m_pstTileGridProperty = nullptr;
+	if (!g_PalyerManager.CheckActionSplit(Vec2(pVecLastPoint->x, pVecLastPoint->y), m_pCurAction, true, &m_pstTileGridProperty))
+	{
+		CCLOG("action split is faild....");
+	}
+
+	// then open pop up
+
+	CExchangeSeaBarPopup* pExchangePopup = CExchangeSeaBarPopup::CreateExchangeSeaBarPopup();
+	if (!pExchangePopup)
+	{
+		return;
+	}
+
+	pExchangePopup->setTag(ESTART_EXCHANGE);
+	addChild(pExchangePopup);
+}
+
+bool CGameMainScene::GetTheLastStepPoint(Vec2 **point)
+{
+	std::vector<int>  vecRow = g_ResCreator.GetActorCtrlInstance()->getRecordPassRowPath();
+	if (vecRow.empty())
+	{
+		return false;
+	}
+
+	std::vector<int>  vecCol = g_ResCreator.GetActorCtrlInstance()->getRecordPassColPath();
+	if (vecCol.empty())
+	{
+		return false;
+	}
+
+	float iRow = vecRow.back();
+	float iCol = vecCol.back();
+
+	float y = ( float )1.0f*iRow * TILE_WIDTH;
+	float x = ( float )1.0f*iCol * TILE_HEIGHT;
+
+	*point = &Vec2(x, y);
+	return true;
+}
+
+
+//bool CGameMainScene::CheckActionSplit(Vec2 opint, CActorBase* pActor)
+//{
+//	CCLOG("func:%s  Dest: x = %02f,   y = %02f ", __FUNCTION__, opint.x, opint.y);
+//	ValueVector vecArray = g_ResCreator.GetMapReaderInstance()->getVecObjectPath();
+//
+//	ValueVector::iterator itBegin = vecArray.begin();
+//	for (; itBegin != vecArray.end(); ++itBegin)
+//	{
+//		ValueMap  mapObject = itBegin->asValueMap();
+//
+//		//CCLOG("value: %d, %s", mapObject.size(), mapObject ["name"]);
+//		float x = mapObject ["x"].asFloat();
+//		float y = mapObject ["y"].asFloat();
+//
+//		Vec2 vecPoint = Vec2(x, y);
+//
+//		Vec2 vecPoint1 = Vec2(x + 1, y + 1);
+//		Vec2 vecPoint2 = Vec2(x + 1, y);
+//		Vec2 vecPoint3 = Vec2(x, y + 1);
+//
+//		Vec2 vecPoint4 = Vec2(x - 1, y - 1);
+//		Vec2 vecPoint5 = Vec2(x - 1, y);
+//		Vec2 vecPoint6 = Vec2(x, y - 1);
+//
+//		//CCLOG("Src: x = %02f,   y = %02f ", x, y);
+//
+//		bool bFlag_x = ( fabs(opint.x - x) <= CoordinateDiff );
+//		bool bFlag_y = ( fabs(opint.y - y) <= CoordinateDiff );
+//		CCLOG("fabs: x = %02f,   y = %02f ", fabs(opint.x - x), fabs(opint.y - y));
+//
+//		if (bFlag_x && bFlag_y)
+//		{
+//			TSPLITHANDLERMAP* pSplitAction = g_ActionSpiltManager.GetSplitHandlerMap();
+//			if (pSplitAction->empty() || pActor == nullptr)
+//			{
+//				return false;
+//			}
+//
+//			string szName = mapObject ["name"].asString();
+//			string szType = mapObject ["Type"].asString();
+//			TSPLITHANDLERMAP::iterator it = pSplitAction->find(szName);
+//			if (it != pSplitAction->end())
+//			{
+//				TTileLayerGridProperty oTileGridPeperty;
+//				__GetTileContextByName(szName, &oTileGridPeperty, mapObject);
+//
+//				g_PalyerManager.RemoveActorInstace(pActor->GetPDBID());
+//
+//				//CTileBase* pSpiltHandler = it->second;
+//
+//				//g_ResCreator.GetMainSceneInstance()->DealWithSpiltActionCallBack();
+//				//DealWithSpiltActionCallBack(pSpiltHandler, &oTileGridPeperty, pActor, g_PalyerManager.GetActorMap());
+//				it->second->CheckCurrentAction(&oTileGridPeperty, pActor, g_PalyerManager.GetActorMap());
+//				return true;
+//			}
+//			else
+//			{
+//				CCLOG("no find this location....");
+//			}
+//			return false;
+//		}
+//	}
+//
+//	return false;
+//}
+//
+//void CGameMainScene::__GetTileContextByName(string szName, TTileLayerGridProperty *pTileContext, ValueMap mapObject)
+//{
+//	pTileContext->szName = mapObject ["name"].asString();
+//	pTileContext->szType = mapObject ["Type"].asString();
+//
+//	if (szName == ETILELAYER_ONCEAGAIN)
+//	{
+//		return;
+//	}
+//	else if (szName == ETILELAYER_BLUE_DOUBLESTAR)
+//	{
+//		pTileContext->iTimes = mapObject ["times"].asInt();
+//	}
+//	else if (szName == ETILELAYER_BLUE_STAR)
+//	{
+//		pTileContext->iTimes = mapObject ["times"].asInt();
+//		pTileContext->iScoreMult = mapObject ["ScoreMult"].asInt();
+//	}
+//	else if (szName == ETILELAYER_FOOT_BLUE)
+//	{
+//		pTileContext->iStopTimes = mapObject ["stoptimes"].asInt();
+//	}
+//	else if (szName == ETILELAYER_FOOT_RED)
+//	{
+//		pTileContext->iStopTimes = mapObject ["stoptimes"].asInt();
+//	}
+//	else if (szName == ETILELAYER_QUESTION)
+//	{
+//
+//	}
+//	else if (szName == ETILELAYER_RED_DOUBLESTAR)
+//	{
+//		pTileContext->iScoreMult = mapObject ["ScoreMult"].asInt();
+//		pTileContext->iTimes = mapObject ["times"].asInt();
+//	}
+//	else if (szName == ETILELAYER_SCORE)
+//	{
+//		pTileContext->iScoreValue = mapObject ["value"].asInt();
+//	}
+//	else if (szName == ETILELAYER_SEABAR)
+//	{
+//		pTileContext->iSeaBarIndex = mapObject ["index"].asInt();
+//		pTileContext->iSeaBarPrice = mapObject ["price"].asInt();
+//		pTileContext->iSeaBarTip = mapObject ["tip"].asInt();
+//	}
+//	else if (szName == ETILELAYER_TUEN_FREE)
+//	{
+//		pTileContext->iTimes = mapObject ["times"].asInt();
+//	}
+//	else if (szName == ETILELAYER_YELLOW_STAR)
+//	{
+//		pTileContext->iTimes = mapObject ["times"].asInt();
+//	}
+//}

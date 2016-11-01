@@ -5,6 +5,8 @@
 
 USING_NS_CC;
 
+class CGameMainScene;
+
 
 class CArthurKingControl :
 	public Layer

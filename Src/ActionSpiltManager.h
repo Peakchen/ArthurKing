@@ -10,7 +10,7 @@
 #define __ACTIVE_MSG_
 
 #pragma once
-#include "ActionSpiltHandler.h"
+#include "TileBase.h"
 
 class CActionSpiltManager
 {
@@ -60,7 +60,7 @@ private:
 	@brief:		you can add one SH into map
 	*/
 	/************************************************************************/
-	void AddLiveMsg(IArthurActionSpiltHandler* pSH);
+	void AddLiveMsg(CTileBase* pSH);
 
 	/************************************************************************/
 	/*
@@ -70,7 +70,7 @@ private:
 	@brief:		you can remove one SH from map
 	*/
 	/************************************************************************/
-	void RemoveLiveMsg(IArthurActionSpiltHandler* pSH);
+	void RemoveLiveMsg(CTileBase* pSH);
 
 private:
 

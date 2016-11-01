@@ -7,9 +7,12 @@
 #include "AIPlayer.h"
 #include "PersonMessageEventHandle.h"
 #include "common/common.h"
+#include "TileBase.h"
 
 USING_NS_CC;
 USING_NS_CC_EXT;
+
+class CResCreator;
 
 enum EMainMenuItemTag
 {
@@ -17,6 +20,7 @@ enum EMainMenuItemTag
 	ECARD_TEST,
 	EFADESPRITE_TEST,
 	ESTART_Go,
+	ESTART_EXCHANGE,
 };
 
 
@@ -83,6 +87,26 @@ public:
 	*/
 	virtual void onTouchCancelled(Touch *touch, Event *unused_event);
 
+	/************************************************************************/
+	/* 
+	func: 
+	*/
+	/************************************************************************/
+
+	void	OnEvent_DealWithSpiltActionCallBack();
+
+	/************************************************************************/
+	/*
+	@func:		CheckActionSplit
+	@param:		CActorBase* pActor
+	@param:		Vec2 oPoint
+	@return:	bool
+	Desc:		check action split
+	*/
+	/************************************************************************/
+
+	//bool CheckActionSplit(Vec2 opint, CActorBase* pActor);
+
 private:
 	void AddSceneMap();
 
@@ -117,7 +141,23 @@ private:
 	/************************************************************************/
 	void AddButton_StartGoAction();
 
+	/************************************************************************/
+	/*
+	@func:		__GetTileContextByName
+	@param:		const char* szName
+	@param:		TTileLayerGridProperty *pTileContext
+	@param:		ValueMap mapObject
+	@return:	no
+	Desc:		get  tile  data context
+	*/
+	/************************************************************************/
+	
+	bool GetTheLastStepPoint(Vec2 **point);
+
 private:
+
+	//friend class CArthurKingControl;
+
 	Size visibleSize;
 
 	CActorBase* m_pCurAction;
@@ -163,5 +203,9 @@ private:
 
 	//ai auto open card state
 	bool m_bAiAutoOpen;
+
+	/////////////////////////////
+
+	TTileLayerGridProperty* m_pstTileGridProperty;
 };
 

@@ -6,8 +6,9 @@
 /************************************************************************/
 
 #include "ActionSpiltHandler.h"
+#include "TileBase.h"
 
-class CSH_SeaBar: public IArthurActionSpiltHandler
+class CSH_SeaBar: public CTileBase
 {
 public:
 	CSH_SeaBar();
@@ -16,6 +17,7 @@ public:
 	virtual char* GetActionName();
 
 	virtual void CheckCurrentAction(const TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pSelfActor, TActorInstanceMap* pOtherActors);
+
 
 private:
 

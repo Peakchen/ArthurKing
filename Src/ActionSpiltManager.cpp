@@ -13,7 +13,7 @@ CActionSpiltManager::~CActionSpiltManager()
 {
 }
 
-void CActionSpiltManager::AddLiveMsg(IArthurActionSpiltHandler* pSH)
+void CActionSpiltManager::AddLiveMsg(CTileBase* pSH)
 {
 	if (pSH == nullptr)
 	{
@@ -28,7 +28,7 @@ void CActionSpiltManager::AddLiveMsg(IArthurActionSpiltHandler* pSH)
 	m_mapSH [pSH->GetActionName()] = pSH;
 }
 
-void CActionSpiltManager::RemoveLiveMsg(IArthurActionSpiltHandler* pSH)
+void CActionSpiltManager::RemoveLiveMsg(CTileBase* pSH)
 {
 	if (pSH == nullptr)
 	{

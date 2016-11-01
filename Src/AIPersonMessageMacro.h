@@ -15,7 +15,9 @@
 
 #define ACTOR_STOP		6		//AI Stop 
 
-#define OpenCard_Action	7
+#define OpenCard_Action	7		// Open Card
+
+#define SH_SEABAR_ACTION	8	//sh  seabar
 
 //Any One can not use Max Value, and A custom Macro is In front.
 #define AI_MESSAGE_MAX_VALUE 256

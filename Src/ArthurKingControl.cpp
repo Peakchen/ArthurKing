@@ -36,9 +36,17 @@ void CArthurKingControl::OnPlayerMoveEnd()
 	if (stPlayerMovePath.iStepCount >= (m_passRowPath.size() - 1))
 	{
 		//
-		Vec2 opoint = Vec2(( float ) 1.0f*m_passRowPath.back()*TILE_WIDTH, (float) 1.0f*m_passColPath.back()*TILE_HEIGHT);
 
-		if (!g_PalyerManager.CheckActionSplit(opoint, m_pActor))
+		float iRow = m_passRowPath.back();
+		float iCol = m_passColPath.back();
+
+		float y = ( float )1.0f*iRow * TILE_WIDTH;
+		float x = ( float )1.0f*iCol * TILE_HEIGHT;
+
+		Vec2 opoint = Vec2(x, y);
+		CCLOG("%s src Point: x=%02f, y=%02f", __FUNCTION__, x, y);
+
+		if (!g_PalyerManager.CheckActionSplit(opoint, m_pActor, false))
 		{
 			CCLOG("action split is faild....");
 		}

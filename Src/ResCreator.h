@@ -20,6 +20,7 @@ version: 1.0
 #include "GiveTipAction.h"
 #include "SellSeaBarAction.h"
 
+//class CGameMainScene;
 
 class CResCreator
 {
@@ -68,6 +69,10 @@ public:
 	/************************************************************************/
 	CPersonMessageEventHandle* GetPersonMessageInstance ( ){ return &m_oPersonMessageHandle; }
 
+	//void SetMainSceneInstance(CGameMainScene* pMainSence){ m_oMainScene = *pMainSence; }
+
+//	CGameMainScene* GetMainSceneInstance(){ return &m_oMainScene; }
+
 
 private:
 	
@@ -98,6 +103,8 @@ private:
 	*/
 	/************************************************************************/
 	CPersonMessageEventHandle m_oPersonMessageHandle;
+
+	//CGameMainScene		m_oMainScene;
 
 };
 

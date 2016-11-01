@@ -117,7 +117,7 @@ public:
 	*/
 	/************************************************************************/
 
-	bool CheckActionSplit(Vec2 opint, CActorBase* pActor);
+	bool CheckActionSplit(Vec2 opint, CActorBase* pActor, bool bCallback = false, TTileLayerGridProperty** pTileGrid = nullptr);
 
 	/************************************************************************/
 	/* 
@@ -128,6 +128,8 @@ public:
 	*/
 	/************************************************************************/
 	void	RemoveActorInstace(__int8 PDBID);
+
+	TActorInstanceMap *GetActorMap(){ return &m_mapActorInstanceMap; }
 
 private:
 
@@ -153,7 +155,7 @@ private:
 	*/
 	/************************************************************************/
 
-	void __GetTileContextByName(const char* szName, TTileLayerGridProperty *pTileContext, ValueMap mapObject);
+	void __GetTileContextByName(string szName, TTileLayerGridProperty *pTileContext, ValueMap mapObject);
 
 private:
 

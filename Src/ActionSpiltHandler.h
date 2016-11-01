@@ -38,6 +38,4 @@ struct IArthurActionSpiltHandler
 	virtual void  CheckCurrentAction(const TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pSelfActor, TActorInstanceMap* pOtherActors) = 0;
 };
 
-typedef map<char*, IArthurActionSpiltHandler*> TSPLITHANDLERMAP;
-
 #endif

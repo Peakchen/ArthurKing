@@ -1,10 +1,11 @@
 #include "SH_SeaBar.h"
 #include "SeaBarFacade.h"
 #include "ExchangeSeaBarPopup.h"
+#include "ResCreator.h"
 
 CSH_SeaBar::CSH_SeaBar()
 {
-
+	
 }
 
 CSH_SeaBar::~CSH_SeaBar()
@@ -30,11 +31,8 @@ void CSH_SeaBar::CheckCurrentAction(const TTileLayerGridProperty *pTileLayerPepe
 	else if (ESeaBar_None == iflag)
 	{
 		// no owner, then pop up 
-		if (CExchangeSeaBarPopup::CreateExchangeSeaBarPopup() == nullptr)
-		{
-			CCLOG("exchange seabar is failed....");
-		}
 
+		g_ResCreator.GetPersonMessageInstance()->FireMessage(SH_SEABAR_ACTION, "SH SEABAR action");
 	}
 	else if (ESeaBar_other == iflag)
 	{
@@ -48,3 +46,4 @@ void CSH_SeaBar::CheckCurrentAction(const TTileLayerGridProperty *pTileLayerPepe
 	}
 
 }
+

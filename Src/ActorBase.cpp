@@ -21,8 +21,8 @@ void CActorBase::GetPlayerGoPath(int iStepCount, int** arrCanGoGrid)
 	int iNextColStep = 0;
 	int iNextRowStep = 0;
 
-	int iCurrentColStep = (dwLocx) / TILE_WIDTH;
-	int iCurrentRowStep = (dwLocy - TILE_HEIGHT / 5) / TILE_HEIGHT;
+	int iCurrentColStep = ceil(dwLocx / TILE_WIDTH);
+	int iCurrentRowStep = ceil((dwLocy - TILE_HEIGHT / 5) / TILE_HEIGHT);
 
 	CCLOG("iCurrentColStep: %d, iCurrentRowStep: %d", iCurrentColStep, iCurrentRowStep);
 

@@ -228,9 +228,9 @@ bool CPlayerManager::DoParseScore(ValueMap mapObject, GWORD &dwScore)
 	return false;
 }
 
-bool CPlayerManager::CheckActionSplit(Vec2 opint, CActorBase* pActor)
+bool CPlayerManager::CheckActionSplit(Vec2 opint, CActorBase* pActor, bool bCallback /* = false */, TTileLayerGridProperty** pTileGrid /* = nullptr*/)
 {
-	//CCLOG("Dest: x = %02f,   y = %02f ", opint.x, opint.y);
+	CCLOG("func:%s  Dest: x = %02f,   y = %02f ", __FUNCTION__, opint.x, opint.y);
 	ValueVector vecArray = g_ResCreator.GetMapReaderInstance()->getVecObjectPath();
 
 	ValueVector::iterator itBegin = vecArray.begin();
@@ -256,7 +256,7 @@ bool CPlayerManager::CheckActionSplit(Vec2 opint, CActorBase* pActor)
 
 		bool bFlag_x = ( fabs(opint.x - x) <= CoordinateDiff );
 		bool bFlag_y = ( fabs(opint.y - y) <= CoordinateDiff );
-		//CCLOG("fabs: x = %02f,   y = %02f ", fabs(opint.x - x), fabs(opint.y - y));
+		CCLOG("fabs: x = %02f,   y = %02f ", fabs(opint.x - x), fabs(opint.y - y));
 
 		if (bFlag_x && bFlag_y)
 		{
@@ -266,23 +266,33 @@ bool CPlayerManager::CheckActionSplit(Vec2 opint, CActorBase* pActor)
 				return false;
 			}
 
-			char* szName = ( char* ) mapObject ["name"].asString().c_str();
-			char* szType = ( char* ) mapObject ["Type"].asString().c_str();
+			string szName = mapObject ["name"].asString();
+			string szType = mapObject ["Type"].asString();
 			TSPLITHANDLERMAP::iterator it = pSplitAction->find(szName);
 			if (it != pSplitAction->end())
 			{
 				TTileLayerGridProperty oTileGridPeperty;
 				__GetTileContextByName(szName, &oTileGridPeperty, mapObject);
 
+
 				RemoveActorInstace(pActor->GetPDBID());
 
-				it->second->CheckCurrentAction(&oTileGridPeperty, pActor, &m_mapActorInstanceMap);
+				IArthurActionSpiltHandler* pSpiltHandler = it->second;
+
+				//g_ResCreator.GetMainSceneInstance()->DealWithSpiltActionCallBack();
+				if (bCallback)
+				{
+					*pTileGrid = &oTileGridPeperty;
+				}
+				else
+				{
+					it->second->CheckCurrentAction(&oTileGridPeperty, pActor, &m_mapActorInstanceMap);
+				}
 				return true;
 			}
 			else
 			{
 				CCLOG("no find this location....");
-				return false;
 			}
 			return false;
 		}
@@ -291,56 +301,56 @@ bool CPlayerManager::CheckActionSplit(Vec2 opint, CActorBase* pActor)
 	return false;
 }
 
-void CPlayerManager::__GetTileContextByName(const char* szName, TTileLayerGridProperty *pTileContext, ValueMap mapObject)
+void CPlayerManager::__GetTileContextByName(string szName, TTileLayerGridProperty *pTileContext, ValueMap mapObject)
 {
-	pTileContext->szName = ( char* ) mapObject ["name"].asString().c_str();
-	pTileContext->szType = ( char* ) mapObject ["Type"].asString().c_str();
+	pTileContext->szName = mapObject ["name"].asString();
+	pTileContext->szType = mapObject ["Type"].asString();
 
-	if (strcmp(szName, ETILELAYER_ONCEAGAIN) == 0)
+	if (szName == ETILELAYER_ONCEAGAIN)
 	{
 		return;
 	}
-	else if (strcmp(szName, ETILELAYER_BLUE_DOUBLESTAR) == 0)
+	else if (szName == ETILELAYER_BLUE_DOUBLESTAR)
 	{
 		pTileContext->iTimes = mapObject ["times"].asInt();
 	}
-	else if (strcmp(szName, ETILELAYER_BLUE_STAR) == 0)
+	else if (szName == ETILELAYER_BLUE_STAR)
 	{
 		pTileContext->iTimes = mapObject ["times"].asInt();
 		pTileContext->iScoreMult = mapObject ["ScoreMult"].asInt();
 	}
-	else if (strcmp(szName, ETILELAYER_FOOT_BLUE) == 0)
+	else if (szName == ETILELAYER_FOOT_BLUE)
 	{
 		pTileContext->iStopTimes = mapObject ["stoptimes"].asInt();
 	}
-	else if (strcmp(szName, ETILELAYER_FOOT_RED) == 0)
+	else if (szName == ETILELAYER_FOOT_RED)
 	{
 		pTileContext->iStopTimes = mapObject ["stoptimes"].asInt();
 	}
-	else if (strcmp(szName, ETILELAYER_QUESTION) == 0)
+	else if (szName == ETILELAYER_QUESTION)
 	{
 		
 	}
-	else if (strcmp(szName, ETILELAYER_RED_DOUBLESTAR) == 0)
+	else if (szName == ETILELAYER_RED_DOUBLESTAR)
 	{
 		pTileContext->iScoreMult = mapObject ["ScoreMult"].asInt();
 		pTileContext->iTimes = mapObject["times"].asInt();
 	}
-	else if (strcmp(szName, ETILELAYER_SCORE) == 0)
+	else if (szName == ETILELAYER_SCORE)
 	{
 		pTileContext->iScoreValue = mapObject ["value"].asInt();
 	}
-	else if (strcmp(szName, ETILELAYER_SEABAR) == 0)
+	else if (szName == ETILELAYER_SEABAR)
 	{
 		pTileContext->iSeaBarIndex = mapObject ["index"].asInt();
 		pTileContext->iSeaBarPrice = mapObject["price"].asInt();
 		pTileContext->iSeaBarTip = mapObject ["tip"].asInt();
 	}
-	else if (strcmp(szName, ETILELAYER_TUEN_FREE) == 0)
+	else if (szName == ETILELAYER_TUEN_FREE)
 	{
 		pTileContext->iTimes = mapObject ["times"].asInt();
 	}
-	else if (strcmp(szName, ETILELAYER_YELLOW_STAR) == 0)
+	else if (szName == ETILELAYER_YELLOW_STAR)
 	{
 		pTileContext->iTimes = mapObject ["times"].asInt();
 	}
