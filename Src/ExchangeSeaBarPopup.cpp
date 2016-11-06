@@ -1,4 +1,4 @@
-#include "ExchangeSeaBarPopup.h"
+ï»¿#include "ExchangeSeaBarPopup.h"
 #include "ConstUtil.h"
 
 CExchangeSeaBarPopup::CExchangeSeaBarPopup() : m_pPopPlayer(NULL)
@@ -20,7 +20,7 @@ void CExchangeSeaBarPopup::OnEnter()
 	CreatePopupModule();
 
 	//
-	setPopContext("Ã´Ã´ßÕ~", "ÄãÈ·¶¨ÒªÖÃ»»Õâ¶°º£Ñó¹ÝÂð£¿");
+	setPopContext("Dear~", "Are you sureï¼Ÿ"); 
 	if (m_pPopPlayer)
 		addChild(m_pPopPlayer);
 }
@@ -29,13 +29,14 @@ void CExchangeSeaBarPopup::onExit()
 {
 	Layer::onExit();
 
+
 	CCLOG("%s is start, file is %s, %d", __FUNCTION__, __FILE__);
 }
 
 void CExchangeSeaBarPopup::setPopContext(const char * szTitle, const char* szContext)
 {
 	CCLOG("%s is start, file is %s, %d", __FUNCTION__, __FILE__);
-	auto pLabelContext = LabelTTF::create(szContext, EFontType_MarkerFelt, 20.0f);
+	auto pLabelContext = LabelTTF::create(szContext, EFontType_MarkerFelt, 15.0f);
 	pLabelContext->setFontFillColor(Color3B::RED);
 
 	if (pLabelContext == NULL)
@@ -47,9 +48,44 @@ void CExchangeSeaBarPopup::setPopContext(const char * szTitle, const char* szCon
 	Point dstPoint = this->getChildByTag(EBackGround)->getContentSize();
 	pMenuItemContext->setPosition(ccp(dstPoint.x / 2, dstPoint.y / 2));
 
+	MenuItemLabel* pMenuCancleItem = nullptr;
+	cocos2d::ccMenuCallback pCancle_CallBack = CC_CALLBACK_0(CExchangeSeaBarPopup::OnCancleExchange_Cancle_Action, this);
+	CreateMenuItemByfontCallback("No",
+								 pCancle_CallBack,
+								 15,
+								 EFontType_MarkerFelt,
+								 &pMenuCancleItem
+								 /* Point(oWinSize.width, oWinSize.height - 50),
+								 Size::ZERO*/
+								 );
 
+	MenuItemLabel* pMenuOkItem = nullptr;
+	cocos2d::ccMenuCallback pOK_CallBack = CC_CALLBACK_0(CExchangeSeaBarPopup::OnCancleExchange_OK_Action, this);
+	CreateMenuItemByfontCallback("OK",
+								 pOK_CallBack,
+								 15,
+								 EFontType_MarkerFelt,
+								 &pMenuOkItem
+								 /* Point(oWinSize.width, oWinSize.height - 50),
+								 Size::ZERO*/
+								 );
 
-	m_pPopPlayer = Menu::create(pMenuItemContext, NULL);
+	//Menu* pHorizonMenuItem = MenuItem::create(pMenuCancleItem, pMenuOkItem, NULL);
+	//pHorizonMenuItem->alignItemsHorizontallyWithPadding(20.0f);
+
+	m_pPopPlayer = Menu::create(pMenuItemContext, pMenuCancleItem, pMenuOkItem, NULL);
+
+	m_pPopPlayer->alignItemsVerticallyWithPadding(5.0f);
+	Size oWinSize = this->getChildByTag(EBackGround)->getContentSize();
+	int index = 0;
+	for (const auto &child : m_pPopPlayer->getChildren())
+	{
+		auto dstPostion = child->getPosition();
+		float dtoffset = oWinSize.width / 5;
+
+		child->setPosition(Vec2(dstPostion.x + dtoffset, dstPostion.y - 10.0f));
+		++index;
+	}
 
 	auto pLabelTitle = LabelTTF::create(szTitle, EFontType_MarkerFelt, 15.0f);
 	if (pLabelTitle == NULL)
@@ -81,4 +117,16 @@ void CExchangeSeaBarPopup::OnEixtSettingMenuCallBack(Object* pSender, Control::E
 {
 	CCLOG("%s is start, file is %s", __FUNCTION__, __FILE__);
 	this->removeFromParent();
+}
+
+void CExchangeSeaBarPopup::OnCancleExchange_Cancle_Action()
+{
+	CCLOG("%s is start, file is %s", __FUNCTION__, __FILE__);
+	this->removeFromParent();
+}
+
+void CExchangeSeaBarPopup::OnCancleExchange_OK_Action()
+{
+	CCLOG("%s is start, file is %s --------------------- ok", __FUNCTION__, __FILE__);
+
 }

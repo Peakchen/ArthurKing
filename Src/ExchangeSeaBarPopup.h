@@ -52,6 +52,10 @@ public:
 	/************************************************************************/
 	virtual void	OnEixtSettingMenuCallBack(Object* pSender, Control::EventType event);
 
+	void OnCancleExchange_Cancle_Action();
+
+	void OnCancleExchange_OK_Action();
+
 private:
 
 	Menu* m_pPopPlayer;

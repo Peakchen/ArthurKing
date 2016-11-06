@@ -156,6 +156,8 @@ private:
 
 	void CreateSequenceAboutOpenCardAction();
 
+	void CreateThreadChechPopupCloseAction();
+
 private:
 
 	//friend class CArthurKingControl;
@@ -209,5 +211,10 @@ private:
 	/////////////////////////////
 
 	TTileLayerGridProperty* m_pstTileGridProperty;
+
+	// dialog close flag
+	bool m_bDialog_close;
+
+	std::mutex m_MainPopMutex;
 };
 

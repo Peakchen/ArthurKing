@@ -25,7 +25,7 @@ bool CArthurKingControl::init()
 		return false;
 	}
 
-
+	//g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(DIALOG_CLOSE_ACTION, this, "SH SEABAR action");
 	//pCallFunc_MoveEnd = CallFunc::create(CC_CALLBACK_0(CArthurKingControl::OnPlayerMoveEnd, this));
 	return true;
 }
@@ -37,19 +37,8 @@ void CArthurKingControl::OnPlayerMoveEnd()
 	{
 		//
 
-		float iRow = m_passRowPath.back();
-		float iCol = m_passColPath.back();
+		CreateThreadChechSplitAction();
 
-		float y = ( float )1.0f*iRow * TILE_WIDTH;
-		float x = ( float )1.0f*iCol * TILE_HEIGHT;
-
-		Vec2 opoint = Vec2(x, y);
-		CCLOG("%s src Point: x=%02f, y=%02f", __FUNCTION__, x, y);
-
-		if (!g_PalyerManager.CheckActionSplit(opoint, m_pActor, false))
-		{
-			CCLOG("action split is faild....");
-		}
 		// 
 		FindNextPlayer();
 		return;
@@ -256,4 +245,35 @@ void CArthurKingControl::FindNextPlayer()
 
 	g_PalyerManager.setRecordCurPlayerAction(iCurAction);
 	g_PalyerManager.setRecordNextPlayerAction(( EPLAYER_ACTION ) iNextAction);
+}
+
+//void CArthurKingControl::OnExecMessageHandle(GWORD nMsgID, const char* szDesc)
+//{
+//	switch (nMsgID)
+//	{
+//		case DIALOG_CLOSE_ACTION:
+//			{
+//				CCLOG("DIALOG_CLOSE_ACTION  file: %s is wrong, function: %s...", __LINE__, __FUNCTION__);
+//			}
+//			break;
+//		default:
+//			CCLOG("file: %s is wrong...", __LINE__, __FUNCTION__);
+//			break;
+//	}
+//}
+
+void CArthurKingControl::CreateThreadChechSplitAction()
+{
+	float iRow = m_passRowPath.back();
+	float iCol = m_passColPath.back();
+
+	float y = ( float )1.0f*iRow * TILE_WIDTH;
+	float x = ( float )1.0f*iCol * TILE_HEIGHT;
+
+	Vec2 opoint = Vec2(x, y);
+	CCLOG("%s src Point: x=%02f, y=%02f", __FUNCTION__, x, y);
+	if (!g_PalyerManager.CheckActionSplit(opoint, m_pActor, false))
+	{
+		CCLOG("action split is faild....");
+	}
 }

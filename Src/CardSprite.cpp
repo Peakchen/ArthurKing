@@ -99,7 +99,7 @@ void CCardSprite::initCardData(const char* strInCard, const char* strOutCard, fl
 		CCLOG("error: 创建 pInCard 非法.");
 		return;
 	}
-	pInCard->setPosition(ccp(visibleSize.width / 2 - 220, visibleSize.height - 50));
+	pInCard->setPosition(ccp(visibleSize.width / 2 - 220, visibleSize.height - 80));
 	pInCard->setVisible(false);	  // hide 
 	pInCard->setTag(EInCard);
 	addChild(pInCard);

@@ -11,6 +11,7 @@
 #include "SettingMenu.h"
 #include "ActionSpiltManager.h"
 #include "ExchangeSeaBarPopup.h"
+#include "cocos2d/cocos/platform/winrt/CCPThreadWinRT.h"
 
 USING_NS_CC;
 
@@ -27,12 +28,15 @@ bool CGameMainScene::init()
 
 	m_bAiAutoOpen = false;
 
+	m_bDialog_close = false;
+
 	g_ResCreator.GetPersonMessageInstance()->ResetData();
 
 	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(ACTOR_START, this, "player action");
 	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(AI_START, this, "AI action");
 	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(OpenCard_Action, this, "Open Card action");
 	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(SH_SEABAR_ACTION, this, "SH SEABAR action");
+	
 
 	visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -546,16 +550,16 @@ void CGameMainScene::OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc)
 				OnEvent_DealWithSpiltActionCallBack();
 				
 			}
+
+		case DIALOG_CLOSE_ACTION:
+			{
+				m_bDialog_close = true;
+			}
 		default:
 			CCLOG("error: %s message is wrong...", __FUNCTION__);
 			break;
 	}
 
-	//if (getChildByTag(ESTART_EXCHANGE))
-	//{
-	//	CCLOG("event is existing..............................");
-	//}
-	//
 }
 
 void CGameMainScene::TurnToGoAction()
@@ -696,6 +700,9 @@ void CGameMainScene::OnEvent_DealWithSpiltActionCallBack()
 
 	pExchangePopup->setTag(ESTART_EXCHANGE);
 	addChild(pExchangePopup);
+
+	std::thread  th_CheckDialog(&CGameMainScene::CreateThreadChechPopupCloseAction, this);
+	th_CheckDialog.join();
 }
 
 bool CGameMainScene::GetTheLastStepPoint(Vec2 **point)
@@ -738,4 +745,22 @@ void CGameMainScene::CreateSequenceAboutOpenCardAction()
 		this->runAction(pSequence_CreateCard);
 	}
 
+}
+
+void CGameMainScene::CreateThreadChechPopupCloseAction()
+{
+	CCLOG("file: %s, function: %s is start.............", __LINE__, __FUNCTION__);
+	while (true)
+	{
+		m_MainPopMutex.lock();
+
+		if (getChildByTag(ESTART_EXCHANGE) == NULL)
+		{
+			CCLOG("ESTART_EXCHANGE is NULL.");
+			m_MainPopMutex.unlock();
+			break;
+		}
+	}
+
+	return;
 }

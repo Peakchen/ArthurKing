@@ -19,6 +19,8 @@
 
 #define SH_SEABAR_ACTION	8	//sh  seabar
 
+#define DIALOG_CLOSE_ACTION	 9
+
 //Any One can not use Max Value, and A custom Macro is In front.
 #define AI_MESSAGE_MAX_VALUE 256
 

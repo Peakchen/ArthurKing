@@ -28,6 +28,9 @@ public:
 	CC_SYNTHESIZE(std::vector<int>, m_passColPath, RecordPassColPath);
 	CC_SYNTHESIZE(std::vector<int>, m_passRowPath, RecordPassRowPath);
 
+	////////////////////////////////IAIPersonMessageSink/////////////////////////////
+	//virtual void  OnExecMessageHandle(GWORD nMsgID, const char* szDesc);
+
 private:
 	//四方向动画
 	Animate* m_pActor_Left_Animate;
@@ -56,6 +59,8 @@ private:
 	void OnPlayerMove();
 
 	void FindNextPlayer();
+
+	void CreateThreadChechSplitAction();
 };
 
 
