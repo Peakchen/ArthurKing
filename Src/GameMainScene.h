@@ -154,6 +154,8 @@ private:
 	
 	bool GetTheLastStepPoint(Vec2 **point);
 
+	void CreateSequenceAboutOpenCardAction();
+
 private:
 
 	//friend class CArthurKingControl;

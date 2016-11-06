@@ -66,7 +66,8 @@ void CPopupBase::CreateMenuItemBySpriteCallBack(const char* szNormalpic, const c
 
 void CPopupBase::OnEixtSettingMenuCallBack(Object* pSender, Control::EventType event)
 {
-	this->removeFromParent();
+	CCLOG("%s is start, file is %s, %d", __FUNCTION__, __FILE__, __LINE__);
+	//this->removeFromParent();
 }
 
 void CPopupBase::CreatePopupModule()
@@ -101,4 +102,37 @@ void CPopupBase::CreatePopupModule()
 	pBg->addChild(pCloseBtn);
 	pBg->setContentSize(Size(362.0f, 147.0f));
 	this->addChild(pBg);
+}
+
+bool CPopupBase::onTouchBegan(Touch *touch, Event *unused_event)
+{
+	CCLOG("%s has %s start....",__FILE__ , __FUNCTION__);
+	return true;
+}
+
+void CPopupBase::onTouchMoved(Touch *touch, Event *unused_event)
+{
+	CCLOG("%s has %s start....", __FILE__, __FUNCTION__);
+}
+
+void CPopupBase::onTouchEnded(Touch *touch, Event *unused_event)
+{
+	CCLOG("%s has %s start....", __FILE__, __FUNCTION__);
+}
+
+void CPopupBase::onTouchCancelled(Touch *touch, Event *unused_event)
+{
+	CCLOG("%s has %s start....", __FILE__, __FUNCTION__);
+}
+
+void CPopupBase::onExit()
+{
+	CCLOG("%s has %s start....", __FILE__, __FUNCTION__);
+	//Layer::onExit();
+}
+
+void CPopupBase::OnEnter()
+{
+	CCLOG("%s has %s start....", __FILE__, __FUNCTION__);
+	//Layer::onEnter();
 }

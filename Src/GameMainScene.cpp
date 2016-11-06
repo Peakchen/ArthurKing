@@ -516,6 +516,8 @@ void CGameMainScene::OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc)
 
 				m_bAiAutoOpen = false;
 				CCLOG("-----------------------------player go ---------------------------");
+
+				CreateSequenceAboutOpenCardAction();
 			}
 			break;
 
@@ -525,6 +527,7 @@ void CGameMainScene::OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc)
 				m_pCurAction = m_pAIplayer;
 				m_bAiAutoOpen = true;
 				CCLOG("-----------------------------ai go ---------------------------");
+				CreateSequenceAboutOpenCardAction();
 			}
 			break;
 
@@ -532,6 +535,8 @@ void CGameMainScene::OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc)
 			{
 				CCLOG("-----------------------------Open Card ---------------------------");
 				AfterOpenCard();
+
+				//CreateSequenceAboutOpenCardAction();
 				return;
 			}
 		case SH_SEABAR_ACTION:
@@ -545,26 +550,12 @@ void CGameMainScene::OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc)
 			CCLOG("error: %s message is wrong...", __FUNCTION__);
 			break;
 	}
-	
-	pCallFunc_CreateCard = CallFunc::create(CC_CALLBACK_0(CGameMainScene::TurnToGoAction, this));
 
-	if (getChildByTag(ESTART_EXCHANGE))
-	{
-		CCLOG("event is existing..............................");
-	}
-
-	CCSequence* pSequence_CreateCard = CCSequence::create(
-		CCDelayTime::create(3.5f),
-		pCallFunc_CreateCard,
-		//CCDelayTime::create(3.5f),
-		NULL
-		);
-	
-	if (pSequence_CreateCard)
-	{
-		this->runAction(pSequence_CreateCard);
-	}
-	
+	//if (getChildByTag(ESTART_EXCHANGE))
+	//{
+	//	CCLOG("event is existing..............................");
+	//}
+	//
 }
 
 void CGameMainScene::TurnToGoAction()
@@ -666,6 +657,7 @@ void CGameMainScene::onTouchMoved(Touch *touch, Event *unused_event)
 void CGameMainScene::onTouchEnded(Touch *touch, Event *unused_event)
 {
 	Trace_In("%s is starting -------------------------", __FUNCTION__);
+	
 }
 
 void CGameMainScene::onTouchCancelled(Touch *touch, Event *unused_event)
@@ -691,6 +683,10 @@ void CGameMainScene::OnEvent_DealWithSpiltActionCallBack()
 	}
 
 	// then open pop up
+	if (getChildByTag(ESTART_EXCHANGE))
+	{
+		removeChildByTag(ESTART_EXCHANGE);
+	}
 
 	CExchangeSeaBarPopup* pExchangePopup = CExchangeSeaBarPopup::CreateExchangeSeaBarPopup();
 	if (!pExchangePopup)
@@ -726,124 +722,20 @@ bool CGameMainScene::GetTheLastStepPoint(Vec2 **point)
 	return true;
 }
 
+void CGameMainScene::CreateSequenceAboutOpenCardAction()
+{
+	pCallFunc_CreateCard = CallFunc::create(CC_CALLBACK_0(CGameMainScene::TurnToGoAction, this));
 
-//bool CGameMainScene::CheckActionSplit(Vec2 opint, CActorBase* pActor)
-//{
-//	CCLOG("func:%s  Dest: x = %02f,   y = %02f ", __FUNCTION__, opint.x, opint.y);
-//	ValueVector vecArray = g_ResCreator.GetMapReaderInstance()->getVecObjectPath();
-//
-//	ValueVector::iterator itBegin = vecArray.begin();
-//	for (; itBegin != vecArray.end(); ++itBegin)
-//	{
-//		ValueMap  mapObject = itBegin->asValueMap();
-//
-//		//CCLOG("value: %d, %s", mapObject.size(), mapObject ["name"]);
-//		float x = mapObject ["x"].asFloat();
-//		float y = mapObject ["y"].asFloat();
-//
-//		Vec2 vecPoint = Vec2(x, y);
-//
-//		Vec2 vecPoint1 = Vec2(x + 1, y + 1);
-//		Vec2 vecPoint2 = Vec2(x + 1, y);
-//		Vec2 vecPoint3 = Vec2(x, y + 1);
-//
-//		Vec2 vecPoint4 = Vec2(x - 1, y - 1);
-//		Vec2 vecPoint5 = Vec2(x - 1, y);
-//		Vec2 vecPoint6 = Vec2(x, y - 1);
-//
-//		//CCLOG("Src: x = %02f,   y = %02f ", x, y);
-//
-//		bool bFlag_x = ( fabs(opint.x - x) <= CoordinateDiff );
-//		bool bFlag_y = ( fabs(opint.y - y) <= CoordinateDiff );
-//		CCLOG("fabs: x = %02f,   y = %02f ", fabs(opint.x - x), fabs(opint.y - y));
-//
-//		if (bFlag_x && bFlag_y)
-//		{
-//			TSPLITHANDLERMAP* pSplitAction = g_ActionSpiltManager.GetSplitHandlerMap();
-//			if (pSplitAction->empty() || pActor == nullptr)
-//			{
-//				return false;
-//			}
-//
-//			string szName = mapObject ["name"].asString();
-//			string szType = mapObject ["Type"].asString();
-//			TSPLITHANDLERMAP::iterator it = pSplitAction->find(szName);
-//			if (it != pSplitAction->end())
-//			{
-//				TTileLayerGridProperty oTileGridPeperty;
-//				__GetTileContextByName(szName, &oTileGridPeperty, mapObject);
-//
-//				g_PalyerManager.RemoveActorInstace(pActor->GetPDBID());
-//
-//				//CTileBase* pSpiltHandler = it->second;
-//
-//				//g_ResCreator.GetMainSceneInstance()->DealWithSpiltActionCallBack();
-//				//DealWithSpiltActionCallBack(pSpiltHandler, &oTileGridPeperty, pActor, g_PalyerManager.GetActorMap());
-//				it->second->CheckCurrentAction(&oTileGridPeperty, pActor, g_PalyerManager.GetActorMap());
-//				return true;
-//			}
-//			else
-//			{
-//				CCLOG("no find this location....");
-//			}
-//			return false;
-//		}
-//	}
-//
-//	return false;
-//}
-//
-//void CGameMainScene::__GetTileContextByName(string szName, TTileLayerGridProperty *pTileContext, ValueMap mapObject)
-//{
-//	pTileContext->szName = mapObject ["name"].asString();
-//	pTileContext->szType = mapObject ["Type"].asString();
-//
-//	if (szName == ETILELAYER_ONCEAGAIN)
-//	{
-//		return;
-//	}
-//	else if (szName == ETILELAYER_BLUE_DOUBLESTAR)
-//	{
-//		pTileContext->iTimes = mapObject ["times"].asInt();
-//	}
-//	else if (szName == ETILELAYER_BLUE_STAR)
-//	{
-//		pTileContext->iTimes = mapObject ["times"].asInt();
-//		pTileContext->iScoreMult = mapObject ["ScoreMult"].asInt();
-//	}
-//	else if (szName == ETILELAYER_FOOT_BLUE)
-//	{
-//		pTileContext->iStopTimes = mapObject ["stoptimes"].asInt();
-//	}
-//	else if (szName == ETILELAYER_FOOT_RED)
-//	{
-//		pTileContext->iStopTimes = mapObject ["stoptimes"].asInt();
-//	}
-//	else if (szName == ETILELAYER_QUESTION)
-//	{
-//
-//	}
-//	else if (szName == ETILELAYER_RED_DOUBLESTAR)
-//	{
-//		pTileContext->iScoreMult = mapObject ["ScoreMult"].asInt();
-//		pTileContext->iTimes = mapObject ["times"].asInt();
-//	}
-//	else if (szName == ETILELAYER_SCORE)
-//	{
-//		pTileContext->iScoreValue = mapObject ["value"].asInt();
-//	}
-//	else if (szName == ETILELAYER_SEABAR)
-//	{
-//		pTileContext->iSeaBarIndex = mapObject ["index"].asInt();
-//		pTileContext->iSeaBarPrice = mapObject ["price"].asInt();
-//		pTileContext->iSeaBarTip = mapObject ["tip"].asInt();
-//	}
-//	else if (szName == ETILELAYER_TUEN_FREE)
-//	{
-//		pTileContext->iTimes = mapObject ["times"].asInt();
-//	}
-//	else if (szName == ETILELAYER_YELLOW_STAR)
-//	{
-//		pTileContext->iTimes = mapObject ["times"].asInt();
-//	}
-//}
+	CCSequence* pSequence_CreateCard = CCSequence::create(
+		CCDelayTime::create(3.5f),
+		pCallFunc_CreateCard,
+		//CCDelayTime::create(3.5f),
+		NULL
+		);
+
+	if (pSequence_CreateCard)
+	{
+		this->runAction(pSequence_CreateCard);
+	}
+
+}

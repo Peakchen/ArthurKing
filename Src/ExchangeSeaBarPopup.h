@@ -42,6 +42,16 @@ public:
 
 	static CExchangeSeaBarPopup* CreateExchangeSeaBarPopup();
 
+	/************************************************************************/
+	/*
+	@func:		OnEixtSettingMenuCallBack()
+	@param:		no
+	@return:	void
+	@brief:		Exit SettingMenu, then todo ...
+	*/
+	/************************************************************************/
+	virtual void	OnEixtSettingMenuCallBack(Object* pSender, Control::EventType event);
+
 private:
 
 	Menu* m_pPopPlayer;
