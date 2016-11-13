@@ -48,7 +48,7 @@ void CExchangeSeaBarPopup::setPopContext(const char * szTitle, const char* szCon
 
 	auto pMenuItemContext = MenuItemLabel::create(pLabelContext);
 	Point dstPoint = this->getChildByTag(EBackGround)->getContentSize();
-	pMenuItemContext->setPosition(ccp(dstPoint.x / 2, dstPoint.y / 2));
+	pMenuItemContext->setPosition(ccp(dstPoint.x / 2 - 100, dstPoint.y / 2));
 
 	MenuItemLabel* pMenuCancleItem = nullptr;
 	cocos2d::ccMenuCallback pCancle_CallBack = CC_CALLBACK_0(CExchangeSeaBarPopup::OnCancleExchange_Cancle_Action, this);
@@ -72,8 +72,6 @@ void CExchangeSeaBarPopup::setPopContext(const char * szTitle, const char* szCon
 								 Size::ZERO*/
 								 );
 
-	//Menu* pHorizonMenuItem = MenuItem::create(pMenuCancleItem, pMenuOkItem, NULL);
-	//pHorizonMenuItem->alignItemsHorizontallyWithPadding(20.0f);
 
 	m_pPopPlayer = Menu::create(pMenuItemContext, pMenuCancleItem, pMenuOkItem, NULL);
 
@@ -85,7 +83,7 @@ void CExchangeSeaBarPopup::setPopContext(const char * szTitle, const char* szCon
 		auto dstPostion = child->getPosition();
 		float dtoffset = oWinSize.width / 5;
 
-		child->setPosition(Vec2(dstPostion.x + dtoffset, dstPostion.y - 10.0f));
+		child->setPosition(Vec2(dstPoint.x + dtoffset, dstPoint.y - 10.0f));
 		++index;
 	}
 
@@ -130,5 +128,6 @@ void CExchangeSeaBarPopup::OnCancleExchange_Cancle_Action()
 void CExchangeSeaBarPopup::OnCancleExchange_OK_Action()
 {
 	CCLOG("%s is start, file is %s --------------------- ok", __FUNCTION__, __FILE__);
-
+	
+	this->removeFromParent();
 }

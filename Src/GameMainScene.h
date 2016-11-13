@@ -21,6 +21,7 @@ enum EMainMenuItemTag
 	EFADESPRITE_TEST,
 	ESTART_Go,
 	ESTART_EXCHANGE,
+	ESTART_SELL,
 };
 
 
@@ -108,28 +109,28 @@ public:
 	//bool CheckActionSplit(Vec2 opint, CActorBase* pActor);
 
 private:
-	void AddSceneMap();
+	void		AddSceneMap();
 
-	void AddSetItem();
+	void		AddSetItem();
 
 	// for test 
-	void  AddButton_SettingMenu();
-	void  AddFadeSprite_Test();
+	void		AddButton_SettingMenu();
+	void		AddFadeSprite_Test();
 
-	void InitPlayerAnimation();
+	void		InitPlayerAnimation();
 
-	void addPlayer();
-	void addAI();
+	void		addPlayer();
+	void		addAI();
 
-	void GetAnimateVec(int iMin, int iMax, TVecSpriteFrame &vecPlayer_director, EPlayer iState);
+	void		GetAnimateVec(int iMin, int iMax, TVecSpriteFrame &vecPlayer_director, EPlayer iState);
 	
-	void AfterOpenCard();
+	void		AfterOpenCard();
 
-	void BeginFloatHead();
+	void		BeginFloatHead();
 
-	void BeginActorGo();
+	void		BeginActorGo();
 
-	void TurnToGoAction();
+	void		TurnToGoAction();
 
 	/************************************************************************/
 	/*	
@@ -139,7 +140,7 @@ private:
 	@brief:		player start go
 	*/
 	/************************************************************************/
-	void AddButton_StartGoAction();
+	void		AddButton_StartGoAction();
 
 	/************************************************************************/
 	/*
@@ -152,9 +153,9 @@ private:
 	*/
 	/************************************************************************/
 	
-	bool GetTheLastStepPoint(Vec2 **point);
+	bool		GetTheLastStepPoint(Vec2 **point);
 
-	void CreateSequenceAboutOpenCardAction();
+	void		CreateSequenceAboutOpenCardAction();
 
 	/************************************************************************/
 	/* 
@@ -164,7 +165,7 @@ private:
 	@brief:		创建一个弹框线程 回调
 	*
 	************************************************************************/
-	void CreateThreadChechPopupCloseActionCallBack();
+	void		CreateThreadChechPopupCloseActionCallBack();
 
 	/************************************************************************/
 	/* 
@@ -174,7 +175,21 @@ private:
 	@brief:		创建一个弹框线程
 	*/
 	/************************************************************************/
-	void CreateThreadChechPopupCloseAction();
+	void		CreateThreadChechPopupCloseAction();
+
+	/************************************************************************/
+	/* 
+	// create exchange popup
+	*/
+	/************************************************************************/
+	void		__CreateSeaBarExchangePopup();
+
+	/************************************************************************/
+	/* 
+	// create sell popup
+	*/
+	/************************************************************************/
+	void		__CreateSeabarSellPopup();
 
 private:
 

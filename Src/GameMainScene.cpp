@@ -12,6 +12,7 @@
 #include "ActionSpiltManager.h"
 #include "ExchangeSeaBarPopup.h"
 #include "cocos2d/cocos/platform/winrt/CCPThreadWinRT.h"
+#include "SellSeaBarPopup.h"
 
 USING_NS_CC;
 
@@ -35,8 +36,8 @@ bool CGameMainScene::init()
 	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(ACTOR_START, this, "player action");
 	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(AI_START, this, "AI action");
 	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(OpenCard_Action, this, "Open Card action");
-	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(SH_SEABAR_ACTION, this, "SH SEABAR action");
-	
+	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(SH_SEABAR_EXCHANGE_ACTION, this, "SH SEABAR echange action");
+	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(SH_SEABAR_SELL_ACTION, this, "SH SEABAR sell action");
 
 	visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -518,10 +519,8 @@ void CGameMainScene::OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc)
 			{
 				// ·­ÅÆ£¬ ×ßÂ·...
 				m_pCurAction = m_pArthurKing;
-
 				m_bAiAutoOpen = false;
 				CCLOG("-----------------------------player go ---------------------------");
-
 				CreateSequenceAboutOpenCardAction();
 			}
 			break;
@@ -535,32 +534,35 @@ void CGameMainScene::OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc)
 				CreateSequenceAboutOpenCardAction();
 			}
 			break;
-
 		case OpenCard_Action:
 			{
 				CCLOG("-----------------------------Open Card ---------------------------");
 				AfterOpenCard();
-
-				//CreateSequenceAboutOpenCardAction();
 				return;
 			}
-		case SH_SEABAR_ACTION:
+		case SH_SEABAR_EXCHANGE_ACTION:
 			{
-				CCLOG("-----------------------------SH seabar ---------------------------");
-
+				CCLOG("-----------------------------SH seabar exchange ---------------------------");
 				OnEvent_DealWithSpiltActionCallBack();
-				
+				__CreateSeaBarExchangePopup();
 			}
-
+			break;
+		case SH_SEABAR_SELL_ACTION:
+			{
+				CCLOG("-----------------------------SH seabar give tip ---------------------------");
+				OnEvent_DealWithSpiltActionCallBack();
+				__CreateSeabarSellPopup();
+			}
+			break;
 		case DIALOG_CLOSE_ACTION:
 			{
 				m_bDialog_close = true;
 			}
+			break;
 		default:
 			CCLOG("error: %s message is wrong...", __FUNCTION__);
 			break;
 	}
-
 }
 
 void CGameMainScene::TurnToGoAction()
@@ -687,23 +689,6 @@ void CGameMainScene::OnEvent_DealWithSpiltActionCallBack()
 		CCLOG("action split is faild....");
 	}
 
-	// then open pop up
-	if (getChildByTag(ESTART_EXCHANGE))
-	{
-		removeChildByTag(ESTART_EXCHANGE);
-	}
-
-	CExchangeSeaBarPopup* pExchangePopup = CExchangeSeaBarPopup::CreateExchangeSeaBarPopup();
-	if (!pExchangePopup)
-	{
-		return;
-	}
-
-	pExchangePopup->setTag(ESTART_EXCHANGE);
-	addChild(pExchangePopup);
-
-	//CreateThreadChechPopupCloseAction();
-
 }
 
 bool CGameMainScene::GetTheLastStepPoint(Vec2 **point)
@@ -777,4 +762,40 @@ void CGameMainScene::CreateThreadChechPopupCloseAction()
 	});
 
 	th_CheckDialog.join();
+}
+
+void CGameMainScene::__CreateSeaBarExchangePopup()
+{
+	// then open pop up
+	if (getChildByTag(ESTART_EXCHANGE))
+	{
+		removeChildByTag(ESTART_EXCHANGE);
+	}
+
+	CExchangeSeaBarPopup* pExchangePopup = CExchangeSeaBarPopup::CreateExchangeSeaBarPopup();
+	if (!pExchangePopup)
+	{
+		return;
+	}
+
+	pExchangePopup->setTag(ESTART_EXCHANGE);
+	addChild(pExchangePopup);
+}
+
+void CGameMainScene::__CreateSeabarSellPopup()
+{
+	// then open pop up
+	if (getChildByTag(ESTART_SELL))
+	{
+		removeChildByTag(ESTART_SELL);
+	}
+
+	CSellSeaBarPopup* pSellPopup = CSellSeaBarPopup::CreateSellBarPopup();
+	if (!pSellPopup)
+	{
+		return;
+	}
+
+	pSellPopup->setTag(ESTART_SELL);
+	addChild(pSellPopup);
 }

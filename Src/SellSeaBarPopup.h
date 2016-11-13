@@ -9,8 +9,8 @@ Desc:	parent: Seabar Base
 */
 /************************************************************************/
 
-#ifndef __EXCHANGE_SEABAR_POPUP__
-#define __EXCHANGE_SEABAR_POPUP__
+#ifndef __SELL_SEABAR_POPUP__
+#define __SELL_SEABAR_POPUP__
 
 #pragma once
 #include "SeaBarPopBase.h"
@@ -39,6 +39,13 @@ public:
 	*/
 	/************************************************************************/
 	virtual void	setPopContext(const char * szTitle, const char* szContext);
+
+	/************************************************************************/
+	/* 
+	// create instance
+	*/
+	/************************************************************************/
+	static CSellSeaBarPopup* CreateSellBarPopup();
 
 private:
 

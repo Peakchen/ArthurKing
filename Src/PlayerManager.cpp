@@ -253,7 +253,6 @@ bool CPlayerManager::CheckActionSplit(Vec2 opint, CActorBase* pActor, bool bCall
 		Vec2 vecPoint6 = Vec2(x, y - 1);
 
 		//CCLOG("Src: x = %02f,   y = %02f ", x, y);
-
 		bool bFlag_x = ( fabs(opint.x - x) <= CoordinateDiff );
 		bool bFlag_y = ( fabs(opint.y - y) <= CoordinateDiff );
 		CCLOG("fabs: x = %02f,   y = %02f ", fabs(opint.x - x), fabs(opint.y - y));
@@ -273,20 +272,22 @@ bool CPlayerManager::CheckActionSplit(Vec2 opint, CActorBase* pActor, bool bCall
 			{
 				TTileLayerGridProperty oTileGridPeperty;
 				__GetTileContextByName(szName, &oTileGridPeperty, mapObject);
-
-
 				RemoveActorInstace(pActor->GetPDBID());
 
 				IArthurActionSpiltHandler* pSpiltHandler = it->second;
+				if (!pSpiltHandler)
+				{
+					return false;
+				}
 
-				//g_ResCreator.GetMainSceneInstance()->DealWithSpiltActionCallBack();
 				if (bCallback)
 				{
-					*pTileGrid = &oTileGridPeperty;
+					//*pTileGrid = &oTileGridPeperty;
+					memcpy(*pTileGrid, &oTileGridPeperty, sizeof(TTileLayerGridProperty));
 				}
 				else
 				{
-					it->second->CheckCurrentAction(&oTileGridPeperty, pActor, &m_mapActorInstanceMap);
+					pSpiltHandler->CheckCurrentAction(&oTileGridPeperty, pActor, &m_mapActorInstanceMap);
 				}
 				return true;
 			}

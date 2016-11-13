@@ -3,8 +3,6 @@
 #include "SeaBarInfoManager.h"
 #include "ActorBase.h"
 
-
-
 bool CBuySeaBarAction::CheckCanExchangeSeaBar(int iSeaBarIndex, ESeaBarAttach& attchFlag, CActorBase* pActor)
 {
 	TSeaBarInfo* pSeaBarInfo = g_SealBarManager.GetSeaBarInfo(iSeaBarIndex);
@@ -64,7 +62,6 @@ void CBuySeaBarAction::DoExchangeSeaBar(int iSeaBarIndex, CActorBase* pActor)
 	pActor->SetOwnerSelfScore(dw_resultScore);
 
 	// then make it remember who is owner...
-
 	g_SealBarManager.SetSeaBarOwnerInfo(iSeaBarIndex, pActor->GetPDBID());
 }
 

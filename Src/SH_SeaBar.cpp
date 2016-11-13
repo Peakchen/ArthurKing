@@ -5,7 +5,10 @@
 
 CSH_SeaBar::CSH_SeaBar()
 {
-	
+	m_pTileLayerPeperty = nullptr;
+	m_pActor = nullptr;
+
+	__InitEventMsg();
 }
 
 CSH_SeaBar::~CSH_SeaBar()
@@ -20,6 +23,8 @@ char* CSH_SeaBar::GetActionName()
 void CSH_SeaBar::CheckCurrentAction(const TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pActor, TActorInstanceMap* pOtherActors)
 {
 	CCLOG("%s in %s is start --------- ", __FUNCTION__, __FILE__);
+	memcpy(m_pTileLayerPeperty, pTileLayerPeperty, sizeof(TTileLayerGridProperty));
+	m_pActor = pActor;
 
 	ESeaBarAttach iflag = ESeaBar_None;
 	bool bCanBuy = g_SeaBarFacade.GetBuySeaBarInstance()->CheckCanExchangeSeaBar(pTileLayerPeperty->iSeaBarIndex, iflag, pActor);
@@ -32,18 +37,45 @@ void CSH_SeaBar::CheckCurrentAction(const TTileLayerGridProperty *pTileLayerPepe
 	{
 		// no owner, then pop up 
 
-		g_ResCreator.GetPersonMessageInstance()->FireMessage(SH_SEABAR_ACTION, "SH SEABAR action");
+		g_ResCreator.GetPersonMessageInstance()->FireMessage(SH_SEABAR_EXCHANGE_ACTION, "SH SEABAR exchange action");
 	}
 	else if (ESeaBar_other == iflag)
 	{
 		// has owner, then give tip
-
+		g_SeaBarFacade.GetGiveTipInstance()->DoGiveTipToOther(m_pTileLayerPeperty->iSeaBarIndex, m_pActor);
 	}
 	else if (ESeaBar_self == iflag)
 	{
 		// the owner of seabar is myself, do nothing 
+		g_ResCreator.GetPersonMessageInstance()->FireMessage(SH_SEABAR_SELL_ACTION, "SH SEABAR sell action");
 		return;
 	}
 
+}
+
+void CSH_SeaBar::OnExecMessageHandle(GWORD nMsgID, const char* szDesc)
+{
+	switch (nMsgID)
+	{
+		case SEABAR_EXCHANGE:
+			{
+				CCLOG("");
+				g_SeaBarFacade.GetBuySeaBarInstance()->DoExchangeSeaBar(m_pTileLayerPeperty->iSeaBarIndex, m_pActor);
+			}
+			break;
+		case SEABAR_GIVETIP:
+			{
+				g_SeaBarFacade.GetGiveTipInstance()->DoGiveTipToOther(m_pTileLayerPeperty->iSeaBarIndex, m_pActor);
+			}
+			break;
+		default:
+			break;
+	}
+}
+
+void CSH_SeaBar::__InitEventMsg()
+{
+	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(SEABAR_EXCHANGE, this, "seabar exchange");
+	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(SEABAR_GIVETIP, this, "seabar give tip");
 }
 

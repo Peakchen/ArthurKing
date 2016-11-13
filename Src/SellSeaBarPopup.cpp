@@ -57,3 +57,18 @@ void CSellSeaBarPopup::setPopContext(const char * szTitle, const char* szContext
 	pLabelTitle->setPosition(dstPoint.x / 2, dstPoint.y);
 	this->getChildByTag(EBackGround)->addChild(pLabelTitle);
 }
+
+CSellSeaBarPopup* CSellSeaBarPopup::CreateSellBarPopup()
+{
+	CSellSeaBarPopup* pSellInstance = new CSellSeaBarPopup();
+	if (pSellInstance == nullptr)
+	{
+		CC_SAFE_DELETE(pSellInstance);
+		return nullptr;
+	}
+
+	pSellInstance->OnEnter();
+
+	pSellInstance->autorelease();
+	return pSellInstance;
+}

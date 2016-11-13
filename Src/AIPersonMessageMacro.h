@@ -17,9 +17,14 @@
 
 #define OpenCard_Action	7		// Open Card
 
-#define SH_SEABAR_ACTION	8	//sh  seabar
+#define SH_SEABAR_EXCHANGE_ACTION	8	//sh  seabar exchange action
 
-#define DIALOG_CLOSE_ACTION	 9
+#define DIALOG_CLOSE_ACTION	 9	// close pop
+
+#define SEABAR_EXCHANGE		10	//Seabar	exchange
+#define SEABAR_GIVETIP		11	//Seabar	give tip
+
+#define SH_SEABAR_SELL_ACTION	12	//sh  seabar sell action
 
 //Any One can not use Max Value, and A custom Macro is In front.
 #define AI_MESSAGE_MAX_VALUE 256
