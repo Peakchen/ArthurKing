@@ -13,7 +13,7 @@ void CPersonMessageEventHandle::RegisterAIMessage(GWORD nMsgID, IAIPersonMessage
 {
 	if (m_mapPersonMsg.empty())
 	{
-		m_mapPersonMsg [nMsgID].push_front(pAiMessageSink);
+		m_mapPersonMsg [nMsgID] = pAiMessageSink;
 		return;
 	}
 
@@ -23,14 +23,8 @@ void CPersonMessageEventHandle::RegisterAIMessage(GWORD nMsgID, IAIPersonMessage
 		//MessageBoxA(NULL, "NO Find This Message", "ERROR", 0);
 		return;
 	}
-	
-	TPersonMessageList& stMessageList = m_mapPersonMsg [nMsgID];
-	TPersonMessageList::iterator it	= find(stMessageList.begin(), stMessageList.end(), pAiMessageSink);
-	if (it == stMessageList.end())
-	{
-		stMessageList.push_front(pAiMessageSink);
-	}
 
+	m_mapPersonMsg [nMsgID] = pAiMessageSink;
 }
 
 void CPersonMessageEventHandle::UnRegisterAIMessage( GWORD nMsgID, IAIPersonMessageSink* pAiMessageSink )
@@ -43,12 +37,7 @@ void CPersonMessageEventHandle::UnRegisterAIMessage( GWORD nMsgID, IAIPersonMess
 		return;
 	}
 
-	TPersonMessageList& stMessageList = itMessage->second;
-	TPersonMessageList::iterator it	= find(stMessageList.begin(), stMessageList.end(), pAiMessageSink);
-	if (it != stMessageList.end())
-	{
-		stMessageList.erase(it);
-	}
+	m_mapPersonMsg.erase(nMsgID);
 }
 
 void CPersonMessageEventHandle::FireMessage(GWORD nMsgID, const char*  szDesc)
@@ -61,14 +50,10 @@ void CPersonMessageEventHandle::FireMessage(GWORD nMsgID, const char*  szDesc)
 		return;
 	}
 
-	TPersonMessageList stMessageList = itMessage->second;
-	TPersonMessageList::iterator it	= stMessageList.begin();
-	
-	for (; it != stMessageList.end(); ++it)
-	{
-		(*it)->OnExecMessageHandle(nMsgID, szDesc);
-	}
-	
+	if (itMessage->second == nullptr)
+		return;
+
+	itMessage->second->OnExecMessageHandle(nMsgID, szDesc);
 }
 
 void CPersonMessageEventHandle::ResetData()

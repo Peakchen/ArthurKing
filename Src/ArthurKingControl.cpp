@@ -11,6 +11,8 @@ CArthurKingControl::CArthurKingControl()
 	m_pActor_Right_Animate = NULL;
 	m_pActor_Up_Animate = NULL;
 	m_pActor_Down_Animate = NULL;
+
+	m_bThroughCard = false;
 }
 
 
@@ -25,7 +27,7 @@ bool CArthurKingControl::init()
 		return false;
 	}
 
-	//g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(DIALOG_CLOSE_ACTION, this, "SH SEABAR action");
+	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(DIALOG_CLOSE_ACTION, this, "Close dialog.");
 	//pCallFunc_MoveEnd = CallFunc::create(CC_CALLBACK_0(CArthurKingControl::OnPlayerMoveEnd, this));
 	return true;
 }
@@ -40,7 +42,9 @@ void CArthurKingControl::OnPlayerMoveEnd()
 		CreateThreadChechSplitAction();
 
 		// 
-		FindNextPlayer();
+		if (!m_bThroughCard)
+			FindNextPlayer();
+
 		return;
 	}
 
@@ -247,20 +251,21 @@ void CArthurKingControl::FindNextPlayer()
 	g_PalyerManager.setRecordNextPlayerAction(( EPLAYER_ACTION ) iNextAction);
 }
 
-//void CArthurKingControl::OnExecMessageHandle(GWORD nMsgID, const char* szDesc)
-//{
-//	switch (nMsgID)
-//	{
-//		case DIALOG_CLOSE_ACTION:
-//			{
-//				CCLOG("DIALOG_CLOSE_ACTION  file: %s is wrong, function: %s...", __LINE__, __FUNCTION__);
-//			}
-//			break;
-//		default:
-//			CCLOG("file: %s is wrong...", __LINE__, __FUNCTION__);
-//			break;
-//	}
-//}
+void CArthurKingControl::OnExecMessageHandle(GWORD nMsgID, const char* szDesc)
+{
+	switch (nMsgID)
+	{
+		case DIALOG_CLOSE_ACTION:
+			{
+				//CCLOG("DIALOG_CLOSE_ACTION  file: %s is wrong, function: %s...", __LINE__, __FUNCTION__);
+				FindNextPlayer();
+			}
+			break;
+		default:
+			CCLOG("file: %s is wrong...", __LINE__, __FUNCTION__);
+			break;
+	}
+}
 
 void CArthurKingControl::CreateThreadChechSplitAction()
 {
@@ -275,5 +280,10 @@ void CArthurKingControl::CreateThreadChechSplitAction()
 	if (!g_PalyerManager.CheckActionSplit(opoint, m_pActor, false))
 	{
 		CCLOG("action split is faild....");
+		m_bThroughCard = false;
+		return;
 	}
+
+	// ÂÔ¹ý£¬ÒòÎª µ¯´°
+	m_bThroughCard = true;
 }

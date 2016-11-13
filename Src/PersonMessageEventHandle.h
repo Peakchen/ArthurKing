@@ -15,8 +15,7 @@ struct IAIPersonMessageSink
 
 class CPersonMessageEventHandle
 {
-	typedef std::list<IAIPersonMessageSink*> TPersonMessageList;
-	typedef std::map<GWORD, TPersonMessageList> TPersonMessageMap;
+	typedef std::map<GWORD, IAIPersonMessageSink*> TPersonMessageMap;
 
 public:
 	CPersonMessageEventHandle(void);

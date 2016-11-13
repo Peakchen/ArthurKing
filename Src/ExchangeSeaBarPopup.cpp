@@ -1,5 +1,7 @@
 ﻿#include "ExchangeSeaBarPopup.h"
 #include "ConstUtil.h"
+#include "AIPersonMessageMacro.h"
+#include "ResCreator.h"
 
 CExchangeSeaBarPopup::CExchangeSeaBarPopup() : m_pPopPlayer(NULL)
 {
@@ -29,8 +31,8 @@ void CExchangeSeaBarPopup::onExit()
 {
 	Layer::onExit();
 
-
 	CCLOG("%s is start, file is %s, %d", __FUNCTION__, __FILE__);
+	g_ResCreator.GetPersonMessageInstance()->FireMessage(DIALOG_CLOSE_ACTION, "Close dialog.");
 }
 
 void CExchangeSeaBarPopup::setPopContext(const char * szTitle, const char* szContext)

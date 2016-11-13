@@ -84,6 +84,7 @@ bool CGameMainScene::init()
 
 	//g_ResCreator.SetMainSceneInstance(this);
 
+	CreateThreadChechPopupCloseAction();
 	return true;
 }
 
@@ -701,8 +702,8 @@ void CGameMainScene::OnEvent_DealWithSpiltActionCallBack()
 	pExchangePopup->setTag(ESTART_EXCHANGE);
 	addChild(pExchangePopup);
 
-	std::thread  th_CheckDialog(&CGameMainScene::CreateThreadChechPopupCloseAction, this);
-	th_CheckDialog.join();
+	//CreateThreadChechPopupCloseAction();
+
 }
 
 bool CGameMainScene::GetTheLastStepPoint(Vec2 **point)
@@ -747,20 +748,33 @@ void CGameMainScene::CreateSequenceAboutOpenCardAction()
 
 }
 
-void CGameMainScene::CreateThreadChechPopupCloseAction()
+void CGameMainScene::CreateThreadChechPopupCloseActionCallBack()
 {
 	CCLOG("file: %s, function: %s is start.............", __LINE__, __FUNCTION__);
-	while (true)
-	{
-		m_MainPopMutex.lock();
-
-		if (getChildByTag(ESTART_EXCHANGE) == NULL)
-		{
-			CCLOG("ESTART_EXCHANGE is NULL.");
-			m_MainPopMutex.unlock();
-			break;
-		}
-	}
 
 	return;
+}
+
+std::mutex gMainPopMutex;
+void CGameMainScene::CreateThreadChechPopupCloseAction()
+{
+	//CCLOG("file: %s, function: %s is start.............", __LINE__, __FUNCTION__);
+	Node* pExchangeNode = this->getChildByTag(ESTART_EXCHANGE);
+	if (pExchangeNode == NULL)
+	{
+		return;
+	}
+
+	std::thread  th_CheckDialog([pExchangeNode] (){
+		
+		gMainPopMutex.lock();
+		if (pExchangeNode == NULL)
+		{
+			CCLOG("ESTART_EXCHANGE is NULL.");
+			gMainPopMutex.unlock();
+			return;
+		}
+	});
+
+	th_CheckDialog.join();
 }

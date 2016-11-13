@@ -156,6 +156,24 @@ private:
 
 	void CreateSequenceAboutOpenCardAction();
 
+	/************************************************************************/
+	/* 
+	@func:		CreateThreadChechPopupCloseActionCallBack
+	@param:		no
+	@return:	no
+	@brief:		创建一个弹框线程 回调
+	*
+	************************************************************************/
+	void CreateThreadChechPopupCloseActionCallBack();
+
+	/************************************************************************/
+	/* 
+	@func:		CreateThreadChechPopupCloseAction
+	@param:		no
+	@return:	no
+	@brief:		创建一个弹框线程
+	*/
+	/************************************************************************/
 	void CreateThreadChechPopupCloseAction();
 
 private:
@@ -215,6 +233,6 @@ private:
 	// dialog close flag
 	bool m_bDialog_close;
 
-	std::mutex m_MainPopMutex;
+	
 };
 

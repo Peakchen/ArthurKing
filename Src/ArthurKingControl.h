@@ -2,6 +2,7 @@
 #include "cocos2d.h"
 #include "ArthurKing.h"
 #include "MacroDefine.h"
+#include "PersonMessageEventHandle.h"
 
 USING_NS_CC;
 
@@ -9,7 +10,8 @@ class CGameMainScene;
 
 
 class CArthurKingControl :
-	public Layer
+	public Layer,
+	public IAIPersonMessageSink
 {
 public:
 	CArthurKingControl();
@@ -29,7 +31,7 @@ public:
 	CC_SYNTHESIZE(std::vector<int>, m_passRowPath, RecordPassRowPath);
 
 	////////////////////////////////IAIPersonMessageSink/////////////////////////////
-	//virtual void  OnExecMessageHandle(GWORD nMsgID, const char* szDesc);
+	virtual void  OnExecMessageHandle(GWORD nMsgID, const char* szDesc);
 
 private:
 	//四方向动画
@@ -53,6 +55,9 @@ private:
 	CallFunc* pCallFunc_MoveEnd;
 
 	CActorBase* m_pActor;
+
+	// 是否 略过下一步摇骰子
+	bool  m_bThroughCard;
 
 private:
 	void OnPlayerMoveEnd();
