@@ -20,14 +20,16 @@ public:
 	///////////////////////////CTileBase////////////////////////////////////////////
 	virtual char* GetActionName();
 
-	virtual void CheckCurrentAction(const TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pSelfActor, TActorInstanceMap* pOtherActors);
+	virtual void CheckCurrentAction(TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pSelfActor, TActorInstanceMap* pOtherActors);
 
 	///////////////////////IAIPersonMessageSink////////////////////////////////
 	virtual void OnExecMessageHandle(GWORD nMsgID, const char* szDesc);
 private:
-	TTileLayerGridProperty *m_pTileLayerPeperty;
+	TTileLayerGridProperty m_oTileLayerPeperty;
 	CActorBase* m_pActor;
 
 private:
 	void __InitEventMsg();
+
+	void __InitSeaBarOperationData(TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pActor);
 };

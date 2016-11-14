@@ -282,12 +282,21 @@ bool CPlayerManager::CheckActionSplit(Vec2 opint, CActorBase* pActor, bool bCall
 
 				if (bCallback)
 				{
-					//*pTileGrid = &oTileGridPeperty;
-					memcpy(*pTileGrid, &oTileGridPeperty, sizeof(TTileLayerGridProperty));
+					*pTileGrid = &oTileGridPeperty;
+					/*	(*pTileGrid)->iScoreMult = oTileGridPeperty.iScoreMult;
+						(*pTileGrid)->iScoreValue = oTileGridPeperty.iScoreValue;
+						(*pTileGrid)->iSeaBarIndex = oTileGridPeperty.iSeaBarIndex;
+						(*pTileGrid)->iSeaBarPrice = oTileGridPeperty.iSeaBarPrice;
+						(*pTileGrid)->iSeaBarTip = oTileGridPeperty.iSeaBarTip;
+						(*pTileGrid)->iStopTimes = oTileGridPeperty.iStopTimes;
+						(*pTileGrid)->iTimes = oTileGridPeperty.iTimes;
+						(*pTileGrid)->szName = oTileGridPeperty.szName;
+						(*pTileGrid)->szType = oTileGridPeperty.szType;*/
+					//memcpy(*pTileGrid, &oTileGridPeperty, sizeof(TTileLayerGridProperty));
 				}
 				else
 				{
-					pSpiltHandler->CheckCurrentAction(&oTileGridPeperty, pActor, &m_mapActorInstanceMap);
+					it->second->CheckCurrentAction(&oTileGridPeperty, pActor, &m_mapActorInstanceMap);
 				}
 				return true;
 			}

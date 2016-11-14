@@ -16,7 +16,7 @@ public:
 
 	virtual char* GetActionName(){ return ""; }
 
-	virtual void CheckCurrentAction(const TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pSelfActor, TActorInstanceMap* pOtherActors){}
+	virtual void CheckCurrentAction(TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pSelfActor, TActorInstanceMap* pOtherActors){}
 
 
 protected:

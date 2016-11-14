@@ -35,7 +35,7 @@ struct IArthurActionSpiltHandler
 	@brief:		override, sub drivers achive self todo something
 	*/
 	/************************************************************************/
-	virtual void  CheckCurrentAction(const TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pSelfActor, TActorInstanceMap* pOtherActors) = 0;
+	virtual void  CheckCurrentAction( TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pSelfActor, TActorInstanceMap* pOtherActors) = 0;
 };
 
 #endif
