@@ -155,8 +155,8 @@ const string TILELAYER_CUSTOM_TYPE [] = {
 
 struct TTileLayerGridProperty
 {
-	char*	szName;
-	char*	szType;
+	string	szName;
+	string	szType;
 	int		iScoreValue;
 	int		iSeaBarIndex;
 	int		iSeaBarPrice;
@@ -176,6 +176,21 @@ struct TTileLayerGridProperty
 		iTimes = 0;
 		iStopTimes = 0;
 		iScoreMult = 0;
+	}
+
+	TTileLayerGridProperty& operator=( TTileLayerGridProperty &stTileGrid)
+	{
+		this->szName = stTileGrid.szName;
+		this->szType = stTileGrid.szType;
+		this->iScoreValue = stTileGrid.iScoreValue;
+		this->iSeaBarIndex = stTileGrid.iSeaBarIndex;
+		this->iSeaBarPrice = stTileGrid.iSeaBarPrice;
+		this->iSeaBarTip = stTileGrid.iSeaBarTip;
+		this->iTimes = stTileGrid.iTimes;
+		this->iStopTimes = stTileGrid.iStopTimes;
+		this->iScoreMult = stTileGrid.iScoreMult;
+
+		return *this;
 	}
 
 };
