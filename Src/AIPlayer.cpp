@@ -5,6 +5,8 @@
 CAIPlayer::CAIPlayer(__int8 PDBID) :m_PDBID(PDBID)
 {
 	//g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(AI_START, this, "AI action");
+	m_ActorScore = 0;
+	m_pCtrl = NULL;
 }
 
 CAIPlayer::CAIPlayer()
@@ -66,6 +68,7 @@ void CAIPlayer::PlayStartGo()
 
 void CAIPlayer::GetOwnerSelfScore(GWORD& score)
 {
+	score = 0;
 	score = m_ActorScore;
 }
 

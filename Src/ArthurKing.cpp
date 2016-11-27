@@ -86,6 +86,7 @@ void CArthurKing::OnLeave()
 
 void CArthurKing::GetOwnerSelfScore(GWORD& score)
 {
+	score = 0;
 	score = m_ActorScore;
 }
 

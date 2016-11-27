@@ -154,4 +154,7 @@
 #define		SETTINGMENU_NO_NORMAL			"btn/btn-yes-normal.png"
 #define		SETTINGMENU_NO_SELECTED			"btn/btn-yes-selected.png"
 
+// score
+#define		SCORE_LOGO_ACTOR_1				"Score/p1.png"
+#define		SCORE_LOGO_ACTOR_2				"Score/p2.png"
 #endif

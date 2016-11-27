@@ -160,39 +160,6 @@ void CSettingMenu::onEnter()
 	Layer::onEnter();
 
 	CreatePopupModule();
-	//auto pBg = Sprite::create(POPPLAYER_BG);
-	//if (pBg == NULL)
-	//{
-	//	return;
-	//}
-
-	//Point dstPoint = Director::getInstance()->getWinSize();
-	//pBg->setPosition(Vec2(dstPoint.x/2, dstPoint.y/2));
-	//
-
-	//float dtCloseLoc_x = pBg->getContentSize().width-10.0f;
-	//float dtCloseLoc_y = pBg->getContentSize().height-10.0f;
-
-	//// close button
-	//auto pCloseSprite = Scale9Sprite::create(POPPLAYER_CLOSE);
-	//if (pCloseSprite == NULL)
-	//{
-	//	return;
-	//}
-	//auto pCloseBtn = ControlButton::create(pCloseSprite);
-	//pCloseBtn->addTargetWithActionForControlEvents(this, 
-	//											   cccontrol_selector(CSettingMenu::OnEixtSettingMenuCallBack), 
-	//											   Control::EventType::TOUCH_DOWN
-	//											   );
-
-	//pCloseBtn->setPosition(ccp(dtCloseLoc_x, dtCloseLoc_y));
-	//
-	//pBg->addChild(pCloseBtn);
-	//pBg->setTag(EBackGround);
-	//pBg->setContentSize(Size(362.0f, 147.0f));
-	//this->addChild(pBg);
-
-	//addChild(pBg);
 
 	// touch event
 	this->setTouchEnabled(true);

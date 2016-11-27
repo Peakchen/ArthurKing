@@ -28,8 +28,11 @@ bool CGameMainScene::init()
 	m_pArthurKing = NULL;
 
 	m_bAiAutoOpen = false;
-
 	m_bDialog_close = false;
+
+	m_FirstScore = NULL;
+	m_SecScore = NULL;
+	m_CurScore = NULL;
 
 	g_ResCreator.GetPersonMessageInstance()->ResetData();
 
@@ -86,6 +89,9 @@ bool CGameMainScene::init()
 	//g_ResCreator.SetMainSceneInstance(this);
 
 	CreateThreadChechPopupCloseAction();
+
+	// about score show
+	__CreateAllEntityScoreLabel();
 	return true;
 }
 
@@ -159,7 +165,7 @@ int schedule_count = 0;
 void CGameMainScene::onClick_StartControl(Object* pSender, Control::EventType event)
 {
 	TurnToGoAction();
-
+	m_CurScore = m_FirstScore;
 	ControlButton* pCtrlBtn = (ControlButton*)pSender;
 	if (pCtrlBtn == NULL)
 	{
@@ -381,12 +387,17 @@ void CGameMainScene::AfterOpenCard()
 	m_pCurAction->RequestActorCtrl();
 
 	// 行走
-	
 	BeginActorGo();
 
 	// 翻拍后 显示 分数
-
 	BeginFloatHead();
+
+	//更新分数 
+	if (m_CurPalyer_Socre > 0)
+	{
+		m_pCurAction->AddScore(m_CurPalyer_Socre);
+		m_CurScore->UpdateEntityScore();
+	}
 }
 
 int sche_aboutScore = 0;
@@ -520,6 +531,7 @@ void CGameMainScene::OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc)
 				// 翻牌， 走路...
 				m_pCurAction = m_pArthurKing;
 				m_bAiAutoOpen = false;
+				m_CurScore = m_FirstScore;
 				CCLOG("-----------------------------player go ---------------------------");
 				CreateSequenceAboutOpenCardAction();
 			}
@@ -530,6 +542,7 @@ void CGameMainScene::OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc)
 				// 自动翻牌， 走路...
 				m_pCurAction = m_pAIplayer;
 				m_bAiAutoOpen = true;
+				m_CurScore = m_SecScore;
 				CCLOG("-----------------------------ai go ---------------------------");
 				CreateSequenceAboutOpenCardAction();
 			}
@@ -798,4 +811,27 @@ void CGameMainScene::__CreateSeabarSellPopup()
 
 	pSellPopup->setTag(ESTART_SELL);
 	addChild(pSellPopup);
+}
+
+void CGameMainScene::__UpdateAllEntityScore()
+{
+	m_FirstScore->UpdateEntityScore();
+	m_SecScore->UpdateEntityScore();
+}
+
+void CGameMainScene::__CreateAllEntityScoreLabel()
+{
+	m_FirstScore = CDisplayScore::CreateDisplayScoreLabel(SCORE_LOGO_ACTOR_1, m_pArthurKing);
+	CC_ASSERT(m_FirstScore != NULL);
+	m_FirstScore->setTag(EFirstScore);
+	m_FirstScore->setPosition(ccp(visibleSize.width/2 - 300, visibleSize.height/2 + 200));
+	m_FirstScore->setColor(Color3B::GREEN);
+	this->addChild(m_FirstScore);
+
+	m_SecScore = CDisplayScore::CreateDisplayScoreLabel(SCORE_LOGO_ACTOR_2,m_pAIplayer);
+	CC_ASSERT(m_SecScore != NULL);
+	m_SecScore->setTag(ESecoedScore);
+	m_SecScore->setPosition(ccp(visibleSize.width/2 - 300, visibleSize.height/2 + 150));
+	m_SecScore->setColor(Color3B::GREEN);
+	this->addChild(m_SecScore);
 }

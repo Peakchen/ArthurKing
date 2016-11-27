@@ -8,6 +8,7 @@
 #include "PersonMessageEventHandle.h"
 #include "common/common.h"
 #include "TileBase.h"
+#include "DisplayScore.h"
 
 USING_NS_CC;
 USING_NS_CC_EXT;
@@ -22,6 +23,12 @@ enum EMainMenuItemTag
 	ESTART_Go,
 	ESTART_EXCHANGE,
 	ESTART_SELL,
+};
+
+enum EPlayerScore
+{
+	EFirstScore = 1,
+	ESecoedScore,
 };
 
 
@@ -191,6 +198,24 @@ private:
 	/************************************************************************/
 	void		__CreateSeabarSellPopup();
 
+	/************************************************************************/
+	/* 
+	@brief:		show all player score
+	@param:		no
+	@return:	no
+	*/
+	/************************************************************************/
+	void		__UpdateAllEntityScore();
+
+	/************************************************************************/
+	/* 
+	@berif:		create all player score label
+	@param:		no
+	@return:	no
+	*/
+	/************************************************************************/
+	void		__CreateAllEntityScoreLabel();
+
 private:
 
 	//friend class CArthurKingControl;
@@ -248,6 +273,10 @@ private:
 	// dialog close flag
 	bool m_bDialog_close;
 
-	
+	// player score
+	CDisplayScore* m_FirstScore;
+	CDisplayScore* m_SecScore;
+
+	CDisplayScore* m_CurScore;
 };
 

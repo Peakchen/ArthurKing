@@ -34,7 +34,7 @@ bool CBuySeaBarAction::CheckCanExchangeSeaBar(int iSeaBarIndex, ESeaBarAttach& a
 		return false;
 	}
 
-	GWORD dw_score = 0;
+	GWORD dw_score;
 	pActor->GetOwnerSelfScore(dw_score);
 	// socre is enough?
 	if (dw_score < pSeaBarInfo->iCur_Score)
@@ -54,7 +54,7 @@ void CBuySeaBarAction::DoExchangeSeaBar(int iSeaBarIndex, CActorBase* pActor)
 		return;
 	}
 
-	GWORD dw_score = 0;
+	GWORD dw_score;
 	pActor->GetOwnerSelfScore(dw_score);
 
 	// spend score at it.

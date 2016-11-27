@@ -50,10 +50,10 @@ void CGiveTipAction::DoGiveTipToOther(int iSeaBar_Index, CActorBase* pActor)
 		return;
 	}
 
-	GWORD gw_oldBuyScore = 0;
+	GWORD gw_oldBuyScore;
 	pBuyer->GetOwnerSelfScore(gw_oldBuyScore);
 
-	GWORD gw_passerOldScore = 0;
+	GWORD gw_passerOldScore;
 	pActor->GetOwnerSelfScore(gw_passerOldScore);
 
 	// first spend passer some scores
