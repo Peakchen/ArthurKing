@@ -44,12 +44,6 @@ CArthurKing* CArthurKing::CreateArthurKing(SpriteFrame* pFrame, __int8 PDBID)
 	return NULL;
 }
 
-
-bool CArthurKing::init()
-{
-	return true;
-}
-
 void CArthurKing::RequestActorCtrl()
 {
 	
@@ -108,4 +102,31 @@ void CArthurKing::AddScore(GWORD iaddScore)
 void CArthurKing::SubScore(GWORD iSubScore)
 {
 	m_ActorScore -= iSubScore;
+}
+
+void CArthurKing::SetActorProp(int tyPropID, int iPropValue)
+{
+	TActorPropMap::iterator it = m_PropMap.find(tyPropID);
+	if (it != m_PropMap.end())
+	{
+		return;
+	}
+
+	m_PropMap [tyPropID] = iPropValue;
+}
+
+int CArthurKing::GetActorProp(int tyPropID)
+{
+	TActorPropMap::iterator it = m_PropMap.find(tyPropID);
+	if (it == m_PropMap.end())
+	{
+		return 0;
+	}
+
+	return m_PropMap [tyPropID];
+}
+
+IEntity* CArthurKing::GetEntityByPDBID(GWORD pdbid)
+{
+	return NULL;
 }

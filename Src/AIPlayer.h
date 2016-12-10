@@ -7,6 +7,7 @@
 #include "cocos2d.h"
 #include "ActorBase.h"
 #include "common.h"
+#include "IActorBase.h"
 
 class CArthurKingControl;
 
@@ -126,6 +127,14 @@ public:
 	inline virtual void setvecAnim_up(Vector<SpriteFrame*> pSpriteFrame){ m_vecAnim_Up = pSpriteFrame; }
 	inline virtual Vector<SpriteFrame*> getvecAnim_up(){ return m_vecAnim_Up; }
 
+	//设置属性值
+	virtual void	SetActorProp(int tyPropID, int iPropValue);
+	//获得属性值
+	virtual int		GetActorProp(int tyPropID);
+
+	/////////////////////////////////IEntity////////////////////////////////
+	virtual IEntity* GetEntityByPDBID(GWORD pdbid);
+
 private:
 	GWORD m_ActorScore;
 
@@ -137,6 +146,8 @@ private:
 	Vector<SpriteFrame*> m_vecAnim_Right;
 	Vector<SpriteFrame*> m_vecAnim_Up;
 	Vector<SpriteFrame*> m_vecAnim_Down;
+
+	TActorPropMap m_PropMap;
 };
 
 #endif

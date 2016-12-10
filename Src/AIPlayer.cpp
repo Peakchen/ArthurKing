@@ -91,3 +91,30 @@ void CAIPlayer::SubScore(GWORD iSubScore)
 {
 	m_ActorScore -= iSubScore;
 }
+
+void CAIPlayer::SetActorProp(int tyPropID, int iPropValue)
+{
+	TActorPropMap::iterator it = m_PropMap.find(tyPropID);
+	if (it != m_PropMap.end())
+	{
+		return;
+	}
+
+	m_PropMap [tyPropID] = iPropValue;
+}
+
+int CAIPlayer::GetActorProp(int tyPropID)
+{
+	TActorPropMap::iterator it = m_PropMap.find(tyPropID);
+	if (it == m_PropMap.end())
+	{
+		return 0;
+	}
+
+	return m_PropMap [tyPropID];
+}
+
+IEntity* CAIPlayer::GetEntityByPDBID(GWORD pdbid)
+{
+	return NULL;
+}

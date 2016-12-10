@@ -10,6 +10,7 @@ USING_NS_CC_EXT;
 #pragma once
 #include "ActorBase.h"
 #include "common.h"
+#include "IActorBase.h"
 
 class CArthurKingControl;
 
@@ -28,8 +29,6 @@ public:
 	* return: void
 	*************************/
 	static CArthurKing* CreateArthurKing(SpriteFrame* pFrame, __int8 PDBID);
-
-	bool init();
 
 	/************************************************************************/
 	/*
@@ -130,6 +129,15 @@ public:
 	inline virtual void setvecAnim_up(Vector<SpriteFrame*> pSpriteFrame){ m_vecAnim_Up = pSpriteFrame; }
 	inline virtual Vector<SpriteFrame*> getvecAnim_up(){ return m_vecAnim_Up; }
 
+	//////////////////////////////////Property/////////////////
+	//设置属性值
+	virtual void	SetActorProp(int tyPropID, int iPropValue);
+	//获得属性值
+	virtual int		GetActorProp(int tyPropID);
+
+	//////////////////////////////IEntity/////////////////////////////////
+	virtual IEntity* GetEntityByPDBID(GWORD pdbid);
+
 private:
 	// to Check actor is runing?
 	bool m_bCheckActorRuning;
@@ -154,6 +162,8 @@ private:
 	Vector<SpriteFrame*> m_vecAnim_Right;
 	Vector<SpriteFrame*> m_vecAnim_Up;
 	Vector<SpriteFrame*> m_vecAnim_Down;
+
+	TActorPropMap m_PropMap;
 };
 
 #endif

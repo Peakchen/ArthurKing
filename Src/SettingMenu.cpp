@@ -194,6 +194,10 @@ void CSettingMenu::onEnter()
 void CSettingMenu::onExit()
 {
 	Layer::onExit();
+
+	// 退出时，订阅和加的观察者都删掉，进行数据保存
+
+
 	Trace_In("%s is Exit...", __FUNCTION__);
 }
 

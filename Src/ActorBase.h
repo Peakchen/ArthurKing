@@ -6,13 +6,15 @@
 #include "IActorBase.h"
 #include "cocos2d.h"
 #include "common.h"
+#include "Entity\EntityServer.h"
 
 
 USING_NS_CC;
 
 class CActorBase : 
 	public IActorBase,
-	public Sprite
+	public Sprite,
+	public IEntity
 {
 public:
 	CActorBase();
@@ -133,7 +135,14 @@ public:
 	/************************************************************************/
 	virtual void SubScore(GWORD iSubScore) = 0;
 
-		
+	//////////////////////////////IEntity/////////////////////////////////
+	virtual IEntity* GetEntityByPDBID(GWORD pdbid);
+
+	//设置属性值
+	virtual void	SetActorProp(int tyPropID, int iPropValue) = 0;
+	//获得属性值
+	virtual int		GetActorProp(int tyPropID) = 0;
+
 private:
 	void GetCanGoColRowData(int iRandnum, int iCol, int iRow, int& iNextCol, int &iNextRow);
 

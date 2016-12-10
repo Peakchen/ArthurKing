@@ -1,5 +1,6 @@
 #include "ActionSpiltManager.h"
 #include "SH_SeaBar.h"
+#include "SH_OtherActionInvalid.h"
 
 CActionSpiltManager g_ActionSpiltManager;
 
@@ -46,6 +47,7 @@ void CActionSpiltManager::RemoveLiveMsg(CTileBase* pSH)
 void CActionSpiltManager::CreateALiveMsg()
 {
 	AddLiveMsg(new CSH_SeaBar());
+	AddLiveMsg(new CSH_OtherActionInvalid());
 }
 
 void CActionSpiltManager::ReleaseAliveMsg()
