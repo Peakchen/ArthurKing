@@ -210,6 +210,17 @@ typedef map<int, int>			TPropMap;
 typedef map<int, TPropMap*>		TPerosnRulePropMap;
 typedef map<int, TPropMap*>		TPerosnPropMap;
 
+//随机 操作
+enum EQuestionType
+{
+	EType_Score_Sub_Ten = 1,		//-10分
+	EType_Foot_Blue,				//对方轮空一次
+
+	/////////
+	EType_Max,		//最大类型,上述不得超过
+};
+
+
 #define FOR_EACH_CONTAINER(TYPE, CONTAINER, IT) for(TYPE::iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
 
 #endif

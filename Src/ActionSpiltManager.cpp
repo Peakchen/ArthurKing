@@ -1,6 +1,7 @@
 #include "ActionSpiltManager.h"
 #include "SH_SeaBar.h"
 #include "SH_OtherActionInvalid.h"
+#include "SH_QuestionMark.h"
 
 CActionSpiltManager g_ActionSpiltManager;
 
@@ -48,6 +49,7 @@ void CActionSpiltManager::CreateALiveMsg()
 {
 	AddLiveMsg(new CSH_SeaBar());
 	AddLiveMsg(new CSH_OtherActionInvalid());
+	AddLiveMsg(new CSH_QuestionMark());
 }
 
 void CActionSpiltManager::ReleaseAliveMsg()
