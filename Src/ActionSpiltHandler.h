@@ -30,12 +30,22 @@ struct IArthurActionSpiltHandler
 	@func:		CheckCurrentAction
 	@param:		const TTileLayerGridProperty *pTileLayerPeperty			为了效率高，省去过多的重复
 	@param:		CActorBase* pSelfActor									当前角色
-	@param:		TActorInstanceMap* pOtherActors							其他角色，当前除了本尊外，只有一个，为以后扩展俩个人以上，方便
+	@param:		TActorTileLayerInfoMap* pOtherActors							其他角色，当前除了本尊外，只有一个，为以后扩展俩个人以上，方便
 	@return:	no
 	@brief:		override, sub drivers achive self todo something
 	*/
 	/************************************************************************/
-	virtual void  CheckCurrentAction( TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pSelfActor, TActorInstanceMap* pOtherActors) = 0;
+	virtual void  CheckCurrentAction( TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pSelfActor, TActorTileLayerInfoMap* pOtherActors) = 0;
+};
+
+struct IEntityRulePropHandler
+{
+	/************************************************************************/
+	/* 
+	// 规则属性值变化 事件
+	*/
+	/************************************************************************/
+	virtual		void	OnEntityRulePropChange(int PDBID, int iRulePropID, int nRulePropValue) = 0;
 };
 
 #endif

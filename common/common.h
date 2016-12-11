@@ -144,6 +144,14 @@ const string TILELAYER_NAME [] = {
 
 
 // custom type
+
+#define		ETILELAYER_TYPE_RAND_NUM	"rand_num"
+#define		ETILELAYER_TYPE_BAR			"Bar"
+#define		ETILELAYER_TYPE_INT			"int"
+#define		ETILELAYER_TYPE_RANDOM		"random"
+#define		ETILELAYER_TYPE_UP			"Up"
+#define		ETILELAYER_TYPE_DOWN		"Down"
+
 const string TILELAYER_CUSTOM_TYPE [] = { 
 								  "rand_num",
 								  "Bar",
@@ -195,6 +203,13 @@ struct TTileLayerGridProperty
 
 };
 
-typedef map<__int8, CActorBase*> TActorInstanceMap;
+typedef map<int, CActorBase*> TActorTileLayerInfoMap;
+
+
+typedef map<int, int>			TPropMap;
+typedef map<int, TPropMap*>		TPerosnRulePropMap;
+typedef map<int, TPropMap*>		TPerosnPropMap;
+
+#define FOR_EACH_CONTAINER(TYPE, CONTAINER, IT) for(TYPE::iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
 
 #endif

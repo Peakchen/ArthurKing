@@ -154,8 +154,13 @@ void CActorBase::UpdateScoreItem ( int addScore )
 	m_dwScore += addScore;
 }
 
-IEntity* CActorBase::GetEntityByPDBID(GWORD pdbid)
+int CActorBase::GetEntityPDBID()
 {
-	return NULL;
+	return 0;
+}
+
+int CActorBase::GetEntityRuleProp(int iRulePropID)
+{
+	return 0;
 }
 

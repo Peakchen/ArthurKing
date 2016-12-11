@@ -1,12 +1,15 @@
 #include "AIPlayer.h"
 #include "ResCreator.h"
+#include "EntityProp.h"
 
 
 CAIPlayer::CAIPlayer(__int8 PDBID) :m_PDBID(PDBID)
 {
-	//g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(AI_START, this, "AI action");
 	m_ActorScore = 0;
 	m_pCtrl = NULL;
+
+	m_PropMap.clear();
+	m_stRulePropMap.clear();
 }
 
 CAIPlayer::CAIPlayer()
@@ -108,13 +111,34 @@ int CAIPlayer::GetActorProp(int tyPropID)
 	TActorPropMap::iterator it = m_PropMap.find(tyPropID);
 	if (it == m_PropMap.end())
 	{
-		return 0;
+		return INVALID_PROP_VALUE;
 	}
 
 	return m_PropMap [tyPropID];
 }
 
-IEntity* CAIPlayer::GetEntityByPDBID(GWORD pdbid)
+int CAIPlayer::GetEntityPDBID()
 {
-	return NULL;
+	return this->GetActorProp(CREATURE_PROP_PDBID);
+}
+
+int CAIPlayer::GetEntityRuleProp(int iRulePropID)
+{
+	if (iRulePropID <= CREATURE_RULE_ID ||
+		iRulePropID >= CREATURE_RULE_MAX)
+	{
+		return INVALID_RULE_VALUE;
+	}
+
+	return m_stRulePropMap [iRulePropID];
+}
+
+int CAIPlayer::GetNextStepEventID()
+{
+	return AI_START;
+}
+
+std::string CAIPlayer::GetNextStepEventDesc()
+{
+	return "AIPlayer";
 }

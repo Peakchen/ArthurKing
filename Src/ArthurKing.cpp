@@ -4,6 +4,7 @@
 #include "ArthurKingControl.h"
 #include "ResCreator.h"
 #include "common.h"
+#include "EntityProp.h"
 
 USING_NS_CC;
 
@@ -17,6 +18,8 @@ CArthurKing::CArthurKing(__int8 PDBID) :m_PDBID(PDBID)
 	m_pActorSprite = NULL;
 	m_szSpriteName = NULL;
 
+	m_PropMap.clear();
+	m_stRulePropMap.clear();
 	//g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(AI_START, this, "player action");
 }
 
@@ -120,13 +123,34 @@ int CArthurKing::GetActorProp(int tyPropID)
 	TActorPropMap::iterator it = m_PropMap.find(tyPropID);
 	if (it == m_PropMap.end())
 	{
-		return 0;
+		return INVALID_PROP_VALUE;
 	}
 
 	return m_PropMap [tyPropID];
 }
 
-IEntity* CArthurKing::GetEntityByPDBID(GWORD pdbid)
+int CArthurKing::GetEntityPDBID()
 {
-	return NULL;
+	return this->GetActorProp(CREATURE_PROP_PDBID);
+}
+
+int CArthurKing::GetEntityRuleProp(int iRulePropID)
+{
+	if (iRulePropID <= CREATURE_RULE_ID ||
+			iRulePropID >= CREATURE_RULE_MAX)
+	{
+		return INVALID_RULE_VALUE;
+	}
+
+	return m_stRulePropMap [iRulePropID];
+}
+
+int CArthurKing::GetNextStepEventID()
+{
+	return ACTOR_START;
+}
+
+std::string CArthurKing::GetNextStepEventDesc()
+{
+	return "ArthurKing";
 }

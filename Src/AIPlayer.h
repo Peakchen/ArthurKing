@@ -133,7 +133,23 @@ public:
 	virtual int		GetActorProp(int tyPropID);
 
 	/////////////////////////////////IEntity////////////////////////////////
-	virtual IEntity* GetEntityByPDBID(GWORD pdbid);
+	/************************************************************************/
+	/*
+	//通过实体 dbid
+	*/
+	/************************************************************************/
+	virtual int		GetEntityPDBID();
+
+	/************************************************************************/
+	/*
+	// 通过 规则属性ID获取实体属性值
+	*/
+	/************************************************************************/
+	virtual int		GetEntityRuleProp(int iRulePropID);
+
+	virtual int		GetNextStepEventID();
+
+	virtual std::string		GetNextStepEventDesc();
 
 private:
 	GWORD m_ActorScore;
@@ -147,7 +163,8 @@ private:
 	Vector<SpriteFrame*> m_vecAnim_Up;
 	Vector<SpriteFrame*> m_vecAnim_Down;
 
-	TActorPropMap m_PropMap;
+	TActorPropMap	m_PropMap;
+	TActorRulePropMap	m_stRulePropMap;
 };
 
 #endif

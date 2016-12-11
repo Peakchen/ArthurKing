@@ -19,7 +19,7 @@ char* CSH_SeaBar::GetActionName()
 	return "sea";
 }
 
-void CSH_SeaBar::CheckCurrentAction(TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pActor, TActorInstanceMap* pOtherActors)
+void CSH_SeaBar::CheckCurrentAction(TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pActor, TActorTileLayerInfoMap* pOtherActors)
 {
 	CCLOG("%s in %s is start --------- ", __FUNCTION__, __FILE__);
 	__InitSeaBarOperationData(pTileLayerPeperty, pActor);

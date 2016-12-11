@@ -113,6 +113,8 @@
 #define SEABAR_JSON_FILE	"SeaBar.json"
 #define PERSON_JSON_FILE	"personInfo.json"
 #define SEABAR_RISEFALL		"seabar_risefall.json"
+#define PERSON_RULE_PROP_FILE	"PersonRuleProp.json"
+#define PERSON_PROP_FILE	"PersonProp.json"
 
 // º£Ñó¹ÝÊýÁ¿
 #define  SEABAR_COUNT		27

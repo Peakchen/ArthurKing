@@ -2,6 +2,8 @@
 #include "ConstUtil.h"
 #include "ResCreator.h"
 #include "ActionSpiltManager.h"
+#include "EntityProp.h"
+#include "Entity\PersonPart.h"
 
 CPlayerManager g_PalyerManager;
 
@@ -48,7 +50,7 @@ void CPlayerManager::Create(CActorBase* pActor)
 	m_CurPlayerAction = EACTOR_PLAYER_ACTION;
 	m_NextPlayerAction = EAI_PLAYER_ACTION;
 
-	m_mapActorInstanceMap.clear();
+	m_mapActorTileLayerInfo.clear();
 
 }
 
@@ -62,7 +64,7 @@ CPlayerManager::~CPlayerManager()
 
 }
 
-void CPlayerManager::LoadPersonInfoData(std::string filename)
+void CPlayerManager::LoadPersonLocationInfoData(std::string filename)
 {
 	m_mapPersonLocation.clear();
 
@@ -90,7 +92,7 @@ void CPlayerManager::LoadPersonInfoData(std::string filename)
 	}
 }
 
-void CPlayerManager::SavePersonInfoData()
+void CPlayerManager::SavePersonLocationInfoData()
 {
 	if (m_mapPersonLocation.size() == 0)
 	{
@@ -148,14 +150,14 @@ TPersonInfo* CPlayerManager::GetPersonInfo(__int8 PDBID)
 void CPlayerManager::AddActorInstace(CActorBase* pActor)
 {
 	assert(pActor != NULL);
-	m_mapActorInstanceMap [pActor->GetPDBID()] = pActor;
+	m_mapActorTileLayerInfo [pActor->GetPDBID()] = pActor;
 }
 
 CActorBase* CPlayerManager::GetActorInstace(__int8 PDBID)
 {
 	if (PDBID <= 0)
 		return NULL;
-	return m_mapActorInstanceMap [PDBID];
+	return m_mapActorTileLayerInfo [PDBID];
 }
 
 bool CPlayerManager::CheckCanTakeAddSocre(GWORD &dwScore, Vec2 oPoint)
@@ -286,7 +288,7 @@ bool CPlayerManager::CheckActionSplit(Vec2 opint, CActorBase* pActor, bool bCall
 				}
 				else
 				{
-					it->second->CheckCurrentAction(&oTileGridPeperty, pActor, &m_mapActorInstanceMap);
+					it->second->CheckCurrentAction(&oTileGridPeperty, pActor, &m_mapActorTileLayerInfo);
 				}
 				return true;
 			}
@@ -356,12 +358,160 @@ void CPlayerManager::__GetTileContextByName(string szName, TTileLayerGridPropert
 	}
 }
 
-void CPlayerManager::RemoveActorInstace(__int8 PDBID)
+void CPlayerManager::RemoveActorInstace(int PDBID)
 {
-	if (m_mapActorInstanceMap.empty())
+	if (m_mapActorTileLayerInfo.empty())
 	{
 		return;
 	}
 
-	m_mapActorInstanceMap.erase(PDBID);
+	m_mapActorTileLayerInfo.erase(PDBID);
 }
+
+void CPlayerManager::LoadPersonRulePropInfoData(std::string filename)
+{
+	if (m_mapPersonLocation.size() == 0)
+	{
+		Trace_In("error: %s map data is empty...", __FUNCTION__);
+		return;
+	}
+
+	// judge file is existed?
+	std::string stFile = FileUtils::getInstance()->getStringFromFile(filename);
+	if (stFile.empty())
+	{
+		Trace_In("warning: %s file is not exist...", __FUNCTION__);
+		return;
+	}
+
+	ValueMap stFileMap = FileUtils::getInstance()->getValueMapFromFile(filename);
+	ValueMap::iterator itBegin = stFileMap.begin();
+	for (; itBegin != stFileMap.end(); ++itBegin)
+	{
+		FOR_EACH_CONTAINER(TPersonInfoMap, m_mapPersonLocation, it){
+			g_PersonPart.SetPersonRuleProp(it->first, CREATURE_RULE_QUESTION, stFileMap [ETILELAYER_QUESTION].asInt());
+			g_PersonPart.SetPersonRuleProp(it->first, CREATURE_RULE_TURN_FREE, stFileMap [ETILELAYER_TUEN_FREE].asInt());
+			g_PersonPart.SetPersonRuleProp(it->first, CREATURE_RULE_FOOT_RED, stFileMap [ETILELAYER_FOOT_RED].asInt());
+			g_PersonPart.SetPersonRuleProp(it->first, CREATURE_RULE_YELLOW_STAR, stFileMap [ETILELAYER_YELLOW_STAR].asInt());
+			g_PersonPart.SetPersonRuleProp(it->first, CREATURE_RULE_RED_DOUBLESTAR, stFileMap [ETILELAYER_RED_DOUBLESTAR].asInt());
+			g_PersonPart.SetPersonRuleProp(it->first, CREATURE_RULE_FOOT_BLUE, stFileMap [ETILELAYER_FOOT_BLUE].asInt());
+			g_PersonPart.SetPersonRuleProp(it->first, CREATURE_RULE_BLUE_STAR, stFileMap [ETILELAYER_BLUE_STAR].asInt());
+			g_PersonPart.SetPersonRuleProp(it->first, CREATURE_RULE_BLUE_DOUBLESTAR, stFileMap [ETILELAYER_BLUE_DOUBLESTAR].asInt());
+		}
+	}
+}
+
+void CPlayerManager::SavePersonRulePropInfoData()
+{
+	if (m_mapPersonLocation.size() == 0)
+	{
+		Trace_In("error: %s map data is empty...", __FUNCTION__);
+		return;
+	}
+
+	Json::Value stArrayList;
+
+	TPersonInfoMap::iterator itBegin = m_mapPersonLocation.begin();
+	for (; itBegin != m_mapPersonLocation.end(); ++itBegin)
+	{
+		Json::Value stValue;
+
+		stValue [ETILELAYER_QUESTION] = g_PersonPart.GetPersonRuleProp(itBegin->first, CREATURE_RULE_QUESTION);
+		stValue [ETILELAYER_TUEN_FREE] = g_PersonPart.GetPersonRuleProp(itBegin->first, CREATURE_RULE_TURN_FREE);
+		stValue [ETILELAYER_FOOT_RED] = g_PersonPart.GetPersonRuleProp(itBegin->first, CREATURE_RULE_FOOT_RED);
+		stValue [ETILELAYER_YELLOW_STAR] = g_PersonPart.GetPersonRuleProp(itBegin->first, CREATURE_RULE_YELLOW_STAR);
+		stValue [ETILELAYER_RED_DOUBLESTAR] = g_PersonPart.GetPersonRuleProp(itBegin->first, CREATURE_RULE_RED_DOUBLESTAR);
+		stValue [ETILELAYER_FOOT_BLUE] = g_PersonPart.GetPersonRuleProp(itBegin->first, CREATURE_RULE_FOOT_BLUE);
+		stValue [ETILELAYER_BLUE_STAR] = g_PersonPart.GetPersonRuleProp(itBegin->first, CREATURE_RULE_BLUE_STAR);
+		stValue [ETILELAYER_BLUE_DOUBLESTAR] = g_PersonPart.GetPersonRuleProp(itBegin->first, CREATURE_RULE_BLUE_DOUBLESTAR);
+
+		stArrayList.append(stValue);
+	}
+
+
+	Json::FastWriter owriter;
+	string json_file = owriter.write(stArrayList);
+
+	string strPath = "";
+#if DEBUG
+	strPath = FileUtils::getInstance()->fullPathForFilename(PERSON_JSON_FILE);
+#else
+	strPath = FileUtils::getInstance()->getWritablePath();
+	strPath.append(PERSON_RULE_PROP_FILE);
+#endif
+
+	FILE* pfile = fopen(strPath.c_str(), "wb");
+	if (pfile)
+	{
+		fputs(json_file.c_str(), pfile);
+		fclose(pfile);
+	}
+
+}
+
+void CPlayerManager::LoadPersonPropInfoData(std::string filename)
+{
+	if (m_mapPersonLocation.size() == 0)
+	{
+		Trace_In("error: %s map data is empty...", __FUNCTION__);
+		return;
+	}
+
+	// judge file is existed?
+	std::string stFile = FileUtils::getInstance()->getStringFromFile(filename);
+	if (stFile.empty())
+	{
+		Trace_In("warning: %s file is not exist...", __FUNCTION__);
+		return;
+	}
+
+	ValueMap stFileMap = FileUtils::getInstance()->getValueMapFromFile(filename);
+	ValueMap::iterator itBegin = stFileMap.begin();
+	for (; itBegin != stFileMap.end(); ++itBegin)
+	{
+		FOR_EACH_CONTAINER(TPersonInfoMap, m_mapPersonLocation, it){
+			g_PersonPart.SetPersonRuleProp(it->first, CREATURE_PROP_PDBID, stFileMap ["PDBID"].asInt());
+		}
+	}
+}
+
+void CPlayerManager::SavePersonPropInfoData()
+{
+	if (m_mapPersonLocation.size() == 0)
+	{
+		Trace_In("error: %s map data is empty...", __FUNCTION__);
+		return;
+	}
+
+	Json::Value stArrayList;
+
+	TPersonInfoMap::iterator itBegin = m_mapPersonLocation.begin();
+	for (; itBegin != m_mapPersonLocation.end(); ++itBegin)
+	{
+		Json::Value stValue;
+
+		stValue ["PDBID"] = g_PersonPart.GetPersonRuleProp(itBegin->first, CREATURE_PROP_PDBID);
+
+		stArrayList.append(stValue);
+	}
+
+
+	Json::FastWriter owriter;
+	string json_file = owriter.write(stArrayList);
+
+	string strPath = "";
+#if DEBUG
+	strPath = FileUtils::getInstance()->fullPathForFilename(PERSON_JSON_FILE);
+#else
+	strPath = FileUtils::getInstance()->getWritablePath();
+	strPath.append(PERSON_PROP_FILE);
+#endif
+
+	FILE* pfile = fopen(strPath.c_str(), "wb");
+	if (pfile)
+	{
+		fputs(json_file.c_str(), pfile);
+		fclose(pfile);
+	}
+}
+

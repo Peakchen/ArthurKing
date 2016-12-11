@@ -20,9 +20,9 @@ public:
 	/////////////////////////CTileBase//////////////////////////////////////
 	virtual char* GetActionName();
 
-	virtual void CheckCurrentAction(TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pSelfActor, TActorInstanceMap* pOtherActors);
+	virtual void CheckCurrentAction(TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pSelfActor, TActorTileLayerInfoMap* pOtherActors);
 
 
 private:
-
+	void	__AllowOpponentBye(TActorTileLayerInfoMap* pOtherActors);
 };

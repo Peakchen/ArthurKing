@@ -52,18 +52,62 @@ public:
 	*/
 	/************************************************************************/
 
-	void LoadPersonInfoData(std::string filename);
+	void LoadPersonLocationInfoData(std::string filename);
 		
 	/************************************************************************/
 	/* 
-	@func:		LoadPersonInfoData
-	@param:		string filename
+	@func:		SavePersonLocationInfoData
+	@param:		no
 	@return:	void
-	@Desc:		load all player info , about socre, location point and so on...
+	@Desc:		save all player info , about socre, location point and so on...
 	*/
 	/************************************************************************/
 
-	void SavePersonInfoData();
+	void SavePersonLocationInfoData();
+
+	/************************************************************************/
+	/*
+	@func:		LoadPersonRulePropInfoData
+	@param:		string filename
+	@return:	void
+	@Desc:		load all player rule prop
+	*/
+	/************************************************************************/
+
+	void LoadPersonRulePropInfoData(std::string filename);
+
+	/************************************************************************/
+	/*
+	@func:		SavePersonRulePropInfoData
+	@param:		no
+	@return:	void
+	@Desc:		save all player Rule prop
+	*/
+	/************************************************************************/
+
+	void SavePersonRulePropInfoData();
+
+	/************************************************************************/
+	/*
+	@func:		LoadPersonPropInfoData
+	@param:		string filename
+	@return:	void
+	@Desc:		load all player rule prop
+	*/
+	/************************************************************************/
+
+	void LoadPersonPropInfoData(std::string filename);
+
+	/************************************************************************/
+	/*
+	@func:		SavePersonPropInfoData
+	@param:		no
+	@return:	void
+	@Desc:		save all player prop
+	*/
+	/************************************************************************/
+
+	void SavePersonPropInfoData();
 
 	/************************************************************************/
 	/* 
@@ -127,10 +171,13 @@ public:
 	Desc:		remove person Instance
 	*/
 	/************************************************************************/
-	void	RemoveActorInstace(__int8 PDBID);
+	void	RemoveActorInstace(int PDBID);
 
-	TActorInstanceMap *GetActorMap(){ return &m_mapActorInstanceMap; }
+	// 获取当前角色所在的地图规则信息
+	TActorTileLayerInfoMap *GetActorPathInfo(){ return &m_mapActorTileLayerInfo; }
 
+	// 获取当前 角色所在位置信息
+	TPersonInfoMap		   *GetActorLocInfo(){ return &m_mapPersonLocation; }
 private:
 
 	/************************************************************************/
@@ -167,7 +214,8 @@ private:
 	 
 	// save all actor instance
 
-	TActorInstanceMap m_mapActorInstanceMap;
+	TActorTileLayerInfoMap m_mapActorTileLayerInfo;
+
 };
 
 extern CPlayerManager g_PalyerManager;

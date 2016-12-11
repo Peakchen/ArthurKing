@@ -136,12 +136,28 @@ public:
 	virtual void SubScore(GWORD iSubScore) = 0;
 
 	//////////////////////////////IEntity/////////////////////////////////
-	virtual IEntity* GetEntityByPDBID(GWORD pdbid);
+	/************************************************************************/
+	/*
+	//通过实体 dbid
+	*/
+	/************************************************************************/
+	virtual int		GetEntityPDBID();
+
+	/************************************************************************/
+	/*
+	// 通过 规则属性ID获取实体属性值
+	*/
+	/************************************************************************/
+	virtual int		GetEntityRuleProp(int iRulePropID);
 
 	//设置属性值
 	virtual void	SetActorProp(int tyPropID, int iPropValue) = 0;
 	//获得属性值
 	virtual int		GetActorProp(int tyPropID) = 0;
+
+	// 获取当前翻牌事件 信息
+	virtual int		GetNextStepEventID() = 0;
+	virtual std::string		GetNextStepEventDesc() = 0;
 
 private:
 	void GetCanGoColRowData(int iRandnum, int iCol, int iRow, int& iNextCol, int &iNextRow);

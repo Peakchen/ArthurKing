@@ -20,7 +20,7 @@ public:
 	///////////////////////////CTileBase////////////////////////////////////////////
 	virtual char* GetActionName();
 
-	virtual void CheckCurrentAction(TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pSelfActor, TActorInstanceMap* pOtherActors);
+	virtual void CheckCurrentAction(TTileLayerGridProperty *pTileLayerPeperty, CActorBase* pSelfActor, TActorTileLayerInfoMap* pOtherActors);
 
 	///////////////////////IAIPersonMessageSink////////////////////////////////
 	virtual void OnExecMessageHandle(GWORD nMsgID, const char* szDesc);
