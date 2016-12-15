@@ -66,6 +66,8 @@ private:
 	void FindNextPlayer();
 
 	void CreateThreadChechSplitAction();
+	// 判断当前角色 暂停次数
+	bool __IsPersonStopTimes();
 };
 
 

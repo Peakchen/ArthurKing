@@ -3,6 +3,8 @@
 #include "ConstUtil.h"
 #include "ResCreator.h"
 #include "PlayerManager.h"
+#include "Entity\PersonPart.h"
+#include "EntityProp.h"
 
 
 CArthurKingControl::CArthurKingControl()
@@ -242,6 +244,19 @@ void CArthurKingControl::CheckAddAnimateByName(EPLAYER_ACTION iCurAction, std::s
 
 void CArthurKingControl::FindNextPlayer()
 {
+	// 是否暂停三次
+	if (__IsPersonStopTimes())
+	{
+		// 拿到 下一轮翻牌的动作
+		// 当前角色数量：2 暂时如此处理
+		EPLAYER_ACTION iCurAction = g_PalyerManager.getRecordNextPlayerAction();
+		int iNextAction = ( iCurAction % Player_Max_Count );
+		iNextAction += 1;
+
+		g_PalyerManager.DoChangeState(( EPLAYER_ACTION ) iNextAction);
+		return;
+	}
+
 	EPLAYER_ACTION iCurAction = g_PalyerManager.getRecordNextPlayerAction();
 	g_PalyerManager.DoChangeState(iCurAction);
 	int iNextAction = ( iCurAction % Player_Max_Count );
@@ -286,4 +301,17 @@ void CArthurKingControl::CreateThreadChechSplitAction()
 
 	// 略过，因为 弹窗
 	m_bThroughCard = true;
+}
+
+bool CArthurKingControl::__IsPersonStopTimes()
+{
+	int iTimes = g_PersonPart.GetPersonRuleProp(m_pActor->GetPDBID(), CREATURE_RULE_FOOT_RED);
+	if (iTimes > 0)
+	{
+		iTimes -= 1;
+		g_PersonPart.SetPersonRuleProp(m_pActor->GetPDBID(), CREATURE_RULE_FOOT_RED, iTimes);
+		return true;
+	}
+
+	return false;
 }

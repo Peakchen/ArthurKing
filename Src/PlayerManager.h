@@ -178,6 +178,9 @@ public:
 
 	// 获取当前 角色所在位置信息
 	TPersonInfoMap		   *GetActorLocInfo(){ return &m_mapPersonLocation; }
+
+	// 设置当前角色 位置信息
+	void		SetActorLocInfo(TPersonInfo *pLocInfo, int PDBID);
 private:
 
 	/************************************************************************/

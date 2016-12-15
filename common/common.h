@@ -207,7 +207,28 @@ typedef map<int, CActorBase*> TActorTileLayerInfoMap;
 
 
 typedef map<int, int>			TPropMap;
+struct TRuleProp
+{
+	int iRulePropID;
+	int iRulePropValue;
+	TRuleProp()
+	{
+		memset(this, 0, sizeof(TRuleProp));
+	}
+
+};
 typedef map<int, TPropMap*>		TPerosnRulePropMap;
+
+struct TPersonProp
+{
+	int iPropID;
+	int iValue;
+	TPersonProp()
+	{
+		memset(this, 0, sizeof(TPersonProp));
+	}
+
+};
 typedef map<int, TPropMap*>		TPerosnPropMap;
 
 //Ëæ»ú ²Ù×÷

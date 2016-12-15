@@ -515,3 +515,19 @@ void CPlayerManager::SavePersonPropInfoData()
 	}
 }
 
+void CPlayerManager::SetActorLocInfo(TPersonInfo *pLocInfo, int PDBID)
+{
+	TPersonInfoMap::iterator it = m_mapPersonLocation.find(PDBID);
+	if (it != m_mapPersonLocation.end())
+	{
+		return;
+	}
+
+	if (pLocInfo == nullptr || PDBID <= 0)
+	{
+		return;
+	}
+
+	m_mapPersonLocation [PDBID] = pLocInfo;
+}
+

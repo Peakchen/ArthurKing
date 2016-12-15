@@ -13,6 +13,7 @@
 #include "ExchangeSeaBarPopup.h"
 #include "cocos2d/cocos/platform/winrt/CCPThreadWinRT.h"
 #include "SellSeaBarPopup.h"
+#include "Entity/PersonPart.h"
 
 USING_NS_CC;
 
@@ -92,6 +93,8 @@ bool CGameMainScene::init()
 
 	// about score show
 	__CreateAllEntityScoreLabel();
+
+	g_PersonPart.ImportPersonData();
 	return true;
 }
 
@@ -267,6 +270,7 @@ void CGameMainScene::addPlayer()
 	m_pArthurKing->setvecAnim_up(m_vecPlayer_up);
 
 	m_pCurAction = m_pArthurKing;
+	__SetPersonCurrrentLocInfo(m_pArthurKing, vec2_p1);
 }
 
 void CGameMainScene::GetAnimateVec(int iMin, int iMax, TVecSpriteFrame &vecPlayer_director, EPlayer iState)
@@ -520,6 +524,8 @@ void CGameMainScene::addAI ( )
 	m_pAIplayer->setvecAnim_Left ( m_vecPAI_left );
 	m_pAIplayer->setvecAnim_Right ( m_vecPAI_right );
 	m_pAIplayer->setvecAnim_up ( m_vecPAI_up );
+
+	__SetPersonCurrrentLocInfo(m_pAIplayer, vec2_aiMap);
 }
 
 void CGameMainScene::OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc)
@@ -834,4 +840,26 @@ void CGameMainScene::__CreateAllEntityScoreLabel()
 	m_SecScore->setPosition(ccp(visibleSize.width/2 - 300, visibleSize.height/2 + 150));
 	m_SecScore->setColor(Color3B::GREEN);
 	this->addChild(m_SecScore);
+}
+
+void CGameMainScene::__SetPersonCurrrentLocInfo(CActorBase *pActor, Vec2 vec)
+{
+	if (pActor == nullptr)
+	{
+		return;
+	}
+
+	TPersonInfo stPersonInfo;
+	GWORD iScore;
+	pActor->GetOwnerSelfScore(iScore);
+	stPersonInfo.dt_score = iScore;
+
+	GWORD iCurTime;
+	g_GameToolAPI.GetGameCurrentTime(iCurTime);
+	stPersonInfo.dw_save_time = iCurTime;
+	stPersonInfo.Loc_x = vec.x;
+	stPersonInfo.Loc_y = vec.y;
+	stPersonInfo.person_ID = pActor->GetPDBID();
+
+	g_PalyerManager.SetActorLocInfo(&stPersonInfo, pActor->GetPDBID());
 }

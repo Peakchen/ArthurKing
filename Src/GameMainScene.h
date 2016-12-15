@@ -216,6 +216,14 @@ private:
 	/************************************************************************/
 	void		__CreateAllEntityScoreLabel();
 
+	/************************************************************************/
+	/* 
+		// 设置角色当前位置信息
+	*/
+	/************************************************************************/
+
+	void		__SetPersonCurrrentLocInfo(CActorBase *pActor, Vec2 vec);
+
 private:
 
 	//friend class CArthurKingControl;

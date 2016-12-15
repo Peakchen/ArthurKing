@@ -41,7 +41,7 @@ void CPersonPart::OnExecMessageHandle(GWORD nMsgID, const char* szDesc)
 void CPersonPart::__InitPersonRulePropData(int PDBID)
 {
 
-	SetPersonRuleProp(PDBID, CREATURE_RULE_ID, 0);	//不必赋值	不必赋值	不必赋值
+	//SetPersonRuleProp(PDBID, CREATURE_RULE_ID, 0);	//不必赋值	不必赋值	不必赋值
 
 	////////////////////////////////导入规则数据//////////////////////////////////
 
@@ -58,7 +58,7 @@ void CPersonPart::__InitPersonRulePropData(int PDBID)
 void CPersonPart::__InitPersonSelfPropData(int PDBID)
 {
 	////////////////////////////////导入角色数据/////////////////////////////
-	SetPersonProp(PDBID, CREATURE_PROP_PDBID, 1);
+	SetPersonProp(PDBID, CREATURE_PROP_PDBID, PDBID);
 }
 
 int CPersonPart::GetPersonRuleProp(int PDBID, int iRulePropID)
@@ -94,32 +94,26 @@ void CPersonPart::SetPersonRuleProp(int PDBID, int iRulePropID, int iValue)
 	}
 
 	if (INVALID_MAX_VALUE < iValue || 
-		iValue >= INVALID_RULE_VALUE)
+		iValue < INVALID_RULE_VALUE)
 	{
 		Trace_In("error: %s 错误的规则属性值.", __FUNCTION__);
 		return;
 	}
 
+	TPropMap stRuleProp;
 	if (m_stRuleProp.empty())
 	{
-		TPropMap pstRuleProp;
-		pstRuleProp [iRulePropID] = 0;
-		m_stRuleProp [PDBID] = &pstRuleProp;
+		stRuleProp [iRulePropID] = 0;
+		m_stRuleProp [PDBID] = &stRuleProp;
 	}
 
-	TPropMap* pstRuleProp = m_stRuleProp [PDBID];
-	if (pstRuleProp == nullptr)
+	TPerosnRulePropMap::iterator pstRuleProp = m_stRuleProp.find(PDBID);
+	if (pstRuleProp == m_stRuleProp.end())
 	{
 		return;
 	}
-
-	TPropMap::iterator& it = pstRuleProp->find(iRulePropID);
-	if (it == pstRuleProp->end())
-	{
-		return;
-	}
-
-	it->second = iValue;
+	
+	(*m_stRuleProp[PDBID])[iRulePropID] = iValue;
 }
 
 int CPersonPart::GetPersonProp(int PDBID, int iPropID)
@@ -130,14 +124,14 @@ int CPersonPart::GetPersonProp(int PDBID, int iPropID)
 		return INVALID_RULE_VALUE;
 	}
 
-	TPropMap* pstProp = m_stNumProp [PDBID];
-	if (pstProp == nullptr)
+	TPerosnPropMap::iterator pstProp = m_stNumProp.find(PDBID);
+	if (pstProp == m_stNumProp.end())
 	{
 		return INVALID_RULE_VALUE;
 	}
 
-	TPropMap::iterator it = pstProp->find(iPropID);
-	if (it == pstProp->end())
+	TPropMap::iterator it = pstProp->second->find(iPropID);
+	if (it == pstProp->second->end())
 	{
 		return INVALID_RULE_VALUE;
 	}
@@ -161,21 +155,21 @@ void CPersonPart::SetPersonProp(int PDBID, int iPropID, int iValue)
 		return;
 	}
 
+	TPropMap stProp;
 	if (m_stNumProp.empty())
 	{
-		TPropMap pstProp;
-		pstProp [iPropID] = 0;
-		m_stNumProp [PDBID] = &pstProp;
+		stProp [iPropID] = 0;
+		m_stNumProp [PDBID] = &stProp;
 	}
 
-	TPropMap* pstProp = m_stNumProp [PDBID];
-	if (pstProp == nullptr)
+	TPerosnPropMap::iterator pstProp = m_stNumProp.find(PDBID);
+	if (pstProp == m_stNumProp.end())
 	{
 		return;
 	}
 
-	TPropMap::iterator& it = pstProp->find(iPropID);
-	if (it == pstProp->end())
+	TPropMap::iterator& it = pstProp->second->find(iPropID);
+	if (it == pstProp->second->end())
 	{
 		return;
 	}
