@@ -401,6 +401,9 @@ void CGameMainScene::AfterOpenCard()
 	{
 		m_pCurAction->AddScore(m_CurPalyer_Socre);
 		m_CurScore->UpdateEntityScore();
+
+		// 当前所加分数清掉
+		m_CurPalyer_Socre = 0;
 	}
 }
 
@@ -840,6 +843,9 @@ void CGameMainScene::__CreateAllEntityScoreLabel()
 	m_SecScore->setPosition(ccp(visibleSize.width/2 - 300, visibleSize.height/2 + 150));
 	m_SecScore->setColor(Color3B::GREEN);
 	this->addChild(m_SecScore);
+
+	// 角色画线
+	__DrawScoreLine();
 }
 
 void CGameMainScene::__SetPersonCurrrentLocInfo(CActorBase *pActor, Vec2 vec)
@@ -862,4 +868,20 @@ void CGameMainScene::__SetPersonCurrrentLocInfo(CActorBase *pActor, Vec2 vec)
 	stPersonInfo.person_ID = pActor->GetPDBID();
 
 	g_PalyerManager.SetActorLocInfo(&stPersonInfo, pActor->GetPDBID());
+
+}
+
+void CGameMainScene::__DrawScoreLine()
+{
+	auto pDraw_H = cocos2d::DrawNode::create();
+	if (pDraw_H == nullptr) return;
+	this->addChild(pDraw_H);
+	float dwWidth = visibleSize.width / 2 - 300;
+	float dwHeight = visibleSize.height / 2 + 182;
+	pDraw_H->drawLine(Vec2(dwWidth, dwHeight), Vec2(dwWidth + 100, dwHeight), Color4F::BLACK);
+
+	auto pDraw_V = cocos2d::DrawNode::create();
+	if (pDraw_V == nullptr) return;
+	this->addChild(pDraw_V);
+	pDraw_V->drawLine(Vec2(dwWidth + 20, dwHeight + 50), Vec2(dwWidth + 20, dwHeight - 50), Color4F::BLACK);
 }

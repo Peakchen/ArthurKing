@@ -62,10 +62,10 @@ bool CDisplayScore::initScore(const char* szPng, CActorBase* pActor)
 	}
 
 	//m_pScoreLabel->setColor(Color3B::YELLOW);
-	//m_pScoreLabel->enableShadow(Color4B::GREEN, Size(10, 10));
+	m_pScoreLabel->enableShadow(Color4B::GREEN, Size(10, 10));
 	//m_pScoreLabel->enableOutline(Color4B::RED, 3);
 	m_pScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	m_pScoreLabel->setPosition(ccp(40.0f, 10.0f));
+	m_pScoreLabel->setPosition(ccp(20.0f, 3.0f));
 
 	this->addChild(pScoreLogo);
 	this->addChild(m_pScoreLabel);

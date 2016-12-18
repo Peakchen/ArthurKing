@@ -113,7 +113,7 @@ void CPersonPart::SetPersonRuleProp(int PDBID, int iRulePropID, int iValue)
 		return;
 	}
 	
-	(*m_stRuleProp[PDBID])[iRulePropID] = iValue;
+	//(*m_stRuleProp[PDBID])[iRulePropID] = iValue;
 }
 
 int CPersonPart::GetPersonProp(int PDBID, int iPropID)

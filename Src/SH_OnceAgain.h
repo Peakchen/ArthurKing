@@ -11,7 +11,8 @@
 
 #include "TileBase.h"
 
-class CSH_OnceAgain
+class CSH_OnceAgain:
+	public CTileBase
 {
 public:
 	CSH_OnceAgain();

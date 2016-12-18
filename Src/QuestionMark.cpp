@@ -33,7 +33,8 @@ void CQuestionMark::OnEnterOperation(int iOperation, int PDBID)
 
 				GWORD iScore;
 				pActor->GetOwnerSelfScore(iScore);
-				pActor->SetOwnerSelfScore(iScore - 10);
+				if (iScore >= 10)
+					pActor->SetOwnerSelfScore(iScore - 10);
 			}
 			break;
 

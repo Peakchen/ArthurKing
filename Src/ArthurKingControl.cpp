@@ -44,7 +44,7 @@ void CArthurKingControl::OnPlayerMoveEnd()
 		CreateThreadChechSplitAction();
 
 		// 
-		if (!m_bThroughCard)
+		//if (!m_bThroughCard)
 			FindNextPlayer();
 
 		return;
@@ -66,11 +66,11 @@ void CArthurKingControl::OnPlayerMove()
 	MoveBy *pMove = NULL;
 	Repeat *pRepeat = NULL;
 
-	CCLOG("iNextCol: %d,  iCurCol: %d", stPlayerMovePath.iNextCol, stPlayerMovePath.iCurCol);
+	/*CCLOG("iNextCol: %d,  iCurCol: %d", stPlayerMovePath.iNextCol, stPlayerMovePath.iCurCol);
 	CCLOG("iNextRow: %d,  iCurRow: %d", stPlayerMovePath.iNextRow, stPlayerMovePath.iCurRow);
 
 	CCLOG("iHorizontalDistence: %d, ", iHorizontalDistence);
-	CCLOG("iVerticalDistence: %d, ", iVerticalDistence);
+	CCLOG("iVerticalDistence: %d, ", iVerticalDistence);*/
 
 	if (iHorizontalDistence > 0)
 	{
@@ -245,17 +245,17 @@ void CArthurKingControl::CheckAddAnimateByName(EPLAYER_ACTION iCurAction, std::s
 void CArthurKingControl::FindNextPlayer()
 {
 	// 是否暂停三次
-	if (__IsPersonStopTimes())
-	{
-		// 拿到 下一轮翻牌的动作
-		// 当前角色数量：2 暂时如此处理
-		EPLAYER_ACTION iCurAction = g_PalyerManager.getRecordNextPlayerAction();
-		int iNextAction = ( iCurAction % Player_Max_Count );
-		iNextAction += 1;
+	//if (__IsPersonStopTimes())
+	//{
+	//	// 拿到 下一轮翻牌的动作
+	//	// 当前角色数量：2 暂时如此处理
+	//	EPLAYER_ACTION iCurAction = g_PalyerManager.getRecordNextPlayerAction();
+	//	int iNextAction = ( iCurAction % Player_Max_Count );
+	//	iNextAction += 1;
 
-		g_PalyerManager.DoChangeState(( EPLAYER_ACTION ) iNextAction);
-		return;
-	}
+	//	g_PalyerManager.DoChangeState(( EPLAYER_ACTION ) iNextAction);
+	//	return;
+	//}
 
 	EPLAYER_ACTION iCurAction = g_PalyerManager.getRecordNextPlayerAction();
 	g_PalyerManager.DoChangeState(iCurAction);

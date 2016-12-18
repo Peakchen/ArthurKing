@@ -224,6 +224,14 @@ private:
 
 	void		__SetPersonCurrrentLocInfo(CActorBase *pActor, Vec2 vec);
 
+	/************************************************************************/
+	/* 
+		// 分数分割线
+	*/
+	/************************************************************************/
+
+	void		__DrawScoreLine();
+
 private:
 
 	//friend class CArthurKingControl;
