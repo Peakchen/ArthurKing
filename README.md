@@ -33,3 +33,5 @@ There will always be updates, Please continue to pay attention to me. thank you!
 
 Welcome to send mail to communicate with me.
 
+
+![image](https://github.com/Peakchen/ArthurKing/blob/master/Design/Version_Preview_1_0.PNG)
