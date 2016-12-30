@@ -142,6 +142,7 @@ bool CSeaBarInfoManager::init()
 	}
 
 	schedule(schedule_selector(CSeaBarInfoManager::UpdateSeaBarData), 60.0f);
+	return true;
 }
 
 void CSeaBarInfoManager::LoadSeaBarRiseData(string fileName)

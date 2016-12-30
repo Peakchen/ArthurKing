@@ -44,6 +44,8 @@ public:
 	///////////////////////////////IAIPersonMessageSink//////////////////////////////////////
 	virtual void  OnExecMessageHandle(GWORD nMsgID, const char* szDesc);
 
+	virtual void OnExecRuleEventMessage(int iPDBID, char* szContext, GWORD nMsgID, const char* szDesc){}
+
 	// 取得 角色 规则属性
 	int		GetPersonRuleProp(int PDBID, int iRulePropID);
 
@@ -56,9 +58,9 @@ public:
 	// 设置 角色属性
 	void	SetPersonProp(int PDBID, int iPropID, int iValue);
 
-	TPerosnRulePropMap *GetPerosnRulePropData(){ return &m_stRuleProp; }
+	TRulePropCollectMap *GetPerosnRulePropData(){ return &m_stRuleProp; }
 
-	TPerosnPropMap	*GetPersonPropData(){ return &m_stNumProp; }
+	TPerosnPropCollectMap	*GetPersonPropData(){ return &m_stNumProp; }
 
 private:
 	//		初始化角色规则数据
@@ -67,10 +69,13 @@ private:
 	//		初始化角色自身属性
 	void	__InitPersonSelfPropData(int PDBID);
 
-private:
-	TPerosnRulePropMap m_stRuleProp;
+	//		处理规则属性事件
+	void	__OnEvent_RuleProp();
 
-	TPerosnPropMap m_stNumProp;
+private:
+
+	TRulePropCollectMap		m_stRuleProp;
+	TPerosnPropCollectMap	m_stNumProp;
 };
 
 

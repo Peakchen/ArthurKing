@@ -61,3 +61,17 @@ void CPersonMessageEventHandle::ResetData()
 	m_mapPersonMsg.clear();
 }
 
+void CPersonMessageEventHandle::FireRulePropChangeEvent(int iPDBID, char* szContext, GWORD dstMsgID, const char*  szDesc)
+{
+	TPersonMessageMap::iterator itMessage = m_mapPersonMsg.find(dstMsgID);
+	if (itMessage == m_mapPersonMsg.end())
+	{
+		return;
+	}
+
+	if (itMessage->second == nullptr)
+		return;
+
+	itMessage->second->OnExecRuleEventMessage(iPDBID, szContext, dstMsgID, szDesc);
+}
+

@@ -45,7 +45,7 @@ struct IEntityRulePropHandler
 	// 规则属性值变化 事件
 	*/
 	/************************************************************************/
-	virtual		void	OnEntityRulePropChange(int PDBID, int iRulePropID, int nRulePropValue) = 0;
+	virtual		void	OnEntityRulePropChange(int iPDBID, char* szContext) = 0;
 };
 
 #endif

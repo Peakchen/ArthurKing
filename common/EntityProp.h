@@ -38,6 +38,7 @@ enum EEntityRuleProp{
 	CREATURE_RULE_FOOT_BLUE,		//  哎呀，踩空了，原地休息
 	CREATURE_RULE_BLUE_STAR,		//	遇到蓝星，之后无论购买什么土地都免费，踩到分数加倍，两次内有效
 	CREATURE_RULE_BLUE_DOUBLESTAR,	//	蓝双星，踩到对方土地免费，走三次内有效
+	CREATURE_RULE_ONCE_AGAIN,		//	随机五个数字，走随机出来的格子数
 
 	///////////////////////////////////
 	CREATURE_RULE_MAX,				//  当前做大属性值，上述属性值不得超过该属性

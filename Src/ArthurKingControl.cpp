@@ -39,11 +39,12 @@ void CArthurKingControl::OnPlayerMoveEnd()
 	stPlayerMovePath.iStepCount++;
 	if (stPlayerMovePath.iStepCount >= (m_passRowPath.size() - 1))
 	{
-		//
-
+		//处理消息
 		CreateThreadChechSplitAction();
 
-		// 
+		// 下一步之前，先处理当前规则属性
+		g_ResCreator.GetPersonMessageInstance()->FireMessage(EN_RULE_PROP_EVENT, "规则属性事件");
+		
 		//if (!m_bThroughCard)
 			FindNextPlayer();
 
@@ -244,19 +245,8 @@ void CArthurKingControl::CheckAddAnimateByName(EPLAYER_ACTION iCurAction, std::s
 
 void CArthurKingControl::FindNextPlayer()
 {
-	// 是否暂停三次
-	//if (__IsPersonStopTimes())
-	//{
-	//	// 拿到 下一轮翻牌的动作
-	//	// 当前角色数量：2 暂时如此处理
-	//	EPLAYER_ACTION iCurAction = g_PalyerManager.getRecordNextPlayerAction();
-	//	int iNextAction = ( iCurAction % Player_Max_Count );
-	//	iNextAction += 1;
-
-	//	g_PalyerManager.DoChangeState(( EPLAYER_ACTION ) iNextAction);
-	//	return;
-	//}
-
+	// 当前进行下一步
+	g_PalyerManager.SetFinallyStepPerson(m_pActor);
 	EPLAYER_ACTION iCurAction = g_PalyerManager.getRecordNextPlayerAction();
 	g_PalyerManager.DoChangeState(iCurAction);
 	int iNextAction = ( iCurAction % Player_Max_Count );

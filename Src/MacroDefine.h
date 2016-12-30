@@ -1,7 +1,7 @@
 #include <vector>
 #include "math\Vec2.h"
 /***********************************
-author: HarryChen
+author: StefanChen
 date: 2016/6/5
 version: 1.0
 
@@ -43,7 +43,5 @@ enum EPLAYER_ACTION
 };
 
 
-
-//typedef std::vector<Vec2> TVectorVec2;
 
 #endif

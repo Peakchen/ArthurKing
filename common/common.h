@@ -206,7 +206,7 @@ struct TTileLayerGridProperty
 typedef map<int, CActorBase*> TActorTileLayerInfoMap;
 
 
-typedef map<int, int>			TPropMap;
+// 规则属性map
 struct TRuleProp
 {
 	int iRulePropID;
@@ -216,9 +216,19 @@ struct TRuleProp
 		memset(this, 0, sizeof(TRuleProp));
 	}
 
-};
-typedef map<int, TPropMap*>		TPerosnRulePropMap;
+	TRuleProp& operator=( const TRuleProp stRuleProp )
+	{
+		iRulePropID = stRuleProp.iRulePropID;
+		iRulePropValue = stRuleProp.iRulePropValue;
+		return *this;
+	}
 
+};
+
+typedef map<int, TRuleProp>					TRuleSinglePropMap;
+typedef map<int, TRuleSinglePropMap>		TRulePropCollectMap;
+
+// 角色属性map
 struct TPersonProp
 {
 	int iPropID;
@@ -228,8 +238,16 @@ struct TPersonProp
 		memset(this, 0, sizeof(TPersonProp));
 	}
 
+	TPersonProp& operator=( const TPersonProp stPersonProp)
+	{
+		iPropID = stPersonProp.iPropID;
+		iValue = stPersonProp.iValue;
+		return *this;
+	}
 };
-typedef map<int, TPropMap*>		TPerosnPropMap;
+
+typedef map<int, TPersonProp>				TPersonSinglePropMap;
+typedef map<int, TPersonSinglePropMap>		TPerosnPropCollectMap;
 
 //随机 操作
 enum EQuestionType
@@ -242,6 +260,122 @@ enum EQuestionType
 };
 
 
+// 正向遍历宏
 #define FOR_EACH_CONTAINER(TYPE, CONTAINER, IT) for(TYPE::iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
+
+/////////////////////////////////////规则事件现场///////////////////////////////////
+// 注意申明：
+//			凡规则现场，都以	"TR_" 打头，	后面接  规则自定义名称		
+
+//	Once Again	随机五个数字，走随机出来的格子数
+
+struct TR_OnceAgain
+{
+	int iRandomStep;		//随机步数
+	TR_OnceAgain()
+	{
+		memset(this, 0, sizeof(TR_OnceAgain));
+	}
+};
+
+// 随机获得一个当前规则的奖励或者惩罚
+struct TR_Question
+{
+	//字段...
+
+	// 初始化
+	TR_Question()
+	{
+		memset(this, 0, sizeof(TR_Question));
+	}
+};
+
+//让对手轮空一次
+struct TR_Turn_Free
+{
+	//字段...
+
+	// 初始化
+	TR_Turn_Free()
+	{
+		memset(this, 0, sizeof(TR_Turn_Free));
+	}
+};
+
+//踩到地雷，原地疗伤，轮空三次
+struct TR_Foot_Red
+{
+	//字段...
+
+	// 初始化
+	TR_Foot_Red()
+	{
+		memset(this, 0, sizeof(TR_Foot_Red));
+	}
+};
+
+//遇到火星，之后不能购买土地，踩到分数无效，共两次
+struct TR_Yellow_Star
+{
+	//字段...
+
+	// 初始化
+	TR_Yellow_Star()
+	{
+		memset(this, 0, sizeof(TR_Yellow_Star));
+	}
+};
+
+//红双星，踩到对方土地用付费加倍，走三次内有效
+
+struct TR_Red_DoubleStar
+{
+	//字段...
+
+	// 初始化
+	TR_Red_DoubleStar()
+	{
+		memset(this, 0, sizeof(TR_Red_DoubleStar));
+	}
+};
+
+//哎呀，踩空了，原地休息一次
+struct TR_Foot_Blue
+{
+	//字段...
+
+	// 初始化
+	TR_Foot_Blue()
+	{
+		memset(this, 0, sizeof(TR_Foot_Blue));
+	}
+};
+
+//遇到蓝星，之后无论购买什么土地都免费，踩到分数加倍，两次内有效
+struct TR_Blue_Star
+{
+	//字段...
+
+	// 初始化
+	TR_Blue_Star()
+	{
+		memset(this, 0, sizeof(TR_Blue_Star));
+	}
+};
+
+//蓝双星，踩到对方土地免费，走三次内有效
+struct TR_Blue_DoubleStar
+{
+	//字段...
+
+	// 初始化
+	TR_Blue_DoubleStar()
+	{
+		memset(this, 0, sizeof(TR_Blue_DoubleStar));
+	}
+};
+
+///////////////////////////////////////////规则现场////////end////////////////////////////////////
+
 
 #endif

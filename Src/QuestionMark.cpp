@@ -54,3 +54,8 @@ void CQuestionMark::OnEnterOperation(int iOperation, int PDBID)
 			break;
 	}
 }
+
+void CQuestionMark::OnEntityRulePropChange(int iPDBID, char* szContext)
+{
+	
+}

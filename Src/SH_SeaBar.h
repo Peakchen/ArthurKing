@@ -24,6 +24,9 @@ public:
 
 	///////////////////////IAIPersonMessageSink////////////////////////////////
 	virtual void OnExecMessageHandle(GWORD nMsgID, const char* szDesc);
+
+	virtual void OnExecRuleEventMessage(int iPDBID, char* szContext, GWORD nMsgID, const char* szDesc){}
+
 private:
 	TTileLayerGridProperty m_oTileLayerPeperty;
 	CActorBase* m_pActor;

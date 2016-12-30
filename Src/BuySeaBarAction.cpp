@@ -2,6 +2,8 @@
 #include "BuySeaBarAction.h"
 #include "SeaBarInfoManager.h"
 #include "ActorBase.h"
+#include "Entity\PersonPart.h"
+#include "EntityProp.h"
 
 bool CBuySeaBarAction::CheckCanExchangeSeaBar(int iSeaBarIndex, ESeaBarAttach& attchFlag, CActorBase* pActor)
 {
@@ -41,7 +43,15 @@ bool CBuySeaBarAction::CheckCanExchangeSeaBar(int iSeaBarIndex, ESeaBarAttach& a
 	{
 		return false;
 	}
-	
+
+	//规则属性判断		遇到火星，之后不能购买土地，踩到分数无效，共两次
+	int iYTimes = g_PersonPart.GetPersonRuleProp(pActor->GetPDBID(), CREATURE_RULE_YELLOW_STAR);
+	if (iYTimes > 0 )
+	{
+		g_PersonPart.SetPersonRuleProp(pActor->GetPDBID(), CREATURE_RULE_YELLOW_STAR, iYTimes - 1);	//每执行一次，-1
+		return false;
+	}
+
 	return true;
 }
 

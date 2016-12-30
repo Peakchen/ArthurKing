@@ -1,3 +1,4 @@
+
 /************************************************************************/
 /* 
 arthur:		StefanChen
@@ -7,7 +8,10 @@ brief:		random prize or punish
 */
 /************************************************************************/
 
-class CQuestionMark
+#include "ActionSpiltHandler.h"
+
+class CQuestionMark:
+	public IEntityRulePropHandler
 {
 public:
 	CQuestionMark();
@@ -30,11 +34,9 @@ public:
 
 	void	OnEnterOperation(int iOperation, int PDBID);
 
-	/************************************************************************/
-	/* 
-	*/
-	/************************************************************************/
+	//////////////////////IEntityRulePropHandler///////////////////////////////
 	
+	virtual void	OnEntityRulePropChange(int iPDBID, char* szContext);
 
 protected:
 	

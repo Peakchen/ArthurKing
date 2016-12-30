@@ -56,7 +56,8 @@ void CPlayerManager::Create(CActorBase* pActor)
 
 CPlayerManager::CPlayerManager()
 {
-
+	m_pActorBase = nullptr;
+	m_pCurrentActor = nullptr;
 }
 
 CPlayerManager::~CPlayerManager()
@@ -531,3 +532,16 @@ void CPlayerManager::SetActorLocInfo(TPersonInfo *pLocInfo, int PDBID)
 	m_mapPersonLocation [PDBID] = pLocInfo;
 }
 
+void CPlayerManager::SetFinallyStepPerson(CActorBase *pActor)
+{
+	if (pActor == nullptr)
+	{
+		log("%s :获取最后一步角色失败, 为nil.", __FUNCTION__);
+	}
+	m_pCurrentActor = pActor;
+}
+
+CActorBase* CPlayerManager::GetFinallyStepPerson()
+{
+	return m_pCurrentActor;
+}

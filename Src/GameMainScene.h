@@ -50,6 +50,8 @@ public:
 
 	virtual void  OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc);
 
+	virtual void OnExecRuleEventMessage(int iPDBID, char* szContext, GWORD nMsgID, const char* szDesc){}
+
 	CREATE_FUNC(CGameMainScene);
 
 	void onClick_StartControl(Object* pSender, Control::EventType event);

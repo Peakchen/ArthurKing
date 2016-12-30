@@ -33,6 +33,7 @@ public:
 	////////////////////////////////IAIPersonMessageSink/////////////////////////////
 	virtual void  OnExecMessageHandle(GWORD nMsgID, const char* szDesc);
 
+	virtual void OnExecRuleEventMessage(int iPDBID, char* szContext, GWORD nMsgID, const char* szDesc){}
 private:
 	//四方向动画
 	Animate* m_pActor_Left_Animate;

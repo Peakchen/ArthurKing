@@ -104,25 +104,12 @@ Scene* CGameMainScene::createMainScene()
 	auto layer = CGameMainScene::create();
 	scene->addChild(layer);
 	return scene;
-
-	/*CGameMainScene* pMainScene = new CGameMainScene();
-	if (pMainScene)
-	{
-		pMainScene->autorelease();
-		return pMainScene;
-	}
-
-	CC_SAFE_DELETE(pMainScene);
-	return nullptr;*/
 }
 
 void CGameMainScene::AddSceneMap()
 {
 	Scene* pMapReaderScene = CMapReader::createMapReaderScene();
 	addChild(pMapReaderScene);
-
-	//m_pMapReader = CMapReader::getMapReaderInstance();
-	//m_pMapReader->initMainLayer();
 }
 
 void CGameMainScene::AddSetItem()

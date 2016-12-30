@@ -181,6 +181,10 @@ public:
 
 	// 设置当前角色 位置信息
 	void		SetActorLocInfo(TPersonInfo *pLocInfo, int PDBID);
+	
+	// 记录当前最后一步的角色
+	void			SetFinallyStepPerson(CActorBase *);
+	CActorBase*		GetFinallyStepPerson();
 private:
 
 	/************************************************************************/
@@ -219,6 +223,8 @@ private:
 
 	TActorTileLayerInfoMap m_mapActorTileLayerInfo;
 
+	// 记录当前最后一步的角色
+	CActorBase*		m_pCurrentActor;
 };
 
 extern CPlayerManager g_PalyerManager;

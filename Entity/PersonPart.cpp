@@ -2,17 +2,18 @@
 #include "PersonPart.h"
 #include "EntityProp.h"
 #include "PlayerManager.h"
+#include "ResCreator.h"
 
 CPersonPart	 g_PersonPart;
 
 CPersonPart::CPersonPart()
 {
-
+	g_ResCreator.GetPersonMessageInstance()->RegisterAIMessage(EN_RULE_PROP_EVENT, this, "规则属性事件");
 }
 
 CPersonPart::~CPersonPart()
 {
-
+	g_ResCreator.GetPersonMessageInstance()->UnRegisterAIMessage(EN_RULE_PROP_EVENT, this);
 }
 
 void CPersonPart::ImportPersonData()
@@ -33,7 +34,14 @@ void CPersonPart::OnExecMessageHandle(GWORD nMsgID, const char* szDesc)
 {
 	switch (nMsgID)
 	{
+		case EN_RULE_PROP_EVENT:
+			{
+				// do something
+
+			}
+			break;
 		default:
+			log("file: %s, function:%s is error.",__FILE__ ,__FUNCTION__);
 			break;
 	}
 }
@@ -45,6 +53,7 @@ void CPersonPart::__InitPersonRulePropData(int PDBID)
 
 	////////////////////////////////导入规则数据//////////////////////////////////
 
+	SetPersonRuleProp(PDBID, CREATURE_RULE_ONCE_AGAIN, 0);
 	SetPersonRuleProp(PDBID, CREATURE_RULE_TURN_FREE, 0);
 	SetPersonRuleProp(PDBID, CREATURE_RULE_QUESTION, 0);
 	SetPersonRuleProp(PDBID, CREATURE_RULE_FOOT_RED, 0);
@@ -69,19 +78,10 @@ int CPersonPart::GetPersonRuleProp(int PDBID, int iRulePropID)
 		return INVALID_RULE_VALUE;
 	}
 
-	TPropMap* pstRuleProp = m_stRuleProp [PDBID];
-	if (pstRuleProp == nullptr)
-	{
-		return INVALID_RULE_VALUE;
-	}
+	TRuleSinglePropMap pstmap_RuleSingleProp = m_stRuleProp [PDBID];
+	TRuleProp stProp = pstmap_RuleSingleProp [iRulePropID];
 
-	TPropMap::iterator it = pstRuleProp->find(iRulePropID);
-	if (it == pstRuleProp->end())
-	{
-		return INVALID_RULE_VALUE;
-	}
-
-	return it->second;
+	return stProp.iRulePropValue;
 }
 
 void CPersonPart::SetPersonRuleProp(int PDBID, int iRulePropID, int iValue)
@@ -99,21 +99,14 @@ void CPersonPart::SetPersonRuleProp(int PDBID, int iRulePropID, int iValue)
 		Trace_In("error: %s 错误的规则属性值.", __FUNCTION__);
 		return;
 	}
-
-	TPropMap stRuleProp;
-	if (m_stRuleProp.empty())
-	{
-		stRuleProp [iRulePropID] = 0;
-		m_stRuleProp [PDBID] = &stRuleProp;
-	}
-
-	TPerosnRulePropMap::iterator pstRuleProp = m_stRuleProp.find(PDBID);
-	if (pstRuleProp == m_stRuleProp.end())
-	{
-		return;
-	}
 	
-	//(*m_stRuleProp[PDBID])[iRulePropID] = iValue;
+	TRuleSinglePropMap& pstmap_RuleSingleProp = m_stRuleProp [PDBID];
+	TRuleProp& stProp = pstmap_RuleSingleProp [iRulePropID];
+
+	TRuleProp stRuleProp;
+	stRuleProp.iRulePropID = iRulePropID;
+	stRuleProp.iRulePropValue = iValue;
+	stProp = stRuleProp;
 }
 
 int CPersonPart::GetPersonProp(int PDBID, int iPropID)
@@ -123,20 +116,10 @@ int CPersonPart::GetPersonProp(int PDBID, int iPropID)
 	{
 		return INVALID_RULE_VALUE;
 	}
-
-	TPerosnPropMap::iterator pstProp = m_stNumProp.find(PDBID);
-	if (pstProp == m_stNumProp.end())
-	{
-		return INVALID_RULE_VALUE;
-	}
-
-	TPropMap::iterator it = pstProp->second->find(iPropID);
-	if (it == pstProp->second->end())
-	{
-		return INVALID_RULE_VALUE;
-	}
-
-	return it->second;
+	
+	TPersonSinglePropMap stmap_PersonSingleProp = m_stNumProp [PDBID];
+	const TPersonProp stProp = stmap_PersonSingleProp [iPropID];
+	return stProp.iValue;
 }
 
 void CPersonPart::SetPersonProp(int PDBID, int iPropID, int iValue)
@@ -155,25 +138,104 @@ void CPersonPart::SetPersonProp(int PDBID, int iPropID, int iValue)
 		return;
 	}
 
-	TPropMap stProp;
-	if (m_stNumProp.empty())
-	{
-		stProp [iPropID] = 0;
-		m_stNumProp [PDBID] = &stProp;
-	}
+	TPersonSinglePropMap& stmap_PersonSingleProp = m_stNumProp [PDBID];
+	TPersonProp& stProp = stmap_PersonSingleProp [iPropID];
 
-	TPerosnPropMap::iterator pstProp = m_stNumProp.find(PDBID);
-	if (pstProp == m_stNumProp.end())
+	TPersonProp stPersonProp;
+	stPersonProp.iPropID = iPropID;
+	stPersonProp.iValue = iValue;
+	stProp = stPersonProp;
+}
+
+void CPersonPart::__OnEvent_RuleProp()
+{
+	CActorBase* pCurActor = g_PalyerManager.GetFinallyStepPerson();
+	if (pCurActor == nullptr)
 	{
+		log("%s: 取得当前角色为null.", __FUNCTION__);
 		return;
 	}
-
-	TPropMap::iterator& it = pstProp->second->find(iPropID);
-	if (it == pstProp->second->end())
+	
+	int iPDBID = pCurActor->GetPDBID();
+	if( GetPersonRuleProp(iPDBID, CREATURE_RULE_ONCE_AGAIN) > 0)
 	{
-		return;
+		TR_OnceAgain stOnceAgainContext;
+		// 预留现场
+		//
+		char* szOnceAgain = reinterpret_cast< char* >( &stOnceAgainContext );
+		g_ResCreator.GetPersonMessageInstance()->FireRulePropChangeEvent(iPDBID, szOnceAgain, EN_RULE_EVENT_QUESTION, ETILELAYER_QUESTION);
 	}
 
-	it->second = iValue;
+	if (GetPersonRuleProp(iPDBID, CREATURE_RULE_TURN_FREE) > 0)
+	{
+		TR_Turn_Free stTurn_FreeContext;
+		// 预留现场
+		//
+		char* szTurn_Free = reinterpret_cast< char* >( &stTurn_FreeContext );
+		g_ResCreator.GetPersonMessageInstance()->FireRulePropChangeEvent(iPDBID, szTurn_Free, EN_RULE_EVENT_TURN_FREE, ETILELAYER_TUEN_FREE);
+	}
+
+	if (GetPersonRuleProp(iPDBID, CREATURE_RULE_QUESTION) > 0)
+	{
+		TR_Question stQuestionContext;
+		// 预留现场
+		//
+		char* szQuestionContext = reinterpret_cast< char* >( &stQuestionContext );
+		g_ResCreator.GetPersonMessageInstance()->FireRulePropChangeEvent(iPDBID, szQuestionContext, EN_RULE_EVENT_QUESTION, ETILELAYER_QUESTION);
+	}
+	if (GetPersonRuleProp(iPDBID, CREATURE_RULE_FOOT_RED) > 0)
+	{
+		TR_Foot_Red stFoot_RedContext;
+		// 预留现场
+		//
+		char* szFoot_RedContext = reinterpret_cast< char* >( &stFoot_RedContext );
+		g_ResCreator.GetPersonMessageInstance()->FireRulePropChangeEvent(iPDBID, szFoot_RedContext, EN_RULE_EVENT_FOOT_RED, ETILELAYER_FOOT_RED);
+	}
+
+	if (GetPersonRuleProp(iPDBID, CREATURE_RULE_YELLOW_STAR) > 0)
+	{
+		TR_Yellow_Star stYellow_StarContext;
+		// 预留现场
+		//
+		char* szYellow_StarContext = reinterpret_cast< char* >( &stYellow_StarContext );
+		g_ResCreator.GetPersonMessageInstance()->FireRulePropChangeEvent(iPDBID, szYellow_StarContext, EN_RULE_EVENT_YELLOW_STAR, ETILELAYER_YELLOW_STAR);
+	}
+
+	if (GetPersonRuleProp(iPDBID, CREATURE_RULE_RED_DOUBLESTAR) > 0)
+	{
+		TR_Red_DoubleStar stRed_DoubleStarContext;
+		// 预留现场
+		//
+		char* szRed_DoubleStarContext = reinterpret_cast< char* >( &stRed_DoubleStarContext );
+		g_ResCreator.GetPersonMessageInstance()->FireRulePropChangeEvent(iPDBID, szRed_DoubleStarContext, EN_RULE_EVENT_RED_DOUBLE_STAR, ETILELAYER_RED_DOUBLESTAR);
+	}
+
+	if (GetPersonRuleProp(iPDBID, CREATURE_RULE_FOOT_BLUE) > 0)
+	{
+		TR_Foot_Blue stFoot_BlueContext;
+		// 预留现场
+		//
+		char* szFoot_BlueContext = reinterpret_cast< char* >( &stFoot_BlueContext );
+		g_ResCreator.GetPersonMessageInstance()->FireRulePropChangeEvent(iPDBID, szFoot_BlueContext, EN_RULE_EVENT_FOOT_BULE, ETILELAYER_FOOT_BLUE);
+	}
+
+	if (GetPersonRuleProp(iPDBID, CREATURE_RULE_BLUE_STAR) > 0)
+	{
+		TR_Blue_Star stBlue_StarContext;
+		// 预留现场
+		//
+		char* szBlue_StarContext = reinterpret_cast< char* >( &stBlue_StarContext );
+		g_ResCreator.GetPersonMessageInstance()->FireRulePropChangeEvent(iPDBID, szBlue_StarContext, EN_RULE_EVENT_BLUE_STAR, ETILELAYER_BLUE_STAR);
+	}
+
+	if (GetPersonRuleProp(iPDBID, CREATURE_RULE_BLUE_DOUBLESTAR) > 0)
+	{
+		TR_Blue_DoubleStar stBlue_DoubleStarContext;
+		// 预留现场
+		//
+		char* szBlue_DoubleStarContext = reinterpret_cast< char* >( &stBlue_DoubleStarContext );
+		g_ResCreator.GetPersonMessageInstance()->FireRulePropChangeEvent(iPDBID, szBlue_DoubleStarContext, EN_RULE_EVENT_BLUE_DOUBLE_STAR, ETILELAYER_BLUE_DOUBLESTAR);
+	}
+	
 }
 
