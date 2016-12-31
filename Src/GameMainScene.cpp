@@ -24,7 +24,7 @@ bool CGameMainScene::init()
 		return false;
 	}
 
-	m_pCurAction = NULL;
+	m_pCurActor = NULL;
 	m_pAIplayer = NULL;
 	m_pArthurKing = NULL;
 
@@ -57,7 +57,7 @@ bool CGameMainScene::init()
 	addPlayer();
 	addAI();
 
-	g_PalyerManager.Create(m_pCurAction);
+	g_PalyerManager.Create(m_pCurActor);
 
 	//g_GameToolAPI.CreateSeaBarRiseFallJsonFile(SEABAR_RISEFALL);
 
@@ -256,7 +256,7 @@ void CGameMainScene::addPlayer()
 	m_pArthurKing->setvecAnim_Right(m_vecPlayer_right);
 	m_pArthurKing->setvecAnim_up(m_vecPlayer_up);
 
-	m_pCurAction = m_pArthurKing;
+	m_pCurActor = m_pArthurKing;
 	__SetPersonCurrrentLocInfo(m_pArthurKing, vec2_p1);
 }
 
@@ -369,29 +369,48 @@ void CGameMainScene::InitPlayerAnimation()
 void CGameMainScene::AfterOpenCard()
 {
 	// 取得路径，请求控制 角色行走
-	if (m_pCurAction == NULL || m_CurRandNum == 0)
+	if (m_pCurActor == NULL || m_CurRandNum == 0)
 	{
 		return;
 	}
 
-	m_pCurAction->GetPlayerGoPath(m_CurRandNum, g_MapReader.GetCanGoPathArr());
-	m_pCurAction->RequestActorCtrl();
+	m_pCurActor->GetPlayerGoPath(m_CurRandNum, g_MapReader.GetCanGoPathArr());
+	m_pCurActor->RequestActorCtrl();
 
 	// 行走
 	BeginActorGo();
 
-	// 翻拍后 显示 分数
-	BeginFloatHead();
+	//TODO:
+	// 判断 规则属性:	分数是否有效
+	int iYellowStarValue = g_PersonPart.GetPersonRuleProp(m_pCurActor->GetPDBID(), CREATURE_RULE_YELLOW_STAR);
+	if (iYellowStarValue > 0)
+	{
+		g_PersonPart.SetPersonRuleProp(m_pCurActor->GetPDBID(), CREATURE_RULE_YELLOW_STAR, iYellowStarValue - 1);
+		m_CurPalyer_Socre = 0;
+	}
 
 	//更新分数 
 	if (m_CurPalyer_Socre > 0)
 	{
-		m_pCurAction->AddScore(m_CurPalyer_Socre);
+		// 判断 规则属性：	分数是否改变
+		int iBlueStarValue = g_PersonPart.GetPersonRuleProp(m_pCurActor->GetPDBID(), CREATURE_RULE_BLUE_STAR);
+		if (iBlueStarValue > 0)
+		{
+			m_CurPalyer_Socre *= 2;
+			g_PersonPart.SetPersonRuleProp(m_pCurActor->GetPDBID(), CREATURE_RULE_BLUE_STAR, iBlueStarValue - 1);
+		}
+
+		m_pCurActor->AddScore(m_CurPalyer_Socre);
 		m_CurScore->UpdateEntityScore();
 
-		// 当前所加分数清掉
-		m_CurPalyer_Socre = 0;
+		
 	}
+
+	// 翻拍后 显示 分数
+	BeginFloatHead();
+
+	// 当前所加分数清掉
+	m_CurPalyer_Socre = 0;
 }
 
 int sche_aboutScore = 0;
@@ -456,7 +475,7 @@ void CGameMainScene::BeginActorGo()
 			unschedule("AfterOpen_Close");
 		}
 
-		m_pCurAction->PlayStartGo();
+		m_pCurActor->PlayStartGo();
 
 	}
 	, 5.0f, 1, 0.0f, "AfterOpen_Close");
@@ -525,7 +544,7 @@ void CGameMainScene::OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc)
 		case ACTOR_START:
 			{
 				// 翻牌， 走路...
-				m_pCurAction = m_pArthurKing;
+				m_pCurActor = m_pArthurKing;
 				m_bAiAutoOpen = false;
 				m_CurScore = m_FirstScore;
 				CCLOG("-----------------------------player go ---------------------------");
@@ -536,7 +555,7 @@ void CGameMainScene::OnExecMessageHandle(GWORD nMsgID, LPCSTR szDesc)
 		case AI_START:
 			{
 				// 自动翻牌， 走路...
-				m_pCurAction = m_pAIplayer;
+				m_pCurActor = m_pAIplayer;
 				m_bAiAutoOpen = true;
 				m_CurScore = m_SecScore;
 				CCLOG("-----------------------------ai go ---------------------------");
@@ -693,7 +712,7 @@ void CGameMainScene::OnEvent_DealWithSpiltActionCallBack()
 	}
 
 	m_pstTileGridProperty = nullptr;
-	if (!g_PalyerManager.CheckActionSplit(Vec2(pVecLastPoint->x, pVecLastPoint->y), m_pCurAction, true, &m_pstTileGridProperty))
+	if (!g_PalyerManager.CheckActionSplit(Vec2(pVecLastPoint->x, pVecLastPoint->y), m_pCurActor, true, &m_pstTileGridProperty))
 	{
 		CCLOG("action split is faild....");
 	}

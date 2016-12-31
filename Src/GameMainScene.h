@@ -240,7 +240,7 @@ private:
 
 	Size visibleSize;
 
-	CActorBase* m_pCurAction;
+	CActorBase* m_pCurActor;
 
 	/////////////////////ACTOR ////////////////////////
 	CArthurKing* m_pArthurKing;

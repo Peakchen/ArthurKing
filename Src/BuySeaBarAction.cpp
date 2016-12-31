@@ -64,12 +64,33 @@ void CBuySeaBarAction::DoExchangeSeaBar(int iSeaBarIndex, CActorBase* pActor)
 		return;
 	}
 
-	GWORD dw_score;
-	pActor->GetOwnerSelfScore(dw_score);
+	//TODO:
+	//规则属性：是否能够购买土地
+	int iYellowStarValue = g_PersonPart.GetPersonRuleProp(pActor->GetPDBID(), CREATURE_RULE_YELLOW_STAR);
+	if (iYellowStarValue > 0 )
+	{
+		g_PersonPart.SetPersonRuleProp(pActor->GetPDBID(), CREATURE_RULE_YELLOW_STAR, iYellowStarValue - 1);
+		// 购买无效直接返回
+		return;
+	}
 
-	// spend score at it.
-	GWORD dw_resultScore = dw_score - pSeaBarInfo->iCur_Score;
-	pActor->SetOwnerSelfScore(dw_resultScore);
+	//TODO:
+	// 判断属性规则： 购买土地是否免费
+	int iBlueStarValue = g_PersonPart.GetPersonRuleProp(pActor->GetPDBID(), CREATURE_RULE_BLUE_STAR);
+	if (iBlueStarValue > 0)
+	{
+		// 属性修改
+		g_PersonPart.SetPersonRuleProp(pActor->GetPDBID(), CREATURE_RULE_BLUE_STAR, iBlueStarValue-1);
+	}
+	else
+	{
+		GWORD dw_score;
+		pActor->GetOwnerSelfScore(dw_score);
+
+		// spend score at it.
+		GWORD dw_resultScore = dw_score - pSeaBarInfo->iCur_Score;
+		pActor->SetOwnerSelfScore(dw_resultScore);
+	}
 
 	// then make it remember who is owner...
 	g_SealBarManager.SetSeaBarOwnerInfo(iSeaBarIndex, pActor->GetPDBID());
