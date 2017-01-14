@@ -33,8 +33,15 @@ There will always be updates, Please continue to pay attention to me. thank you!
 
 Welcome to send mail to communicate with me.
 
+version 0.0.1
 
 ![image](https://github.com/Peakchen/ArthurKing/blob/master/Design/Version_Preview_1_0.PNG)
 
-                                                                       
+
+version:0.1.1
+
+![image](https://github.com/Peakchen/ArthurKing/blob/master/Design/Version_Preview_1_1.png)
+
+
                                                                        不定期更新...
+
